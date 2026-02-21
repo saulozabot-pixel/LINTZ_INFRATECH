@@ -6,7 +6,7 @@
 - [x] Rebuild do APK ✅ BUILD SUCCESSFUL
 - [x] Testado no dispositivo — funcionando ✅
 
----
+poderia aumentar a fo---
 
 ## 🔄 EM ANDAMENTO: Verificação com Uber + Correção do Cálculo Real
 

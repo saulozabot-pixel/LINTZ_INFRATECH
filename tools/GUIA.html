@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>LUX Driver — Guia de Gerenciamento</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--gold:#FFD700;--green:#4CAF50;--red:#F44336;--bg:#0a0a0d;--card:#13131a;--border:#1e1e2a;--text:#e0e0e0;--muted:#888}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;padding:0}
+a{color:var(--gold);text-decoration:none}
+a:hover{text-decoration:underline}
+/* HEADER */
+.header{background:linear-gradient(135deg,rgba(255,215,0,.08) 0%,transparent 60%);border-bottom:1px solid var(--border);padding:40px 32px 32px;text-align:center}
+.header h1{font-size:32px;font-weight:900;color:var(--gold);margin-bottom:8px}
+.header p{color:var(--muted);font-size:15px}
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+/* SIDEBAR */
+.sidebar{background:var(--card);border-right:1px solid var(--border);padding:24px 16px;position:sticky;top:0;height:100vh;overflow-y:auto}
+.sidebar h3{font-size:10px;font-weight:700;letter-spacing:.15em;color:var(--muted);text-transform:uppercase;margin-bottom:12px;margin-top:20px}
+.sidebar h3:first-child{margin-top:0}
+.sidebar a{display:block;padding:8px 12px;border-radius:8px;font-size:13px;color:var(--muted);margin-bottom:2px;transition:all .15s}
+.sidebar a:hover{background:rgba(255,215,0,.08);color:var(--gold);text-decoration:none}
+/* CONTENT */
+.content{padding:40px 48px;max-width:860px}
+/* SECTION */
+.section{margin-bottom:56px}
+.section-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,215,0,.1);border:1px solid rgba(255,215,0,.25);color:var(--gold);padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.08em;margin-bottom:12px}
+.section h2{font-size:26px;font-weight:900;margin-bottom:8px}
+.section p{color:var(--muted);font-size:14px;line-height:1.7;margin-bottom:16px}
+/* CARD */
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px 24px;margin-bottom:16px}
+.card h3{font-size:15px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.card p,.card li{font-size:13px;color:var(--muted);line-height:1.8}
+.card ul,.card ol{padding-left:20px}
+/* LINK CARD */
+.link-card{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:20px 24px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:16px;transition:border-color .2s}
+.link-card:hover{border-color:rgba(255,215,0,.4)}
+.link-card-info h3{font-size:15px;font-weight:700;margin-bottom:4px}
+.link-card-info p{font-size:12px;color:var(--muted)}
+.link-card-btn{background:var(--gold);color:#000;padding:10px 20px;border-radius:10px;font-size:13px;font-weight:700;white-space:nowrap;text-decoration:none}
+.link-card-btn:hover{opacity:.9;text-decoration:none}
+/* STEPS */
+.steps{counter-reset:step}
+.step{display:flex;gap:16px;margin-bottom:20px}
+.step-num{width:32px;height:32px;border-radius:50%;background:rgba(255,215,0,.1);border:2px solid rgba(255,215,0,.3);color:var(--gold);font-size:14px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.step-body h4{font-size:14px;font-weight:700;margin-bottom:4px}
+.step-body p{font-size:13px;color:var(--muted);line-height:1.7}
+/* CODE */
+code{background:#1a1a24;border:1px solid var(--border);padding:2px 8px;border-radius:6px;font-size:12px;color:#FFD700;font-family:monospace}
+.code-block{background:#1a1a24;border:1px solid var(--border);border-radius:10px;padding:16px;font-family:monospace;font-size:12px;color:#e0e0e0;line-height:1.8;margin:12px 0;overflow-x:auto}
+/* BADGE */
+.badge{display:inline-block;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:700}
+.badge-green{background:rgba(76,175,80,.15);color:#4CAF50;border:1px solid rgba(76,175,80,.3)}
+.badge-yellow{background:rgba(255,215,0,.15);color:#FFD700;border:1px solid rgba(255,215,0,.3)}
+.badge-red{background:rgba(244,67,54,.15);color:#F44336;border:1px solid rgba(244,67,54,.3)}
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:13px;margin:12px 0}
+th{text-align:left;padding:10px 12px;background:rgba(255,215,0,.06);color:var(--gold);font-size:11px;letter-spacing:.08em;text-transform:uppercase;border-bottom:1px solid var(--border)}
+td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.04);color:var(--muted)}
+tr:last-child td{border-bottom:none}
+/* TIP */
+.tip{background:rgba(76,175,80,.06);border:1px solid rgba(76,175,80,.2);border-radius:10px;padding:14px 16px;font-size:13px;color:#aaa;margin:12px 0}
+.tip strong{color:#4CAF50}
+.warn{background:rgba(255,193,7,.06);border:1px solid rgba(255,193,7,.2);border-radius:10px;padding:14px 16px;font-size:13px;color:#aaa;margin:12px 0}
+.warn strong{color:#FFC107}
+/* RESPONSIVE */
+@media(max-width:700px){.layout{grid-template-columns:1fr}.sidebar{display:none}.content{padding:24px 20px}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🛠️ LUX Driver — Guia de Gerenciamento</h1>
+  <p>Tutorial completo para administrar assinantes, gerar códigos e monitorar receita</p>
+</div>
+
+<div class="layout">
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <h3>Ferramentas</h3>
+  <a href="#ferramentas">🔗 Links rápidos</a>
+  <a href="#dashboard">📊 Admin Dashboard</a>
+  <a href="#codigos">🔑 Gerador de Códigos</a>
+  <a href="#landing">🌐 Landing Page</a>
+
+  <h3>Fluxo de Venda</h3>
+  <a href="#fluxo">💰 Como vender</a>
+  <a href="#ativar">✅ Ativar assinante</a>
+  <a href="#renovar">🔄 Renovar plano</a>
+
+  <h3>Referência</h3>
+  <a href="#planos">📋 Planos e preços</a>
+  <a href="#codigos-ref">🔐 Sistema de códigos</a>
+  <a href="#dicas">💡 Dicas importantes</a>
+</nav>
+
+<!-- CONTENT -->
+<main class="content">
+
+<!-- FERRAMENTAS -->
+<div class="section" id="ferramentas">
+  <div class="section-badge">🔗 Acesso rápido</div>
+  <h2>Suas ferramentas</h2>
+  <p>Todas as ferramentas ficam na pasta <code>tools/</code> do projeto. Abra diretamente no navegador — não precisa de servidor.</p>
+
+  <div class="link-card">
+    <div class="link-card-info">
+      <h3>📊 Admin Dashboard</h3>
+      <p>Gerenciar assinantes, gerar códigos, ver receita, exportar CSV, enviar WhatsApp</p>
+    </div>
+    <a class="link-card-btn" href="admin-dashboard.html" target="_blank">Abrir →</a>
+  </div>
+
+  <div class="link-card">
+    <div class="link-card-info">
+      <h3>🔑 Gerador de Códigos</h3>
+      <p>Gerar e validar códigos de ativação LUX-XXXX-XXXX</p>
+    </div>
+    <a class="link-card-btn" href="code-generator.html" target="_blank">Abrir →</a>
+  </div>
+
+  <div class="link-card">
+    <div class="link-card-info">
+      <h3>🌐 Landing Page (site)</h3>
+      <p>Página de vendas hospedada no Vercel</p>
+    </div>
+    <a class="link-card-btn" href="https://lux-driver-assistant-l1kn79ee4-saulozabot-pixels-projects.vercel.app" target="_blank" rel="noopener">Abrir →</a>
+  </div>
+
+  <div class="link-card">
+    <div class="link-card-info">
+      <h3>💬 WhatsApp de vendas</h3>
+      <p>(47) 98818-2649 — link direto para receber clientes</p>
+    </div>
+    <a class="link-card-btn" href="https://wa.me/47988182649" target="_blank" rel="noopener">Abrir →</a>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="section" id="dashboard">
+  <div class="section-badge">📊 Admin Dashboard</div>
+  <h2>Como usar o Dashboard</h2>
+  <p>O dashboard é um arquivo HTML local que salva tudo no <strong style="color:#e0e0e0">localStorage</strong> do navegador. Sempre abra no mesmo navegador para não perder os dados.</p>
+
+  <div class="warn">
+    <strong>⚠️ Importante:</strong> Os dados ficam salvos no navegador (localStorage). Não limpe o histórico/cache do navegador ou os dados serão perdidos. Use sempre o mesmo navegador (ex: Chrome).
+  </div>
+
+  <div class="card">
+    <h3>📊 Aba Dashboard</h3>
+    <ul>
+      <li>Mostra total de assinantes, receita total, MRR (receita mensal recorrente)</li>
+      <li>Gráfico de receita por plano</li>
+      <li>Lista dos últimos assinantes cadastrados</li>
+      <li>Índice do próximo código a ser gerado</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>👥 Aba Assinantes</h3>
+    <ul>
+      <li><strong style="color:#e0e0e0">Adicionar:</strong> clique em "+ Novo Assinante" → preencha nome, WhatsApp, plano → o código é gerado automaticamente</li>
+      <li><strong style="color:#e0e0e0">Buscar:</strong> use a barra de pesquisa por nome ou WhatsApp</li>
+      <li><strong style="color:#e0e0e0">Filtrar:</strong> por status (ativo/expirado/trial)</li>
+      <li><strong style="color:#e0e0e0">Enviar código:</strong> clique em 💬 → abre WhatsApp com mensagem pronta</li>
+      <li><strong style="color:#e0e0e0">Editar/Excluir:</strong> ícones ✏️ e 🗑️ em cada linha</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>🔑 Aba Códigos</h3>
+    <ul>
+      <li>Gera um intervalo de códigos (ex: índices 1 a 10)</li>
+      <li>Códigos já usados aparecem em <span style="color:#F44336">vermelho</span></li>
+      <li>Códigos disponíveis aparecem em <span style="color:#4CAF50">verde</span></li>
+      <li>Botão "Copiar todos" para copiar a lista</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>💰 Aba Receita</h3>
+    <ul>
+      <li>Total recebido, MRR, ARR projetado</li>
+      <li>Histórico de pagamentos</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>📤 Exportar CSV</h3>
+    <p>Botão no topo do dashboard → baixa planilha com todos os assinantes. Abra no Excel ou Google Sheets.</p>
+  </div>
+</div>
+
+<!-- FLUXO DE VENDA -->
+<div class="section" id="fluxo">
+  <div class="section-badge">💰 Fluxo de venda</div>
+  <h2>Como vender passo a passo</h2>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h4>Cliente entra em contato pelo WhatsApp</h4>
+        <p>Ele viu o site ou foi indicado. Responda, tire dúvidas e apresente os planos.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h4>Cliente escolhe o plano e paga via PIX</h4>
+        <p>Envie sua chave PIX. Confirme o pagamento antes de ativar.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h4>Abra o Admin Dashboard → Aba Assinantes</h4>
+        <p>Clique em <strong style="color:#FFD700">"+ Novo Assinante"</strong>, preencha os dados e salve. O código é gerado automaticamente.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h4>Clique em 💬 na linha do assinante</h4>
+        <p>O WhatsApp abre com a mensagem já preenchida contendo o código de ativação. Só enviar!</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <h4>Cliente ativa no app LUX</h4>
+        <p>Ele abre o LUX → tela de ativação → digita o código <code>LUX-XXXX-XXXX</code> → Premium ativado ✅</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ATIVAR ASSINANTE -->
+<div class="section" id="ativar">
+  <div class="section-badge">✅ Ativação</div>
+  <h2>Ativando um assinante</h2>
+
+  <div class="card">
+    <h3>📝 Dados para cadastrar</h3>
+    <table>
+      <tr><th>Campo</th><th>Exemplo</th><th>Obrigatório</th></tr>
+      <tr><td>Nome</td><td>João Silva</td><td><span class="badge badge-red">Sim</span></td></tr>
+      <tr><td>WhatsApp</td><td>47999999999</td><td><span class="badge badge-red">Sim</span></td></tr>
+      <tr><td>Plano</td><td>Mensal / Trimestral / Anual</td><td><span class="badge badge-red">Sim</span></td></tr>
+      <tr><td>Observação</td><td>Pagou PIX R$9,90</td><td><span class="badge badge-green">Opcional</span></td></tr>
+    </table>
+  </div>
+
+  <div class="tip">
+    <strong>💡 Dica:</strong> O código é gerado automaticamente ao salvar. Você não precisa copiar manualmente — o botão 💬 já monta a mensagem completa para o WhatsApp.
+  </div>
+
+  <div class="card">
+    <h3>💬 Mensagem enviada automaticamente</h3>
+    <div class="code-block">Olá [Nome]! 🎉
+
+Seu acesso ao LUX Driver foi ativado!
+
+🔑 Seu código de ativação:
+LUX-XXXX-XXXX
+
+📱 Como ativar:
+1. Abra o app LUX Driver
+2. Toque em "Já tenho um código"
+3. Digite o código acima
+4. Pronto! Premium ativado ✅
+
+Qualquer dúvida, é só chamar aqui! 🚗</div>
+  </div>
+</div>
+
+<!-- RENOVAR -->
+<div class="section" id="renovar">
+  <div class="section-badge">🔄 Renovação</div>
+  <h2>Renovando um plano</h2>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h4>Cliente paga a renovação via PIX</h4>
+        <p>Confirme o pagamento.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h4>Abra o Dashboard → encontre o assinante → clique ✏️</h4>
+        <p>Edite a data de expiração para a nova data (ex: +30 dias para mensal).</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h4>O mesmo código continua funcionando</h4>
+        <p>Não precisa gerar novo código. O app verifica a data de expiração localmente.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PLANOS -->
+<div class="section" id="planos">
+  <div class="section-badge">📋 Referência</div>
+  <h2>Planos e preços</h2>
+
+  <table>
+    <tr><th>Plano</th><th>Preço</th><th>Duração</th><th>Por mês</th></tr>
+    <tr><td>Mensal</td><td><strong style="color:#e0e0e0">R$ 9,90</strong></td><td>30 dias</td><td>R$ 9,90</td></tr>
+    <tr><td>Trimestral</td><td><strong style="color:#e0e0e0">R$ 24,90</strong></td><td>90 dias</td><td>R$ 8,30</td></tr>
+    <tr><td>Anual ⭐</td><td><strong style="color:#FFD700">R$ 79,90</strong></td><td>365 dias</td><td>R$ 6,66</td></tr>
+  </table>
+
+  <div class="tip">
+    <strong>💡 Trial:</strong> 7 dias grátis para novos usuários. Após o trial, o app mostra a tela de pagamento.
+  </div>
+</div>
+
+<!-- CÓDIGOS -->
+<div class="section" id="codigos-ref">
+  <div class="section-badge">🔐 Sistema de códigos</div>
+  <h2>Como funciona o sistema de códigos</h2>
+
+  <div class="card">
+    <h3>🔑 Formato</h3>
+    <p>Todos os códigos seguem o padrão: <code>LUX-XXXX-XXXX</code></p>
+    <p style="margin-top:8px">Exemplo: <code>LUX-A3KM-P7QR</code></p>
+  </div>
+
+  <div class="card">
+    <h3>📊 Capacidade</h3>
+    <ul>
+      <li>500 códigos únicos disponíveis (índices 1 a 500)</li>
+      <li>Cada código é gerado a partir de um índice sequencial</li>
+      <li>O dashboard controla qual índice usar a seguir</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>✅ Validação no app</h3>
+    <p>O app valida o código localmente (sem internet). O algoritmo é o mesmo no app e no dashboard — garantindo que apenas códigos gerados por você funcionem.</p>
+  </div>
+
+  <div class="warn">
+    <strong>⚠️ Segurança:</strong> Nunca compartilhe o arquivo <code>admin-dashboard.html</code> ou <code>code-generator.html</code> com ninguém. Eles contêm o algoritmo de geração de códigos.
+  </div>
+</div>
+
+<!-- DICAS -->
+<div class="section" id="dicas">
+  <div class="section-badge">💡 Dicas</div>
+  <h2>Dicas importantes</h2>
+
+  <div class="card">
+    <h3>💾 Backup dos dados</h3>
+    <p>Os dados ficam no localStorage do navegador. Para fazer backup:</p>
+    <ol style="margin-top:8px">
+      <li>Abra o Dashboard</li>
+      <li>Clique em <strong style="color:#FFD700">"Exportar CSV"</strong></li>
+      <li>Salve o arquivo em local seguro (Google Drive, etc.)</li>
+      <li>Faça isso semanalmente</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h3>📱 Acessar de outro computador</h3>
+    <p>O localStorage é local — não sincroniza entre computadores. Se precisar acessar de outro PC:</p>
+    <ol style="margin-top:8px">
+      <li>Exporte o CSV do computador atual</li>
+      <li>No novo computador, importe os dados manualmente</li>
+      <li>Ou use sempre o mesmo computador para o dashboard</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h3>🔗 Links úteis</h3>
+    <ul>
+      <li><a href="https://github.com/saulozabot-pixel/LuxDriverAssistent" target="_blank" rel="noopener">GitHub — código fonte</a></li>
+      <li><a href="https://vercel.com/dashboard" target="_blank" rel="noopener">Vercel — painel de deploy</a></li>
+      <li><a href="https://lux-driver-assistant-l1kn79ee4-saulozabot-pixels-projects.vercel.app" target="_blank" rel="noopener">Site ao vivo</a></li>
+      <li><a href="https://wa.me/47988182649" target="_blank" rel="noopener">WhatsApp de vendas</a></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>🚀 Próximos passos recomendados</h3>
+    <ol>
+      <li>Gerar o APK no Android Studio → <strong style="color:#e0e0e0">Build → Generate Signed APK</strong></li>
+      <li>Hospedar o APK no GitHub Releases</li>
+      <li>Atualizar o link de download no site</li>
+      <li>Tornar o repositório GitHub privado</li>
+      <li>Testar o fluxo completo: instalar APK → trial → comprar → ativar código</li>
+    </ol>
+  </div>
+</div>
+
+</main>
+</div>
+
+</body>
+</html>
