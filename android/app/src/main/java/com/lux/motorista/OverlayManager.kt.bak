@@ -1,0 +1,164 @@
+package com.lux.motorista
+
+import android.content.Context
+import android.graphics.Color
+import android.graphics.PixelFormat
+import android.graphics.Typeface
+import android.view.Gravity
+import android.view.View
+import android.view.WindowManager
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.graphics.drawable.GradientDrawable
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
+
+class OverlayManager(private val context: Context) {
+
+    private val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+    private var overlayView: View? = null
+    private var removeHandler: Handler? = null
+    private var removeRunnable: Runnable? = null
+    
+    // Duração configurável do overlay (padrão: 10 segundos)
+    var overlayDuration: Long = 10000
+
+    fun showOverlay(kmValue: String, timeValue: String, profitValue: String) {
+        Log.e("LUX_DEBUG", "🎨 MANAGER: Tentando exibir overlay...")
+        
+        // Cancela qualquer timer pendente PRIMEIRO
+        cancelPendingTimer()
+        
+        // Remove overlay anterior se existir
+        if (overlayView != null) {
+            safeRemoveOverlay()
+        }
+
+        // Cria o layout principal
+        val layout = LinearLayout(context).apply {
+            orientation = LinearLayout.VERTICAL
+            val padding = dpToPx(16)
+            setPadding(padding, padding, padding, padding)
+            
+            // Fundo escuro com borda dourada
+            val background = GradientDrawable().apply {
+                setColor(Color.parseColor("#1A1A1A"))
+                cornerRadius = dpToPx(20).toFloat()
+                setStroke(dpToPx(3), Color.parseColor("#FFD700"))
+            }
+            setBackground(background)
+        }
+
+        // Linha 1: Logo LUX
+        val titleText = TextView(context).apply {
+            text = "💎 LUX ELITE"
+            textSize = 14f
+            setTextColor(Color.parseColor("#FFD700"))
+            typeface = Typeface.DEFAULT_BOLD
+            gravity = Gravity.CENTER
+        }
+        layout.addView(titleText)
+
+        // Linha 2: Lucro Principal
+        val profitText = TextView(context).apply {
+            text = "R$ $profitValue"
+            textSize = 28f
+            setTextColor(Color.WHITE)
+            typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
+            gravity = Gravity.CENTER
+        }
+        layout.addView(profitText)
+
+        // Linha 3: Info do card (Distância e Tempo)
+        val infoText = TextView(context).apply {
+            text = "📍 $kmValue km  ⏱️ $timeValue min"
+            textSize = 14f
+            setTextColor(Color.parseColor("#AAAAAA"))
+            typeface = Typeface.DEFAULT
+            gravity = Gravity.CENTER
+        }
+        layout.addView(infoText)
+
+        // Linha 4: Lucro por KM (estimado)
+        val profitPerKm = if (kmValue.toDoubleOrNull() != null && kmValue.toDouble() > 0) {
+            val profit = profitValue.replace(",", ".").toDoubleOrNull() ?: 0.0
+            val km = kmValue.toDouble()
+            "R$ %.2f/km".format(profit / km)
+        } else {
+            "R$ --/km"
+        }
+        
+        val profitPerKmText = TextView(context).apply {
+            text = "💵 $profitPerKm"
+            textSize = 12f
+            setTextColor(Color.parseColor("#4CAF50"))
+            typeface = Typeface.DEFAULT_BOLD
+            gravity = Gravity.CENTER
+        }
+        layout.addView(profitPerKmText)
+
+        overlayView = layout
+
+        // Configura parâmetros da janela
+        val params = WindowManager.LayoutParams(
+            WindowManager.LayoutParams.WRAP_CONTENT,
+            WindowManager.LayoutParams.WRAP_CONTENT,
+            WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or 
+            WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or 
+            WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
+            PixelFormat.TRANSLUCENT
+        ).apply {
+            gravity = Gravity.TOP or Gravity.CENTER_HORIZONTAL
+            y = dpToPx(100) // Posição um pouco mais acima
+        }
+
+        try {
+            windowManager.addView(overlayView, params)
+            Log.wtf("LUX_DEBUG", "✅ MANAGER: Overlay adicionado! Duração: ${overlayDuration}ms")
+            
+            // Agenda remoção automática
+            scheduleRemove()
+            
+        } catch (e: Exception) {
+            Log.wtf("LUX_DEBUG", "❌ MANAGER ERRO FATAL: " + e.message)
+        }
+    }
+
+    private fun scheduleRemove() {
+        removeHandler = Handler(Looper.getMainLooper())
+        removeRunnable = Runnable {
+            removeOverlay()
+            Log.e("LUX_DEBUG", "⏰ TIMER: Overlay removido automaticamente")
+        }
+        removeHandler?.postDelayed(removeRunnable!!, overlayDuration)
+    }
+
+    fun removeOverlay() {
+        // Cancela o timer de remoção
+        removeRunnable?.let {
+            removeHandler?.removeCallbacks(it)
+        }
+        
+        overlayView?.let {
+            try {
+                windowManager.removeView(it)
+                overlayView = null
+                Log.e("LUX_DEBUG", "🔴 OVERLAY: Removido da tela")
+            } catch (e: Exception) {
+                Log.e("LUX_DEBUG", "❌ ERRO ao remover: " + e.message)
+            }
+        }
+    }
+    
+    fun setDuration(durationMs: Long) {
+        overlayDuration = durationMs
+        Log.e("LUX_DEBUG", "⏱️ DURAÇÃO: Configurada para ${durationMs}ms")
+    }
+
+    private fun dpToPx(dp: Int): Int {
+        val density = context.resources.displayMetrics.density
+        return (dp * density).toInt()
+    }
+}

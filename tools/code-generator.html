@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LUX — Gerador de Códigos de Ativação</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #0d0d0f;
+      color: #e0e0e0;
+      min-height: 100vh;
+      padding: 32px 16px;
+    }
+    .container { max-width: 700px; margin: 0 auto; }
+    h1 { color: #FFD700; font-size: 28px; font-weight: 900; letter-spacing: -0.5px; }
+    .subtitle { color: #666; font-size: 13px; margin-top: 4px; margin-bottom: 32px; }
+    .card {
+      background: #1a1a1f;
+      border: 1px solid #2a2a35;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    label { display: block; font-size: 13px; color: #888; margin-bottom: 6px; }
+    input[type="number"], input[type="text"] {
+      width: 100%;
+      background: #0d0d0f;
+      border: 1px solid #2a2a35;
+      border-radius: 10px;
+      padding: 10px 14px;
+      color: #fff;
+      font-size: 15px;
+      outline: none;
+    }
+    input:focus { border-color: #FFD700; }
+    .row { display: flex; gap: 12px; margin-bottom: 16px; }
+    .row > div { flex: 1; }
+    button {
+      background: #FFD700;
+      color: #000;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 24px;
+      font-size: 15px;
+      font-weight: 900;
+      cursor: pointer;
+      width: 100%;
+      transition: opacity 0.15s;
+    }
+    button:hover { opacity: 0.85; }
+    .codes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .code-item {
+      background: #0d0d0f;
+      border: 1px solid #2a2a35;
+      border-radius: 10px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .code-item .num { color: #444; font-size: 11px; min-width: 28px; }
+    .code-item .code {
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      font-weight: bold;
+      color: #FFD700;
+      letter-spacing: 1px;
+      flex: 1;
+    }
+    .code-item .copy-btn {
+      background: #2a2a35;
+      color: #aaa;
+      border: none;
+      border-radius: 6px;
+      padding: 4px 8px;
+      font-size: 11px;
+      cursor: pointer;
+      width: auto;
+    }
+    .code-item .copy-btn:hover { background: #3a3a45; color: #fff; }
+    .copy-all-btn {
+      background: #1a2a1a;
+      color: #4CAF50;
+      border: 1px solid #4CAF50;
+      margin-top: 12px;
+    }
+    .copy-all-btn:hover { background: #2a3a2a; }
+    .info-box {
+      background: #1a1a0a;
+      border: 1px solid #FFD70040;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 20px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: #aaa;
+    }
+    .info-box strong { color: #FFD700; }
+    .secret-warning {
+      background: #1a0a0a;
+      border: 1px solid #F4433640;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 20px;
+      font-size: 13px;
+      color: #F44336;
+    }
+    #status { font-size: 13px; color: #4CAF50; margin-top: 8px; min-height: 20px; }
+    .empty { color: #444; text-align: center; padding: 32px; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔑 LUX — Gerador de Códigos</h1>
+    <p class="subtitle">Ferramenta exclusiva para gerar códigos de ativação Premium</p>
+
+    <div class="secret-warning">
+      ⚠️ <strong>MANTENHA ESTE ARQUIVO EM SEGREDO.</strong> Qualquer pessoa com acesso a ele pode gerar códigos válidos.
+      Não compartilhe e não publique online.
+    </div>
+
+    <div class="info-box">
+      <strong>Como usar:</strong><br/>
+      1. Defina o intervalo de índices (ex: 1 a 20 para os primeiros 20 clientes)<br/>
+      2. Clique em <strong>Gerar Códigos</strong><br/>
+      3. Copie um código por cliente e anote na sua planilha<br/>
+      4. Envie o código pelo WhatsApp após confirmar o pagamento PIX<br/><br/>
+      <strong>Importante:</strong> Cada índice gera sempre o mesmo código. Use índices diferentes para clientes diferentes.
+      O app aceita índices de 1 a 500.
+    </div>
+
+    <div class="card">
+      <div class="row">
+        <div>
+          <label>Índice inicial</label>
+          <input type="number" id="startIdx" value="1" min="1" max="500" />
+        </div>
+        <div>
+          <label>Índice final</label>
+          <input type="number" id="endIdx" value="20" min="1" max="500" />
+        </div>
+      </div>
+      <button onclick="generateCodes()">⚡ Gerar Códigos</button>
+      <div id="status"></div>
+    </div>
+
+    <div id="output"></div>
+  </div>
+
+  <script>
+    // ── DEVE SER IDÊNTICO AO PaywallScreen.tsx ────────────────────────────────
+    const SECRET = 'LUX_SAULO_2025_DRIVER';
+
+    function djb2Hash(str) {
+      let hash = 5381;
+      for (let i = 0; i < str.length; i++) {
+        hash = ((hash << 5) + hash) + str.charCodeAt(i);
+        hash = hash & hash;
+      }
+      return Math.abs(hash);
+    }
+
+    function generateCode(index) {
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      let n1 = djb2Hash(SECRET + index + 'A');
+      let n2 = djb2Hash(SECRET + index + 'B');
+      let part1 = '';
+      let part2 = '';
+      for (let i = 0; i < 4; i++) {
+        part1 += chars[n1 % chars.length]; n1 = Math.floor(n1 / chars.length);
+        part2 += chars[n2 % chars.length]; n2 = Math.floor(n2 / chars.length);
+      }
+      return `LUX-${part1}-${part2}`;
+    }
+    // ─────────────────────────────────────────────────────────────────────────
+
+    let generatedCodes = [];
+
+    function generateCodes() {
+      const start = parseInt(document.getElementById('startIdx').value);
+      const end   = parseInt(document.getElementById('endIdx').value);
+
+      if (isNaN(start) || isNaN(end) || start < 1 || end > 500 || start > end) {
+        document.getElementById('status').textContent = '❌ Intervalo inválido (1–500, início ≤ fim)';
+        document.getElementById('status').style.color = '#F44336';
+        return;
+      }
+
+      generatedCodes = [];
+      for (let i = start; i <= end; i++) {
+        generatedCodes.push({ index: i, code: generateCode(i) });
+      }
+
+      renderCodes();
+      document.getElementById('status').textContent = `✅ ${generatedCodes.length} código(s) gerado(s)`;
+      document.getElementById('status').style.color = '#4CAF50';
+    }
+
+    function renderCodes() {
+      const out = document.getElementById('output');
+      if (generatedCodes.length === 0) {
+        out.innerHTML = '<div class="empty">Nenhum código gerado ainda.</div>';
+        return;
+      }
+
+      const items = generatedCodes.map(({ index, code }) => `
+        <div class="code-item">
+          <span class="num">#${index}</span>
+          <span class="code">${code}</span>
+          <button class="copy-btn" onclick="copyCode('${code}', this)">Copiar</button>
+        </div>
+      `).join('');
+
+      out.innerHTML = `
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <span style="font-weight:bold; color:#fff;">${generatedCodes.length} código(s)</span>
+            <span style="font-size:12px; color:#666;">Índices ${generatedCodes[0].index}–${generatedCodes[generatedCodes.length-1].index}</span>
+          </div>
+          <div class="codes-grid">${items}</div>
+          <button class="copy-all-btn" onclick="copyAll()">📋 Copiar todos (para planilha)</button>
+        </div>
+      `;
+    }
+
+    function copyCode(code, btn) {
+      navigator.clipboard.writeText(code).then(() => {
+        const orig = btn.textContent;
+        btn.textContent = '✓';
+        btn.style.color = '#4CAF50';
+        setTimeout(() => { btn.textContent = orig; btn.style.color = ''; }, 1500);
+      });
+    }
+
+    function copyAll() {
+      const text = generatedCodes.map(({ index, code }) => `${index}\t${code}`).join('\n');
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = event.target;
+        btn.textContent = '✅ Copiado! Cole na sua planilha (Excel/Google Sheets)';
+        setTimeout(() => { btn.textContent = '📋 Copiar todos (para planilha)'; }, 2500);
+      });
+    }
+
+    // Gera automaticamente ao carregar
+    generateCodes();
+  </script>
+</body>
+</html>

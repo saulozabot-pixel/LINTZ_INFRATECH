@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #FFD700;
+  --color-secondary: #DAA520;
+  --color-success: #00E676;
+  --color-danger: #FF5252;
+  --color-warning: #FFAB00;
+  --color-dark-bg: #0d0d0f;
+  --color-dark-card: #1a1a1f;
+  --color-dark-border: #333;
+  --font-sans: "Inter", sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-dark-bg text-white font-sans;
+    /* Garante que o conteúdo não fique atrás da barra de status ou navegação */
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply w-full bg-primary text-black font-bold py-4 rounded-xl text-lg hover:brightness-110 transition-all flex items-center justify-center gap-2;
+  }
+
+  .input-field {
+    @apply w-full bg-dark-card border border-dark-border rounded-lg p-3 text-white focus:border-primary focus:outline-none transition-colors text-lg;
+  }
+
+  .card {
+    @apply bg-dark-card border border-dark-border rounded-2xl p-6 shadow-xl;
+  }
+
+  .animate-slide-down {
+    animation: slideDown 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
