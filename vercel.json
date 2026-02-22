@@ -3,11 +3,6 @@
   "outputDirectory": "docs",
   "installCommand": null,
   "framework": null,
-  "functions": {
-    "api/*.js": {
-      "runtime": "nodejs20.x"
-    }
-  },
   "headers": [
     {
       "source": "/api/(.*)",
