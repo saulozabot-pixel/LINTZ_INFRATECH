@@ -4,6 +4,14 @@ apply plugin: 'kotlin-android'
 android {
     namespace = "com.lux.motorista"
     compileSdk = rootProject.ext.compileSdkVersion
+    signingConfigs {
+        release {
+            storeFile file("lux-release.jks")
+            storePassword "LuxDriver2025"
+            keyAlias "lux"
+            keyPassword "LuxDriver2025"
+        }
+    }
     defaultConfig {
         applicationId "com.lux.motorista"
         minSdkVersion rootProject.ext.minSdkVersion
@@ -21,6 +29,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 }
