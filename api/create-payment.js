@@ -34,7 +34,7 @@ export default async function handler(req, res) {
     const response = await fetch('https://api.pushinpay.com.br/api/pix/cashIn', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${process.env.PUSHINPAY_TOKEN}`,
+        'Authorization': `Bearer ${(process.env.PUSHINPAY_TOKEN || '').trim()}`,
         'Content-Type': 'application/json',
         'Accept': 'application/json',
       },

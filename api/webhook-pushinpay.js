@@ -26,9 +26,10 @@ function generateLuxCode(seed) {
 
 // ── Envia mensagem via Evolution API ─────────────────────────────────────────
 async function sendWhatsApp(phone, message) {
-  const apiUrl      = process.env.EVOLUTION_API_URL;   // ex: https://roaringtigershark-evolution.cloudfy.live
-  const apiKey      = process.env.EVOLUTION_API_KEY;   // API Key global do Evolution
-  const instance    = process.env.EVOLUTION_INSTANCE;  // Nome da instância (ver Painel)
+  // .trim() remove newlines que o PowerShell adiciona ao setar via CLI
+  const apiUrl      = (process.env.EVOLUTION_API_URL   || '').trim();
+  const apiKey      = (process.env.EVOLUTION_API_KEY   || '').trim();
+  const instance    = (process.env.EVOLUTION_INSTANCE  || '').trim();
 
   if (!apiUrl || !apiKey || !instance) {
     console.error('Evolution API não configurada — verifique as env vars');
