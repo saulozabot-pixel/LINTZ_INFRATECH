@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>LUX Driver — Assinar</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--gold:#FFD700;--bg:#0a0a0d;--card:#13131a;--border:#1e1e2a;--text:#e0e0e0;--muted:#888;--green:#4CAF50}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:24px 16px 48px}
+.logo{font-size:22px;font-weight:900;color:var(--gold);margin-bottom:32px;margin-top:16px;letter-spacing:.05em}
+.logo span{color:var(--muted);font-size:12px;font-weight:400;margin-left:6px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:28px;width:100%;max-width:420px}
+h2{font-size:20px;font-weight:900;margin-bottom:6px}
+.sub{font-size:13px;color:var(--muted);margin-bottom:24px}
+/* Planos */
+.plans{display:flex;flex-direction:column;gap:10px;margin-bottom:24px}
+.plan-opt{border:2px solid var(--border);border-radius:14px;padding:14px 16px;cursor:pointer;transition:all .2s;position:relative}
+.plan-opt:hover{border-color:rgba(255,215,0,.4)}
+.plan-opt.selected{border-color:var(--gold);background:rgba(255,215,0,.05)}
+.plan-opt input{position:absolute;opacity:0;width:0;height:0}
+.plan-row{display:flex;justify-content:space-between;align-items:center}
+.plan-name{font-size:15px;font-weight:700}
+.plan-price{font-size:18px;font-weight:900;color:var(--gold)}
+.plan-detail{font-size:11px;color:var(--muted);margin-top:3px}
+.plan-badge{background:var(--gold);color:#000;font-size:10px;font-weight:900;padding:2px 8px;border-radius:10px;margin-left:8px}
+/* Form */
+label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px;letter-spacing:.06em;text-transform:uppercase}
+input[type=tel]{width:100%;background:#0d0d14;border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-size:16px;outline:none;transition:border-color .2s;margin-bottom:20px}
+input[type=tel]:focus{border-color:var(--gold)}
+input[type=tel]::placeholder{color:#444}
+.btn-pay{width:100%;padding:16px;background:var(--gold);color:#000;border:none;border-radius:14px;font-size:16px;font-weight:900;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-pay:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,215,0,.3)}
+.btn-pay:disabled{opacity:.5;cursor:not-allowed;transform:none}
+/* PIX QR */
+#pix-section{display:none;text-align:center}
+.qr-wrap{background:#fff;border-radius:16px;padding:16px;display:inline-block;margin:16px 0}
+.qr-wrap img{width:200px;height:200px;display:block}
+.pix-code-wrap{background:#0d0d14;border:1px solid var(--border);border-radius:10px;padding:12px;margin:12px 0;word-break:break-all;font-size:11px;color:#aaa;text-align:left;position:relative}
+.copy-btn{position:absolute;top:8px;right:8px;background:var(--gold);color:#000;border:none;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer}
+.copy-btn:active{opacity:.7}
+.waiting{display:flex;align-items:center;gap:8px;justify-content:center;font-size:13px;color:var(--muted);margin-top:12px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--gold);animation:pulse 1.4s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+.timer{font-size:12px;color:var(--muted);margin-top:8px}
+/* Success */
+#success-section{display:none;text-align:center}
+.success-icon{font-size:56px;margin-bottom:12px}
+.code-box{background:rgba(255,215,0,.08);border:2px solid var(--gold);border-radius:14px;padding:20px;margin:16px 0}
+.code-label{font-size:11px;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.1em}
+.code-value{font-size:28px;font-weight:900;color:var(--gold);letter-spacing:.1em}
+.steps-list{text-align:left;margin-top:16px;font-size:13px;color:var(--muted);line-height:2}
+.steps-list b{color:var(--text)}
+/* Error */
+.error-msg{background:rgba(244,67,54,.1);border:1px solid rgba(244,67,54,.3);border-radius:10px;padding:12px;font-size:13px;color:#f44336;margin-top:12px;display:none}
+.back-link{font-size:13px;color:var(--muted);margin-top:20px;text-align:center}
+.back-link a{color:var(--gold)}
+</style>
+</head>
+<body>
+
+<div class="logo">LUX <span>DRIVER</span></div>
+
+<div class="card">
+
+  <!-- ── STEP 1: Seleção de plano + telefone ── -->
+  <div id="form-section">
+    <h2>Assinar LUX Driver</h2>
+    <p class="sub">Escolha seu plano e pague via PIX. O código chega no WhatsApp em segundos.</p>
+
+    <div class="plans" id="plans">
+      <label class="plan-opt selected" id="opt-mensal">
+        <input type="radio" name="plan" value="mensal" checked/>
+        <div class="plan-row">
+          <span class="plan-name">Mensal</span>
+          <span class="plan-price">R$ 9,90</span>
+        </div>
+        <div class="plan-detail">R$ 9,90 por mês</div>
+      </label>
+
+      <label class="plan-opt" id="opt-trimestral">
+        <input type="radio" name="plan" value="trimestral"/>
+        <div class="plan-row">
+          <span class="plan-name">Trimestral</span>
+          <span class="plan-price">R$ 24,90</span>
+        </div>
+        <div class="plan-detail">R$ 8,30/mês • Economize 16%</div>
+      </label>
+
+      <label class="plan-opt" id="opt-anual">
+        <input type="radio" name="plan" value="anual"/>
+        <div class="plan-row">
+          <span class="plan-name">Anual <span class="plan-badge">🔥 Melhor valor</span></span>
+          <span class="plan-price">R$ 79,90</span>
+        </div>
+        <div class="plan-detail">R$ 6,66/mês • Economize 33%</div>
+      </label>
+    </div>
+
+    <label for="phone">Seu WhatsApp (com DDD)</label>
+    <input type="tel" id="phone" placeholder="(47) 99999-9999" maxlength="15"/>
+
+    <button class="btn-pay" id="btn-pay" onclick="createPayment()">
+      💳 Gerar PIX
+    </button>
+    <div class="error-msg" id="error-msg"></div>
+  </div>
+
+  <!-- ── STEP 2: QR Code PIX ── -->
+  <div id="pix-section">
+    <h2>Pague via PIX</h2>
+    <p class="sub">Escaneie o QR Code ou copie o código PIX abaixo.</p>
+
+    <div class="qr-wrap" id="qr-wrap">
+      <img id="qr-img" src="" alt="QR Code PIX"/>
+    </div>
+
+    <div class="pix-code-wrap">
+      <span id="pix-code-text"></span>
+      <button class="copy-btn" onclick="copyPix()">Copiar</button>
+    </div>
+
+    <div class="waiting">
+      <div class="dot"></div>
+      Aguardando pagamento...
+    </div>
+    <div class="timer" id="timer">O código expira em <b id="countdown">15:00</b></div>
+
+    <p style="font-size:12px;color:var(--muted);margin-top:16px">
+      ✅ Após o pagamento, você receberá o código de ativação no WhatsApp informado.
+    </p>
+  </div>
+
+  <!-- ── STEP 3: Sucesso (fallback se não receber WhatsApp) ── -->
+  <div id="success-section">
+    <div class="success-icon">✅</div>
+    <h2>Pagamento confirmado!</h2>
+    <p class="sub">Seu código de ativação foi enviado para o WhatsApp.</p>
+    <p style="font-size:13px;color:var(--muted);margin-top:8px">
+      Não recebeu? Entre em contato pelo WhatsApp:
+      <a href="https://wa.me/47988182649" target="_blank" style="color:var(--gold)">(47) 98818-2649</a>
+    </p>
+  </div>
+
+</div>
+
+<div class="back-link"><a href="/">← Voltar para o site</a></div>
+
+<script>
+// ── Seleção de plano ──────────────────────────────────────────────────────────
+document.querySelectorAll('.plan-opt input').forEach(radio => {
+  radio.addEventListener('change', () => {
+    document.querySelectorAll('.plan-opt').forEach(el => el.classList.remove('selected'));
+    radio.closest('.plan-opt').classList.add('selected');
+  });
+});
+
+// Pré-seleciona plano via query string (?plan=anual)
+const urlPlan = new URLSearchParams(location.search).get('plan');
+if (urlPlan) {
+  const radio = document.querySelector(`input[value="${urlPlan}"]`);
+  if (radio) {
+    radio.checked = true;
+    document.querySelectorAll('.plan-opt').forEach(el => el.classList.remove('selected'));
+    radio.closest('.plan-opt').classList.add('selected');
+  }
+}
+
+// ── Formata telefone ──────────────────────────────────────────────────────────
+document.getElementById('phone').addEventListener('input', function() {
+  let v = this.value.replace(/\D/g, '').slice(0, 11);
+  if (v.length > 10) v = v.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
+  else if (v.length > 6) v = v.replace(/^(\d{2})(\d{4})(\d*)$/, '($1) $2-$3');
+  else if (v.length > 2) v = v.replace(/^(\d{2})(\d*)$/, '($1) $2');
+  this.value = v;
+});
+
+// ── Cria pagamento ────────────────────────────────────────────────────────────
+async function createPayment() {
+  const phone = document.getElementById('phone').value.replace(/\D/g, '');
+  const plan  = document.querySelector('input[name="plan"]:checked')?.value;
+  const btn   = document.getElementById('btn-pay');
+  const errEl = document.getElementById('error-msg');
+
+  errEl.style.display = 'none';
+
+  if (phone.length < 10) {
+    showError('Digite um número de WhatsApp válido com DDD.');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '⏳ Gerando PIX...';
+
+  try {
+    const res = await fetch('/api/create-payment', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ phone, plan }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok || !data.qr_code) {
+      showError(data.error || 'Erro ao gerar PIX. Tente novamente.');
+      btn.disabled = false;
+      btn.innerHTML = '💳 Gerar PIX';
+      return;
+    }
+
+    showPixSection(data);
+
+  } catch (err) {
+    showError('Erro de conexão. Verifique sua internet e tente novamente.');
+    btn.disabled = false;
+    btn.innerHTML = '💳 Gerar PIX';
+  }
+}
+
+function showError(msg) {
+  const el = document.getElementById('error-msg');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+// ── Exibe QR Code ─────────────────────────────────────────────────────────────
+function showPixSection(data) {
+  document.getElementById('form-section').style.display = 'none';
+  document.getElementById('pix-section').style.display  = 'block';
+
+  // QR Code: usa base64 se disponível, senão gera via API pública
+  const qrImg = document.getElementById('qr-img');
+  if (data.qr_code_base64) {
+    qrImg.src = `data:image/png;base64,${data.qr_code_base64}`;
+  } else {
+    qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data.qr_code)}`;
+  }
+
+  document.getElementById('pix-code-text').textContent = data.qr_code;
+
+  // Countdown 15 minutos
+  startCountdown(15 * 60);
+}
+
+// ── Copia código PIX ──────────────────────────────────────────────────────────
+function copyPix() {
+  const code = document.getElementById('pix-code-text').textContent;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = '✓ Copiado!';
+    setTimeout(() => btn.textContent = 'Copiar', 2000);
+  });
+}
+
+// ── Countdown ─────────────────────────────────────────────────────────────────
+function startCountdown(seconds) {
+  const el = document.getElementById('countdown');
+  const interval = setInterval(() => {
+    if (seconds <= 0) {
+      clearInterval(interval);
+      el.textContent = 'expirado';
+      document.getElementById('timer').innerHTML =
+        '⚠️ PIX expirado. <a href="/checkout.html" style="color:var(--gold)">Gerar novo</a>';
+      return;
+    }
+    seconds--;
+    const m = String(Math.floor(seconds / 60)).padStart(2, '0');
+    const s = String(seconds % 60).padStart(2, '0');
+    el.textContent = `${m}:${s}`;
+  }, 1000);
+}
+</script>
+</body>
+</html>
