@@ -3,6 +3,11 @@
   "outputDirectory": "docs",
   "installCommand": null,
   "framework": null,
+  "rewrites": [
+    { "source": "/",                              "destination": "/docs/index.html" },
+    { "source": "/:file.html",                   "destination": "/docs/:file.html" },
+    { "source": "/:file.apk",                    "destination": "/docs/:file.apk" }
+  ],
   "headers": [
     {
       "source": "/api/(.*)",
