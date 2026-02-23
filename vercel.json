@@ -1,6 +1,6 @@
 {
-  "buildCommand": "",
-  "outputDirectory": "docs",
+  "buildCommand": "mkdir -p dist && cp -r docs/. dist/",
+  "outputDirectory": "dist",
   "installCommand": "",
   "framework": null,
   "headers": [
