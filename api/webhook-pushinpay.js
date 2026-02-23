@@ -1,27 +1,39 @@
 // Vercel Serverless Function — Recebe confirmação de pagamento PushinPay
 // Gera código LUX e envia via WhatsApp (Evolution API)
 
-// ── Gerador de código (mesmo algoritmo do app) ────────────────────────────────
+// ── Gerador de código — MESMO algoritmo do PaywallScreen.tsx ─────────────────
+// ATENÇÃO: qualquer mudança aqui deve ser espelhada em PaywallScreen.tsx
 function djb2Hash(str) {
   let hash = 5381;
   for (let i = 0; i < str.length; i++) {
     hash = ((hash << 5) + hash) + str.charCodeAt(i);
-    hash = hash & hash;
+    hash = hash & hash; // 32-bit
   }
   return Math.abs(hash);
 }
 
-function generateLuxCode(seed) {
+// Gera o código para um índice específico (índices 1–500)
+// Idêntico a generateCode(index) no PaywallScreen.tsx
+function generateCode(index) {
   const SECRET = process.env.LUX_SECRET || 'LUX_SAULO_2025_DRIVER';
-  const CHARS  = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  let h = djb2Hash(SECRET + seed);
-  let code = '';
-  for (let i = 0; i < 8; i++) {
-    code += CHARS[h % CHARS.length];
-    h = Math.floor(h / CHARS.length);
-    if (h < CHARS.length) h = djb2Hash(SECRET + seed + i);
+  const CHARS   = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // sem 0/O/1/I
+  let n1 = djb2Hash(SECRET + index + 'A');
+  let n2 = djb2Hash(SECRET + index + 'B');
+  let part1 = '';
+  let part2 = '';
+  for (let i = 0; i < 4; i++) {
+    part1 += CHARS[n1 % CHARS.length]; n1 = Math.floor(n1 / CHARS.length);
+    part2 += CHARS[n2 % CHARS.length]; n2 = Math.floor(n2 / CHARS.length);
   }
-  return `LUX-${code.slice(0, 4)}-${code.slice(4, 8)}`;
+  return `LUX-${part1}-${part2}`;
+}
+
+// Deriva um índice único (1–500) a partir do txid + telefone
+function generateLuxCode(txid, phone) {
+  const SECRET = process.env.LUX_SECRET || 'LUX_SAULO_2025_DRIVER';
+  const MAX_CODES = 500;
+  const index = (djb2Hash(SECRET + txid + phone) % MAX_CODES) + 1;
+  return generateCode(index);
 }
 
 // ── Envia mensagem via Evolution API ─────────────────────────────────────────
@@ -136,7 +148,7 @@ export default async function handler(req, res) {
 
   // ── Gera código único baseado no txid + telefone ──────────────────────────
   const txid = payload.id || payload.txid || payload.payment?.id || ts;
-  const code = generateLuxCode(`${txid}${phone}`);
+  const code = generateLuxCode(txid, phone);
 
   console.log(`✅ Pagamento confirmado — phone: ${phone}, plan: ${plan}, code: ${code}`);
 

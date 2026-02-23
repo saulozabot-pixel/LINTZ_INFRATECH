@@ -1,0 +1,10 @@
+var fs=require('fs');
+var c=fs.readFileSync('docs/pitch-deck-locadora-ev.html','utf8');
+console.log('Dolphin Mini:',c.includes('Dolphin Mini'));
+console.log('Dolphin GS:',c.includes('Dolphin GS'));
+console.log('R$ 625.000:',c.includes('625.000'));
+console.log('R$ 1.200.000:',c.includes('1.200.000'));
+console.log('ROI 31,5%:',c.includes('31,5%'));
+console.log('Payback 2,3:',c.includes('2,3 anos'));
+console.log('Seguro 3.250:',c.includes('3.250'));
+console.log('EBITDA 10.500:',c.includes('10.500'));

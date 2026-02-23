@@ -1,4 +1,4 @@
-# LUX - Lista de Tarefas
+ # LUX - Lista de Tarefas
 
 ## ✅ CONCLUÍDO: Correção dos Botões de Permissão
 - [x] Corrigir `openAccessibilitySettings` → abre `Settings.ACTION_ACCESSIBILITY_SETTINGS`
@@ -43,4 +43,12 @@
 - [x] **3. Criar `docs/generate-pitch.js`** — Bugs de regex corrigidos ✅
   - Bug crítico: Index 4 capturava Cenário A em vez de Cenário B → corrigido
   - Bug: Index 3 e 6 falhavam por `[^<]*` não passar por `<span>` → corrigido
-- [ ] **4. Git commit + push** → Deploy automático no Vercel
+- [x] **4. Git commit + push + deploy Vercel** — HTTP 200 confirmado ✅
+  - URL: https://lux-driver-assistent-18y8.vercel.app/pitch-deck-locadora-ev.html
+  - Fix final: `buildCommand: "mkdir -p dist && cp -r docs/. dist/"` + `outputDirectory: "dist"`
+  - Deploy via `npx vercel --prod` (commit be8fcf9)
+
+### ⚠️ Nota sobre warnings no VSCode (340 avisos):
+- São avisos do **Microsoft Edge Tools** sobre CSS inline no HTML
+- **Não são erros reais** — o HTML funciona corretamente no browser
+- São apenas sugestões de mover estilos inline para CSS externo

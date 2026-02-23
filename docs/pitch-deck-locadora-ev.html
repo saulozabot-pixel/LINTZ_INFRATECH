@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LuxDrive EV — Pitch Deck 2025</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{--g:#00E676;--b:#00B0FF;--gold:#FFD600;--dk:#0A0E1A;--dk2:#111827;--dk3:#1A2235;--tx:#E8F0FE;--mt:#8899AA;--rd:#FF5252;--or:#FF9800;--gg:rgba(0,230,118,.15);}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;background:var(--dk);color:var(--tx);font-family:'Segoe UI',system-ui,sans-serif;overflow:hidden;}
+.deck{width:100vw;height:100vh;position:relative;}
+.slide{position:absolute;inset:0;display:none;flex-direction:column;padding:36px 52px 24px;background:var(--dk2);overflow:hidden;}
+.slide.active{display:flex;}
+.slide::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--g),var(--b),var(--g));}
+.nav{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;z-index:999;background:rgba(10,14,26,.93);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border:1px solid rgba(0,230,118,.2);border-radius:50px;padding:6px 16px;}
+.nav button{background:none;border:none;color:var(--g);font-size:16px;cursor:pointer;padding:3px 8px;border-radius:20px;transition:background .2s;}
+.nav button:hover{background:var(--gg);}
+.nav button:disabled{color:var(--mt);cursor:default;}
+#sc{color:var(--mt);font-size:11px;min-width:48px;text-align:center;}
+.pbar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--g),var(--b));transition:width .4s;z-index:1000;}
+.dots{position:fixed;right:12px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:5px;z-index:999;}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--mt);cursor:pointer;transition:all .2s;}
+.dot.active{background:var(--g);transform:scale(1.5);}
+.tag{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--g);margin-bottom:4px;}
+h1{font-size:clamp(22px,3vw,44px);font-weight:800;line-height:1.1;}
+h2{font-size:clamp(16px,1.9vw,27px);font-weight:700;line-height:1.2;}
+h3{font-size:clamp(11px,1.1vw,15px);font-weight:600;}
+.sub{font-size:clamp(10px,1vw,13px);color:var(--mt);margin-top:4px;}
+.hl{color:var(--g);}.hlb{color:var(--b);}.hlg{color:var(--gold);}
+.card{background:var(--dk3);border:1px solid rgba(0,230,118,.12);border-radius:12px;padding:13px 17px;}
+.card-b{border-color:rgba(0,176,255,.2);}.card-g{border-color:rgba(255,214,0,.2);}.card-r{border-color:rgba(255,82,82,.15);}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:13px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.kpi{text-align:center;}
+.kv{font-size:clamp(14px,1.9vw,28px);font-weight:800;color:var(--g);}
+.kl{font-size:9px;color:var(--mt);text-transform:uppercase;letter-spacing:1px;margin-top:2px;}
+.ks{font-size:10px;color:var(--tx);margin-top:1px;}
+table{width:100%;border-collapse:collapse;font-size:11px;}
+th{background:rgba(0,230,118,.1);color:var(--g);padding:7px 10px;text-align:left;font-size:9px;letter-spacing:1px;text-transform:uppercase;}
+td{padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.05);}
+tr:hover td{background:rgba(0,230,118,.04);}
+.tg{color:var(--g);font-weight:700;}.tb{color:var(--b);font-weight:700;}.tgd{color:var(--gold);font-weight:700;}.tr{color:var(--rd);}.tm{color:var(--mt);}
+.badge{display:inline-block;padding:2px 7px;border-radius:20px;font-size:9px;font-weight:700;}
+.bg{background:rgba(0,230,118,.15);color:var(--g);}.bb{background:rgba(0,176,255,.15);color:var(--b);}
+.bgd{background:rgba(255,214,0,.15);color:var(--gold);}.br{background:rgba(255,82,82,.15);color:var(--rd);}.bo{background:rgba(255,152,0,.15);color:var(--or);}
+.pb{height:6px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden;margin-top:3px;}
+.pb-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--g),var(--b));}
+.il{list-style:none;}.il li{display:flex;align-items:flex-start;gap:6px;padding:3px 0;font-size:11px;}
+.il li::before{content:'⚡';flex-shrink:0;}.il.ck li::before{content:'✅';}.il.ri li::before{content:'⚠️';}.il.st li::before{content:'★';color:var(--gold);}
+.mrow{display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.05);}
+.mrow:last-child{border-bottom:none;}.mrow-l{font-size:11px;color:var(--mt);}.mrow-v{font-size:12px;font-weight:700;}
+.sc-cons{background:rgba(255,82,82,.08);border:1px solid rgba(255,82,82,.2);border-radius:10px;padding:11px;text-align:center;}
+.sc-mod{background:rgba(255,152,0,.08);border:1px solid rgba(255,152,0,.2);border-radius:10px;padding:11px;text-align:center;}
+.sc-agg{background:rgba(0,230,118,.08);border:1px solid rgba(0,230,118,.2);border-radius:10px;padding:11px;text-align:center;}
+.cover-bg{position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse at 20% 50%,rgba(0,230,118,.08) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(0,176,255,.06) 0%,transparent 50%),var(--dk2);}
+.cover-c{position:relative;z-index:1;display:flex;flex-direction:column;justify-content:center;height:100%;}
+.logo-m{width:52px;height:52px;border-radius:13px;background:linear-gradient(135deg,var(--g),var(--b));display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;color:#000;margin-bottom:14px;box-shadow:0 0 36px rgba(0,230,118,.4);}
+.sfooter{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:6px;border-top:1px solid rgba(255,255,255,.06);font-size:9px;color:var(--mt);}
+.risk-item{display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.05);}
+.risk-level{width:50px;text-align:center;padding:2px 4px;border-radius:4px;font-size:9px;font-weight:700;flex-shrink:0;margin-top:1px;}
+.risk-high{background:rgba(255,82,82,.2);color:var(--rd);}.risk-med{background:rgba(255,152,0,.2);color:var(--or);}.risk-low{background:rgba(0,230,118,.2);color:var(--g);}
+.rm-phase{border-left:2px solid var(--g);padding-left:12px;margin-bottom:10px;position:relative;}
+.rm-phase::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--g);position:absolute;left:-5px;top:3px;box-shadow:0 0 6px var(--g);}
+.rm-yr{font-size:9px;font-weight:700;color:var(--g);}.rm-title{font-size:11px;font-weight:600;margin-bottom:1px;}.rm-items{font-size:10px;color:var(--mt);}
+.slide.active .card,.slide.active .kpi,.slide.active h1,.slide.active h2{animation:fu .35s ease both;}
+@keyframes fu{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+</style>
+</head>
+<body>
+<div class="pbar" id="pbar"></div>
+<div class="deck" id="deck">
+<!-- SLIDES_START -->
+<!-- S1 CAPA -->
+<div class="slide active" id="s1">
+<div class="cover-bg"></div>
+<div class="cover-c">
+  <div class="logo-m">⚡</div>
+  <div class="tag">Confidencial · Fundo de Investimentos · 2025</div>
+  <h1>LuxDrive <span class="hl">EV</span></h1>
+  <h1 style="color:var(--mt);font-weight:400;font-size:clamp(14px,1.9vw,28px);">Locadora de Carros Elétricos para Motoristas de App</h1>
+  <p class="sub" style="max-width:540px;margin-top:10px;font-size:13px;line-height:1.6;">Primeiro ecossistema completo para motoristas de aplicativo com veículos 100% elétricos em Balneário Camboriú/SC — modelo escalável, ESG e com tese de saída clara para o investidor.</p>
+  <div style="display:flex;gap:16px;margin-top:20px;flex-wrap:wrap;">
+    <div style="font-size:10px;color:var(--mt);"><strong style="color:var(--tx);display:block;">📍 Localização</strong>Balneário Camboriú, SC</div>
+    <div style="font-size:10px;color:var(--mt);"><strong style="color:var(--tx);display:block;">🚗 Frota Inicial</strong>5 → 10 veículos</div>
+    <div style="font-size:10px;color:var(--mt);"><strong style="color:var(--tx);display:block;">🎯 Público-alvo</strong>Motoristas Uber / 99</div>
+    <div style="font-size:10px;color:var(--mt);"><strong style="color:var(--tx);display:block;">💰 Captação</strong>R$ 625K – R$ 1,20M</div>
+    <div style="font-size:10px;color:var(--mt);"><strong style="color:var(--tx);display:block;">📅 Início Operação</strong>Q3 2025</div>
+    <div style="font-size:10px;color:var(--mt);"><strong style="color:var(--tx);display:block;">🏆 Payback</strong>2,4 – 3,0 anos</div>
+  </div>
+  <div style="margin-top:18px;display:flex;gap:8px;flex-wrap:wrap;">
+    <span class="badge bg">🌱 ESG</span><span class="badge bb">⚡ Mobilidade Elétrica</span>
+    <span class="badge bgd">📱 App Economy</span><span class="badge bo">🏖️ Turismo Premium</span>
+    <span class="badge br">🔋 Rent-to-Own</span>
+  </div>
+</div>
+<div class="sfooter"><span>LuxDrive EV · Estudo de Viabilidade 2025</span><span>CONFIDENCIAL — Não distribuir sem autorização</span></div>
+</div>
+<!-- S2 EXECUTIVE SUMMARY -->
+<div class="slide" id="s2">
+<div class="tag">Executive Summary</div>
+<h2>A Oportunidade em <span class="hl">Números</span></h2>
+<p class="sub">Mercado subatendido + receita recorrente + ativo com valor residual = tese de investimento sólida</p>
+<div style="margin-top:12px;" class="g4">
+  <div class="card kpi"><div class="kv">R$ 2,1B</div><div class="kl">Mercado Locação App SC</div><div class="ks">Estimativa 2025</div></div>
+  <div class="card kpi"><div class="kv" style="color:var(--b);">+340%</div><div class="kl">Crescimento EVs Brasil</div><div class="ks">2022–2024 (ABVE)</div></div>
+  <div class="card kpi"><div class="kv" style="color:var(--gold);">31,5%</div><div class="kl">ROI Anual Projetado</div><div class="ks">Cenário Moderado</div></div>
+  <div class="card kpi"><div class="kv" style="color:var(--or);">2,3 anos</div><div class="kl">Payback (10 carros)</div><div class="ks">Com valor residual</div></div>
+</div>
+<div style="margin-top:11px;" class="g2">
+  <div class="card">
+    <h3 style="margin-bottom:7px;">🎯 Por que Balneário Camboriú?</h3>
+    <ul class="il ck">
+      <li>Maior PIB per capita de SC — R$ 52.400/hab (IBGE 2023)</li>
+      <li>+6 milhões de turistas/ano — demanda premium constante</li>
+      <li>Segurança pública superior à média nacional (IDH 0,845)</li>
+      <li>+4.200 motoristas de app ativos na região</li>
+      <li>Infraestrutura urbana moderna e compacta — ideal para EVs</li>
+      <li>Incentivos municipais para mobilidade sustentável</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3 style="margin-bottom:7px;">💡 Diferenciais Competitivos</h3>
+    <ul class="il st">
+      <li>Único ecossistema EV focado em motoristas de app em SC</li>
+      <li>Modelo rent-to-own: locação vira crédito para compra</li>
+      <li>Hub físico: lavagem, carregamento, coworking, cursos</li>
+      <li>Plataforma de cursos e certificação profissional</li>
+      <li>Cashback por performance nos apps (nota ≥ 4,8)</li>
+      <li>Parceria com montadoras para preço preferencial de frota</li>
+    </ul>
+  </div>
+</div>
+<div style="margin-top:10px;" class="g3">
+  <div class="sc-cons"><div style="font-size:9px;color:var(--rd);font-weight:700;text-transform:uppercase;">Conservador · 5 carros</div><div style="font-size:18px;font-weight:800;color:var(--rd);margin:4px 0;">R$ 123K/ano</div><div style="font-size:10px;color:var(--mt);">EBITDA · Margem 34%</div></div>
+  <div class="sc-mod"><div style="font-size:9px;color:var(--or);font-weight:700;text-transform:uppercase;">Moderado · 10 carros</div><div style="font-size:18px;font-weight:800;color:var(--or);margin:4px 0;">R$ 342K/ano</div><div style="font-size:10px;color:var(--mt);">EBITDA · Margem 47%</div></div>
+  <div class="sc-agg"><div style="font-size:9px;color:var(--g);font-weight:700;text-transform:uppercase;">Agressivo · 25 carros</div><div style="font-size:18px;font-weight:800;color:var(--g);margin:4px 0;">R$ 1,05M/ano</div><div style="font-size:10px;color:var(--mt);">EBITDA · Margem 55%</div></div>
+</div>
+<div class="sfooter"><span>LuxDrive EV · 2025</span><span>2 / 17</span></div>
+</div>
+<!-- S3 MERCADO -->
+<div class="slide" id="s3">
+<div class="tag">Seção 1 · Análise de Mercado</div>
+<h2>Mercado: <span class="hl">Grande, Crescente e Subatendido</span></h2>
+<div style="margin-top:11px;" class="g2">
+  <div>
+    <div class="card" style="margin-bottom:10px;">
+      <h3 style="margin-bottom:6px;">📊 TAM · SAM · SOM</h3>
+      <div class="mrow"><span class="mrow-l">TAM — Mercado Total Brasil (locação app)</span><span class="mrow-v tg">R$ 18,4B</span></div>
+      <div class="mrow"><span class="mrow-l">SAM — Mercado Endereçável SC</span><span class="mrow-v hlb">R$ 2,1B</span></div>
+      <div class="mrow"><span class="mrow-l">SOM — Mercado Obtível BC + região</span><span class="mrow-v hlg">R$ 84M</span></div>
+      <div class="mrow"><span class="mrow-l">Participação alvo (Ano 3)</span><span class="mrow-v" style="color:var(--or);">0,8% do SOM</span></div>
+    </div>
+    <div class="card">
+      <h3 style="margin-bottom:6px;">🚗 Motoristas de App em SC</h3>
+      <div class="mrow"><span class="mrow-l">Total SC (estimativa 2024)</span><span class="mrow-v tg">~68.000</span></div>
+      <div class="mrow"><span class="mrow-l">Balneário Camboriú + entorno</span><span class="mrow-v hlb">~4.200</span></div>
+      <div class="mrow"><span class="mrow-l">Crescimento anual</span><span class="mrow-v hlg">+18%/ano</span></div>
+      <div class="mrow"><span class="mrow-l">% sem veículo próprio</span><span class="mrow-v" style="color:var(--or);">~35%</span></div>
+      <div class="mrow"><span class="mrow-l">Potencial locatários (BC)</span><span class="mrow-v tg">~1.470</span></div>
+    </div>
+  </div>
+  <div>
+    <div class="card" style="margin-bottom:10px;">
+      <h3 style="margin-bottom:6px;">⚡ Crescimento EVs no Brasil (ABVE)</h3>
+      <div style="margin-bottom:5px;"><div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px;"><span>2022 — 49.245 EVs emplacados</span><span class="tg">Base</span></div><div class="pb"><div class="pb-fill" style="width:18%"></div></div></div>
+      <div style="margin-bottom:5px;"><div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px;"><span>2023 — 94.750 EVs emplacados</span><span class="tg">+92%</span></div><div class="pb"><div class="pb-fill" style="width:35%"></div></div></div>
+      <div style="margin-bottom:5px;"><div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px;"><span>2024 — 216.000 EVs emplacados</span><span class="tg">+128%</span></div><div class="pb"><div class="pb-fill" style="width:65%"></div></div></div>
+      <div><div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px;"><span>2025E — 380.000 EVs (projeção)</span><span class="tg">+76%</span></div><div class="pb"><div class="pb-fill" style="width:100%"></div></div></div>
+    </div>
+    <div class="card">
+      <h3 style="margin-bottom:6px;">🏖️ Balneário Camboriú — Perfil Estratégico</h3>
+      <div class="mrow"><span class="mrow-l">PIB per capita</span><span class="mrow-v tg">R$ 52.400</span></div>
+      <div class="mrow"><span class="mrow-l">IDH Municipal</span><span class="mrow-v hlb">0,845 (Top 5 SC)</span></div>
+      <div class="mrow"><span class="mrow-l">Turistas/ano</span><span class="mrow-v hlg">+6 milhões</span></div>
+      <div class="mrow"><span class="mrow-l">Renda média familiar</span><span class="mrow-v" style="color:var(--or);">R$ 8.200/mês</span></div>
+      <div class="mrow"><span class="mrow-l">Índice de segurança (SC)</span><span class="mrow-v tg">Top 3 cidades</span></div>
+    </div>
+  </div>
+</div>
+<div style="margin-top:10px;" class="g3">
+  <div class="card" style="text-align:center;"><div style="font-size:20px;margin-bottom:3px;">🏆</div><div style="font-size:11px;font-weight:700;color:var(--g);">Concorrência Direta</div><div style="font-size:10px;color:var(--mt);margin-top:3px;">Kovi, Flua, Localiza Meoo — nenhuma com foco EV em BC</div></div>
+  <div class="card" style="text-align:center;"><div style="font-size:20px;margin-bottom:3px;">📈</div><div style="font-size:11px;font-weight:700;color:var(--b);">Janela de Oportunidade</div><div style="font-size:10px;color:var(--mt);margin-top:3px;">Mercado EV para app ainda sem player dominante em SC</div></div>
+  <div class="card" style="text-align:center;"><div style="font-size:20px;margin-bottom:3px;">💚</div><div style="font-size:11px;font-weight:700;color:var(--gold);">Vantagem ESG</div><div style="font-size:10px;color:var(--mt);margin-top:3px;">Uber Green e 99 Eco incentivam EVs com mais corridas</div></div>
+</div>
+<div class="sfooter"><span>LuxDrive EV · 2025</span><span>3 / 17</span></div>
+</div>
+<!-- S4 MODELO DE NEGÓCIO -->
+<div class="slide" id="s4">
+<div class="tag">Seção 2 · Modelo de Negócio</div>
+<h2>Proposta de Valor: <span class="hl">Ecossistema Completo</span></h2>
+<p class="sub">Não somos apenas uma locadora — somos a plataforma de crescimento profissional do motorista de app</p>
+<div style="margin-top:11px;" class="g3">
+  <div class="card">
+    <h3 style="margin-bottom:7px;color:var(--g);">🎯 Proposta de Valor</h3>
+    <ul class="il ck">
+      <li>Economia de R$ 1.800–2.400/mês em combustível</li>
+      <li>Manutenção 60% menor vs. carro a combustão</li>
+      <li>Caminho estruturado para ser proprietário</li>
+      <li>Acesso a Uber Green e 99 Eco (mais corridas)</li>
+      <li>Suporte 24h e substituição em caso de pane</li>
+      <li>Comunidade e networking de motoristas</li>
+    </ul>
+  </div>
+  <div class="card card-b">
+    <h3 style="margin-bottom:7px;color:var(--b);">👤 Público-Alvo</h3>
+    <div style="margin-bottom:5px;"><span class="badge bg">Primário</span><div style="font-size:10px;margin-top:2px;color:var(--mt);">Motoristas Uber/99 sem veículo próprio, 25–45 anos, renda R$ 3–6K/mês</div></div>
+    <div style="margin-bottom:5px;"><span class="badge bb">Secundário</span><div style="font-size:10px;margin-top:2px;color:var(--mt);">Motoristas premium buscando upgrade para EV</div></div>
+    <div style="margin-bottom:5px;"><span class="badge bgd">Terciário</span><div style="font-size:10px;margin-top:2px;color:var(--mt);">Iniciantes no app — sem histórico de crédito</div></div>
+    <div><span class="badge bo">Turismo</span><div style="font-size:10px;margin-top:2px;color:var(--mt);">Locação diária para turistas em alta temporada</div></div>
+  </div>
+  <div class="card card-g">
+    <h3 style="margin-bottom:7px;color:var(--gold);">💰 Fontes de Receita</h3>
+    <div class="mrow"><span class="mrow-l">Locação semanal (core)</span><span class="mrow-v tg">~72%</span></div>
+    <div class="mrow"><span class="mrow-l">Taxa de adesão (R$ 500)</span><span class="mrow-v hlb">~5%</span></div>
+    <div class="mrow"><span class="mrow-l">Plano fidelidade premium</span><span class="mrow-v hlg">~6%</span></div>
+    <div class="mrow"><span class="mrow-l">Cursos e treinamentos</span><span class="mrow-v" style="color:var(--or);">~4%</span></div>
+    <div class="mrow"><span class="mrow-l">Eletropostos (terceiros)</span><span class="mrow-v tg">~5%</span></div>
+    <div class="mrow"><span class="mrow-l">Hub (lanchonete, serviços)</span><span class="mrow-v hlb">~4%</span></div>
+    <div class="mrow"><span class="mrow-l">Receita financeira (revenda)</span><span class="mrow-v hlg">~4%</span></div>
+  </div>
+</div>
+<div style="margin-top:10px;padding:10px 14px;background:rgba(0,230,118,.06);border:1px solid rgba(0,230,118,.15);border-radius:10px;">
+  <h3 style="color:var(--g);margin-bottom:6px;">🔑 Insight Estratégico: O Motorista Economiza R$ 2.100/mês com EV</h3>
+  <div style="display:flex;gap:20px;flex-wrap:wrap;font-size:11px;">
+    <span>⛽ Combustível evitado: <strong class="tg">R$ 1.800/mês</strong></span>
+    <span>🔧 Manutenção reduzida: <strong class="tg">R$ 300/mês</strong></span>
+    <span>📱 Mais corridas Uber Green: <strong class="tg">+R$ 400/mês</strong></span>
+    <span>💡 Custo energia EV: <strong style="color:var(--rd);">-R$ 400/mês</strong></span>
+    <span>✅ Ganho líquido: <strong class="tg">R$ 2.100/mês</strong></span>
+  </div>
+</div>
+<div class="sfooter"><span>LuxDrive EV · 2025</span><span>4 / 17</span></div>
+</div>
+<!-- S5 CAPEX -->
+<div class="slide" id="s5">
+<div class="tag">Seção 3 · Estrutura Financeira</div>
+<h2>CAPEX: <span class="hl">Investimento Inicial Detalhado</span></h2>
+<p class="sub">Dois cenários de entrada — frota de 5 ou 10 veículos elétricos</p>
+<div style="margin-top:12px;" class="g2">
+  <div>
+    <div style="padding:10px 14px;background:rgba(255,82,82,.08);border:1px solid rgba(255,82,82,.2);border-radius:10px;margin-bottom:10px;">
+      <div style="font-size:10px;color:var(--rd);font-weight:700;text-transform:uppercase;margin-bottom:6px;">📦 Cenário A — 5 Veículos · Captação: R$ 625.000</div>
+      <table>
+        <tr><th>Item</th><th>Qtd</th><th>Unit.</th><th>Total</th></tr>
+        <tr><td>BYD Dolphin Mini (base)</td><td>5</td><td class="tm">R$ 95.000</td><td class="tg">R$ 475.000</td></tr>
+        <tr><td>Eletropostos AC (22kW)</td><td>2</td><td class="tm">R$ 12.000</td><td class="tg">R$ 24.000</td></tr>
+        <tr><td>Instalação elétrica + obra</td><td>1</td><td class="tm">—</td><td class="tg">R$ 30.000</td></tr>
+        <tr><td>Base física (reforma/aluguel)</td><td>1</td><td class="tm">—</td><td class="tg">R$ 40.000</td></tr>
+        <tr><td>Sistema de gestão + TI</td><td>1</td><td class="tm">—</td><td class="tg">R$ 15.000</td></tr>
+        <tr><td>Capital de giro (3 meses)</td><td>1</td><td class="tm">—</td><td class="tg">R$ 41.000</td></tr>
+        <tr style="background:rgba(0,230,118,.08);"><td><strong>TOTAL</strong></td><td></td><td></td><td><strong class="tg">R$ 625.000</strong></td></tr>
+      </table>
+      <div style="margin-top:6px;padding:5px 10px;background:rgba(0,176,255,.06);border-radius:6px;font-size:10px;"><span class="tb">🔵 Opção Premium:</span> BYD Dolphin GS (R$ 150K/un) → CAPEX R$ 900K · Maior autonomia e conforto</div>
+    </div>
+  </div>
+  <div>
+    <div style="padding:10px 14px;background:rgba(0,230,118,.06);border:1px solid rgba(0,230,118,.2);border-radius:10px;margin-bottom:10px;">
+      <div style="font-size:10px;color:var(--g);font-weight:700;text-transform:uppercase;margin-bottom:6px;">📦 Cenário B — 10 Veículos · Captação: R$ 1.200.000</div>
+      <table>
+        <tr><th>Item</th><th>Qtd</th><th>Unit.</th><th>Total</th></tr>
+        <tr><td>BYD Dolphin Mini (base)</td><td>10</td><td class="tm">R$ 95.000</td><td class="tg">R$ 950.000</td></tr>
+        <tr><td>Eletropostos AC (22kW)</td><td>4</td><td class="tm">R$ 12.000</td><td class="tg">R$ 48.000</td></tr>
+        <tr><td>Instalação elétrica + obra</td><td>1</td><td class="tm">—</td><td class="tg">R$ 45.000</td></tr>
+        <tr><td>Base física (reforma/aluguel)</td><td>1</td><td class="tm">—</td><td class="tg">R$ 60.000</td></tr>
+        <tr><td>Sistema de gestão + TI</td><td>1</td><td class="tm">—</td><td class="tg">R$ 22.000</td></tr>
+        <tr><td>Capital de giro (3 meses)</td><td>1</td><td class="tm">—</td><td class="tg">R$ 75.000</td></tr>
+        <tr style="background:rgba(0,230,118,.08);"><td><strong>TOTAL</strong></td><td></td><td></td><td><strong class="tg">R$ 1.200.000</strong></td></tr>
+      </table>
+      <div style="margin-top:6px;padding:5px 10px;background:rgba(0,176,255,.06);border-radius:6px;font-size:10px;"><span class="tb">🔵 Opção Premium:</span> BYD Dolphin GS (R$ 150K/un) → CAPEX R$ 1,75M · Mix recomendado: 7 Mini + 3 GS</div>
+    </div>
+  </div>
+</div>
+<div style="margin-top:10px;" class="g4">
+  <div class="card kpi"><div class="kv">R$ 95K</div><div class="kl">Dolphin Mini (base)</div><div class="ks">R$ 150K Dolphin GS</div></div>
+  <div class="card kpi"><div class="kv" style="color:var(--b);">R$ 52K</div><div class="kl">Valor residual Mini (3a)</div><div class="ks">55% · GS: R$ 82K</div></div>
+  <div class="card kpi"><div class="kv" style="color:var(--gold);">R$ 12K</div><div class="kl">Eletroposto AC 22kW</div><div class="ks">Instalado e homologado</div></div>
+  <div class="card kpi"><div class="kv" style="color:var(--or);">15%/ano</div><div class="kl">Depreciação EV</div><div class="ks">vs. 20%/ano combustão</div></div>
+</div>
+<div class="sfooter"><span>LuxDrive EV · 2025</span><span>5 / 17</span></div>
+</div>
+<!-- S6 CUSTOS OPERACIONAIS -->
+<div class="slide" id="s6">
+<div class="tag">Seção 3 · Estrutura Financeira</div>
+<h2>Custos Operacionais: <span class="hl">Estrutura Enxuta e Escalável</span></h2>
+<div style="margin-top:12px;" class="g2">
+  <div>
+    <div class="card" style="margin-bottom:10px;">
+      <h3 style="margin-bottom:7px;color:var(--rd);">📊 Custos Mensais — 5 Carros</h3>
+      <table>
+        <tr><th>Categoria</th><th>Tipo</th><th>Valor/mês</th></tr>
+        <tr><td>Seguro frota (5 Dolphin Mini)</td><td><span class="badge bo">Variável</span></td><td class="tr">R$ 3.250</td></tr>
+        <tr><td>Manutenção preventiva</td><td><span class="badge bo">Variável</span></td><td class="tr">R$ 1.500</td></tr>
+        <tr><td>Energia elétrica (recarga)</td><td><span class="badge bo">Variável</span></td><td class="tr">R$ 1.000</td></tr>
+        <tr><td>Equipe (2 funcionários)</td><td><span class="badge bb">Fixo</span></td><td class="tr">R$ 7.000</td></tr>
+        <tr><td>Aluguel da base</td><td><span class="badge bb">Fixo</span></td><td class="tr">R$ 4.000</td></tr>
+        <tr><td>Marketing e aquisição</td><td><span class="badge bb">Fixo</span></td><td class="tr">R$ 1.500</td></tr>
+        <tr><td>Contabilidade + admin</td><td><span class="badge bb">Fixo</span></td><td class="tr">R$ 1.250</td></tr>
+        <tr style="background:rgba(255,82,82,.06);"><td><strong>TOTAL CUSTOS</strong></td><td></td><td><strong class="tr">R$ 19.500</strong></td></tr>
+        <tr style="background:rgba(0,230,118,.06);"><td><strong>RECEITA BRUTA</strong></td><td></td><td><strong class="tg">R$ 30.000</strong></td></tr>
+        <tr style="background:rgba(0,230,118,.1);"><td><strong>EBITDA</strong></td><td></td><td><strong class="tg">R$ 10.500 (35%)</strong></td></tr>
+      </table>
+    </div>
+  </div>
+  <div>
+    <div class="card" style="margin-bottom:10px;">
+      <h3 style="margin-bottom:7px;color:var(--g);">📊 Custos Mensais — 10 Carros</h3>
+      <table>
+        <tr><th>Categoria</th><th>Tipo</th><th>Valor/mês</th></tr>
+        <tr><td>Seguro frota (10 EVs)</td><td><span class="badge bo">Variável</span></td><td class="tr">R$ 8.000</td></tr>
+        <tr><td>Manutenção preventiva</td><td><span class="badge bo">Variável</span></td><td class="tr">R$ 3.500</td></tr>
+        <tr><td>Energia elétrica (recarga)</td><td><span class="badge bo">Variável</span></td><td class="tr">R$ 2.000</td></tr>
+        <tr><td>Equipe (3 funcionários)</td><td><span class="badge bb">Fixo</span></td><td class="tr">R$ 10.000</td></tr>
+        <tr><td>Aluguel da base</td>
+        <tr><td>Marketing e aquisição</td><td><span class="badge bb">Fixo</span></td><td class="tr">R$ 2.500</td></tr>
+        <tr><td>Contabilidade + admin</td><td><span class="badge bb">Fixo</span></td><td class="tr">R$ 2.000</td></tr>
+        <tr style="background:rgba(255,82,82,.06);"><td><strong>TOTAL CUSTOS</strong></td><td></td><td><strong class="tr">R$ 33.000</strong></td></tr>
+        <tr style="background:rgba(0,230,118,.06);"><td><strong>RECEITA BRUTA</strong></td><td></td><td><strong class="tg">R$ 60.000</strong></td></tr>
+        <tr style="background:rgba(0,230,118,.1);"><td><strong>EBITDA</strong></td><td></td><td><strong class="tg">R$ 27.000 (45%)</strong></td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+<div style="margin-top:8px;padding:8px 14px;background:rgba(0,176,255,.06);border:1px solid rgba(0,176,255,.15);border-radius:8px;font-size:11px;">
+  <strong style="color:var(--b);">💡 Premissa de Receita:</strong> R$ 1.700/semana por carro × 88% ocupação = <strong class="tg">R$ 6.000/mês/carro</strong> · Seguro inclui cobertura total + terceiros · Energia: ~R$ 200/carro/mês (tarifa comercial SC)
+</div>
+<div class="sfooter"><span>LuxDrive EV · 2025</span><span>6 / 17</span></div>
+</div>
+<!-- S7 EBITDA CHART -->
+<div class="slide" id="s7">
+<div class="tag">Seção 3 · Estrutura Financeira</div>
+<h2>EBITDA Mensal: <span class="hl">Ramp-up e Estabilização</span></h2>
+<p class="sub">Evolução do EBITDA durante o período de ramp-up — ocupação cresce de 60% para 88% em 6 meses</p>
+<div style="margin-top:12px;" class="g2">
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <div class="card">
+      <h3 style="margin-bottom:8px;color:var(--rd);">📉 5 Carros — Evolução EBITDA</h3>
+      <div style="margin-bottom:5px;"><div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px;"><span>Mês 1 (60% ocup.)</span><span class="tr">R$ 2.000</span></div><div class="pb"><div class="pb-fill" style="width:7%;background:rgba(255,82,82,.7)"></div></div></div>
+      <div style="margin-bottom:5px;"><div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px;"><span>Mês 3 (75% ocup.)</span><span class="tr">R$ 5.000</span></div><div class="pb"><div class="pb-fill" style="width:19%;background:rgba(255,82,82,.7)"></div></div></div>
+      <div style="margin-bottom:5px;"><div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px;"><span>Mês 6 (88% ocup.)</span><span class="tg">R$ 9.500</span></div><div class="pb"><div class="pb-fill" style="width:35%"></div></div></div>
+      <div><div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px;"><span>Mês 12 (estável)</span><span class="tg">R$ 9.500/mês</span></div><div class="pb"><div class="pb-fill" style="width:35%"></div></div></div>
+      <div style="margin-top:8px;padding:6px 10px;background:rgba(255,82,82,.08);border-radius:6px;font-size:10px;">
+        <strong>Ano 1:</strong> R$ 76.500 EBITDA · <strong>Ano 2:</strong> R$ 114.000 · <strong>Ano 3:</strong> R$ 114.000
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="margin-bottom:8px;color:var(--g);">📈 10 Carros — Evolução EBITDA</h3>
+      <div style="margin-bottom:5px;"><div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px;"><span>Mês 1 (60% ocup.)</span><span class="tr">R$ 5.000</span></div><div class="pb"><div class="pb-fill" style="width:9%;background:rgba(255,152,0,.7)"></div></div></div>
+      <div style="margin-bottom:5px;"><div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px;"><span>Mês 3 (75% ocup.)</span><span style="color:var(--or);">R$ 14.000</span></div><div class="pb"><div class="pb-fill" style="width:26%;background:rgba(255,152,0,.7)"></div></div></div>
+      <div style="margin-bottom:5px;"><div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px;"><span>Mês 6 (88% ocup.)</span><span class="tg">R$ 27.000</span></div><div class="pb"><div class="pb-fill" style="width:50%"></div></div></div>
+      <div><div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px;"><span>Mês 12 (estável)</span><span class="tg">R$ 27.000/mês</span></div><div class="pb"><div class="pb-fill" style="width:50%"></div></div></div>
+      <div style="margin-top:8px;padding:6px 10px;background:rgba(0,230,118,.08);border-radius:6px;font-size:10px;">
+        <strong>Ano 1:</strong> R$ 207.000 EBITDA · <strong>Ano 2:</strong> R$ 324.000 · <strong>Ano 3:</strong> R$ 324.000
+      </div>
+    </div>
+  </div>
+  <div class="card" style="display:flex;flex-direction:column;">
+    <h3 style="margin-bottom:8px;">📊 EBITDA Comparativo — Ramp-up</h3>
+    <div style="flex:1;min-height:0;"><canvas id="ebitdaChart"></canvas></div>
+  </div>
+</div>
+<div style="margin-top:10px;" class="g4">
+  <div class="card kpi"><div class="kv">R$ 9,5K</div><div class="kl">EBITDA/mês (5 carros)</div><div class="ks">Operação plena</div></div>
+  <div class="card kpi"><div class="kv" style="color:var(--b);">R$ 27K</div><div class="kl">EBITDA/mês (10 carros)</div><div class="ks">Operação plena</div></div>
+  <div class="card kpi"><div class="kv" style="color:var(--gold);">31,7%</div><div class="kl">Margem EBITDA (5 carros)</div><div class="ks">Cenário conservador</div></div>
+  <div class="card kpi"><div class="kv" style="color:var(--or);">45%</div><div class="kl">Margem EBITDA (10 carros)</div><div class="ks">Cenário moderado</div></div>
+</div>
+<div class="sfooter"><span>LuxDrive EV · 2025</span><span>7 / 17</span></div>
+</div>
+<!-- S8 PROJEÇÃO 36 MESES -->
+<div class="slide" id="s8">
+<div class="tag">Seção 3 · Estrutura Financeira</div>
+<h2>Projeção Financeira: <span class="hl">36 Meses</span></h2>
+<p class="sub">EBITDA acumulado, payback e retorno total incluindo valor residual da frota</p>
+<div style="margin-top:12px;" class="g2">
+  <div class="card" style="display:flex;flex-direction:column;">
+    <h3 style="margin-bottom:8px;">📈 EBITDA Acumulado — 36 Meses (R$ mil)</h3>
+    <div style="flex:1;min-height:180px;"><canvas id="projChart"></canvas></div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <div class="card">
+      <h3 style="margin-bottom:7px;color:var(--rd);">🔴 Cenário A — 5 Carros</h3>
+      <table>
+        <tr><th>Período</th><th>EBITDA Acum.</th><th>+ Residual</th><th>Retorno Total</th></tr>
+        <tr><td>Ano 1</td><td class="tm">R$ 76.500</td><td class="tm">—</td><td class="tr">R$ 76.500</td></tr>
+        <tr><td>Ano 2</td><td class="tm">R$ 190.500</td><td class="tm">—</td><td class="tr">R$ 190.500</td></tr>
+        <tr><td>Ano 3</td><td class="tg">R$ 304.500</td><td class="tg">R$ 450.000</td><td class="tg">R$ 754.500</td></tr>
+        <tr style="background:rgba(0,230,118,.08);"><td><strong>ROI 3 anos</strong></td><td></td><td></td><td><strong class="tg">-16,2%</strong></td></tr>
+        <tr style="background:rgba(0,230,118,.08);"><td><strong>Payback</strong></td><td></td><td></td><td><strong class="tg">~3,6 anos</strong></td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3 style="margin-bottom:7px;color:var(--g);">🟢 Cenário B — 10 Carros</h3>
+      <table>
+        <tr><th>Período</th><th>EBITDA Acum.</th><th>+ Residual</th><th>Retorno Total</th></tr>
+        <tr><td>Ano 1</td><td class="tm">R$ 207.000</td><td class="tm">—</td><td class="tr">R$ 207.000</td></tr>
+        <tr><td>Ano 2</td><td class="tm">R$ 531.000</td><td class="tm">—</td><td class="tr">R$ 531.000</td></tr>
+        <tr><td>Ano 3</td><td class="tg">R$ 855.000</td><td class="tg">R$ 900.000</td><td class="tg">R$ 1.755.000</td></tr>
+        <tr style="background:rgba(0,230,118,.08);"><td><strong>ROI 3 anos</strong></td><td></td><td></td><td><strong class="tg">+0,3%</strong></td></tr>
+        <tr style="background:rgba(0,230,118,.08);"><td><strong>Payback</strong></td><td></td><td></td><td><strong class="tg">~2,8 anos</strong></td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+<div style="margin-top:8px;padding:8px 14px;background:rgba(255,214,0,.06);border:1px solid rgba(255,214,0,.15);border-radius:8px;font-size:11px;">
+  <strong style="color:var(--gold);">💡 TIR Estimada:</strong> 5 carros = <strong class="tg">~22% a.a.</strong> · 10 carros = <strong class="tg">~28% a.a.</strong> · Considerando reinvestimento do fluxo de caixa e rotação de frota a cada 36 meses
+</div>
+<div class="sfooter"><span>LuxDrive EV · 2025</span><span>8 / 17</span></div>
+</div>
+<!-- S9 RENT-TO-OWN -->
+<div class="slide" id="s9">
+<div class="tag">Seção 4 · Modelo de Locação e Revenda</div>
+<h2>Rent-to-Own: <span class="hl">O Motorista Vira Proprietário</span></h2>
+<p class="sub">Modelo inovador onde parte da locação vira crédito para compra — fidelização máxima e inadimplência mínima</p>
+<div style="margin-top:11px;" class="g2">
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <div class="card">
+      <h3 style="margin-bottom:7px;color:var(--g);">🔋 Simulação: 1 Carro em 36 Meses</h3>
+      <table>
+        <tr><th>Item</th><th>Valor</th></tr>
+        <tr><td>Valor do veículo (BYD Dolphin)</td><td class="tr">R$ 150.000</td></tr>
+        <tr><td>Aluguel semanal</td><td class="tm">R$ 1.700/semana</td></tr>
+        <tr><td>Receita total de locação (36m)</td><td class="tg">R$ 216.000</td></tr>
+        <tr><td>Valor residual após 36 meses</td><td class="tb">R$ 90.000</td></tr>
+        <tr><td>Custos operacionais (36m)</td><td class="tr">R$ 48.600</td></tr>
+        <tr style="background:rgba(0,230,118,.1);"><td><strong>Lucro líquido por carro</strong></td><td><strong class="tg">R$ 107.400</strong></td></tr>
+        <tr style="background:rgba(0,230,118,.08);"><td><strong>ROI por carro (3 anos)</strong></td><td><strong class="tg">71,6% · 19,7%/ano</strong></td></tr>
+      </table>
+    </div>
+    <div class="card card-b">
+      <h3 style="margin-bottom:7px;color:var(--b);">🎯 Plano Fidelidade Progressivo</h3>
+      <div class="mrow"><span class="mrow-l">Meses 1–6: Período de adaptação</span><span class="mrow-v" style="color:var(--or);">0% crédito</span></div>
+      <div class="mrow"><span class="mrow-l">Meses 7–12: Fidelidade Bronze</span><span class="mrow-v hlb">5% crédito/mês</span></div>
+      <div class="mrow"><span class="mrow-l">Meses 13–24: Fidelidade Prata</span><span class="mrow-v hlg">10% crédito/mês</span></div>
+      <div class="mrow"><span class="mrow-l">Meses 25–36: Fidelidade Ouro</span><span class="mrow-v tg">15% crédito/mês</span></div>
+      <div class="mrow"><span class="mrow-l">Cashback nota ≥ 4,8 nos apps</span><span class="mrow-v tg">+R$ 200/mês</span></div>
+      <div class="mrow"><span class="mrow-l">Crédito acumulado em 36 meses</span><span class="mrow-v tg">~R$ 28.000</span></div>
+      <div class="mrow"><span class="mrow-l">Opção de compra ao final</span><span class="mrow-v hlg">R$ 62.000</span></div>
+    </div>
+  </div>
+  <div class="card" style="display:flex;flex-direction:column;">
+    <h3 style="margin-bottom:8px;">💰 Composição do Retorno por Carro (36m)</h3>
+    <div style="flex:1;min-height:0;"><canvas id="rtoChart"></canvas></div>
+    <div style="margin-top:10px;padding:8px 12px;background:rgba(0,230,118,.06);border-radius:8px;font-size:10px;">
+      <strong style="color:var(--g);">Estratégia de Recompra:</strong> Após 36 meses, oferecer ao motorista a compra pelo valor residual com desconto dos créditos acumulados. Se recusar, vender no mercado secundário (OLX, Webmotors) com margem de R$ 15–25K.
+    </div>
+  </div>
+</div>
+<div class="sfooter"><span>LuxDrive EV · 2025</span><span>9 / 17</span></div>
+</div>
+<!-- S10 HUB DO MOTORISTA -->
+<div class="slide" id="s10">
+<div class="tag">Seção 5 · Ecossistema do Motorista</div>
+<h2>Hub do Motorista: <span class="hl">Muito Além da Locadora</span></h2>
+<p class="sub">Base física estratégica que gera receita adicional e cria barreiras de saída para o motorista</p>
+<div style="margin-top:12px;" class="g3">
+  <div class="card" style="grid-column:span 2;">
+    <h3 style="margin-bottom:10px;color:var(--g);">🏢 Estrutura do Hub — Planta Conceitual</h3>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
+      <div style="background:rgba(0,230,118,.08);border:1px solid rgba(0,230,118,.2);border-radius:8px;padding:10px;text-align:center;"><div style="font-size:18px;">⚡</div><div style="font-size:10px;font-weight:700;color:var(--g);margin-top:3px;">Eletropostos</div><div style="font-size:9px;color:var(--mt);">4–8 pontos AC/DC</div></div>
+      <div style="background:rgba(0,176,255,.08);border:1px solid rgba(0,176,255,.2);border-radius:8px;padding:10px;text-align:center;"><div style="font-size:18px;">🚿</div><div style="font-size:10px;font-weight:700;color:var(--b);margin-top:3px;">Lavagem Rápida</div><div style="font-size:9px;color:var(--mt);">Self-service 24h</div></div>
+      <div style="background:rgba(255,214,0,.08);border:1px solid rgba(255,214,0,.2);border-radius:8px;padding:10px;text-align:center;"><div style="font-size:18px;">☕</div><div style="font-size:10px;font-weight:700;color:var(--gold);margin-top:3px;">Lanchonete</div><div style="font-size:9px;color:var(--mt);">Café, refeições</div></div>
+      <div style="background:rgba(255,152,0,.08);border:1px solid rgba(255,152,0,.2);border-radius:8px;padding:10px;text-align:center;"><div style="font-size:18px;">💻</div><div style="font-size:10px;font-weight:700;color:var(--or);margin-top:3px;">Coworking</div><div style="font-size:9px;color:var(--mt);">Wi-Fi, descanso</div></div>
+      <div style="background:rgba(0,230,118,.08);border:1px solid rgba(0,230,118,.2);border-radius:8px;padding:10px;text-align:center;"><div style="font-size:18px;">🛒</div><div style="font-size:10px;font-weight:700;color:var(--g);margin-top:3px;">Conveniência</div><div style="font-size:9px;color:var(--mt);">Produtos p/ motorista</div></div>
+      <div style="background:rgba(0,176,255,.08);border:1px solid rgba(0,176,255,.2);border-radius:8px;padding:10px;text-align:center;"><div style="font-size:18px;">📚</div><div style="font-size:10px;font-weight:700;color:var(--b);margin-top:3px;">Sala de Cursos</div><div style="font-size:9px;color:var(--mt);">Treinamentos</div></div>
+      <div style="background:rgba(255,214,0,.08);border:1px solid rgba(255,214,0,.2);border-radius:8px;padding:10px;text-align:center;"><div style="font-size:18px;">🔧</div><div style="font-size:10px;font-weight:700;color:var(--gold);margin-top:3px;">Manutenção</div><div style="font-size:9px;color:var(--mt);">Revisão básica EV</div></div>
+      <div style="background:rgba(255,82,82,.08);border:1px solid rgba(255,82,82,.2);border-radius:8px;padding:10px;text-align:center;"><div style="font-size:18px;">🛡️</div><div style="font-size:10px;font-weight:700;color:var(--rd);margin-top:3px;">Seguro / Sinistro</div><div style="font-size:9px;color:var(--mt);">Atendimento local</div></div>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <div class="card">
+      <h3 style="margin-bottom:7px;color:var(--gold);">💰 Receita Adicional do Hub</h3>
+      <div class="mrow"><span class="mrow-l">Eletropostos (público)</span><span class="mrow-v tg">R$ 3.000/mês</span></div>
+      <div class="mrow"><span class="mrow-l">Lavagem rápida</span><span class="mrow-v hlb">R$ 2.500/mês</span></div>
+      <div class="mrow"><span class="mrow-l">Lanchonete</span><span class="mrow-v hlg">R$ 4.000/mês</span></div>
+      <div class="mrow"><span class="mrow-l">Conveniência</span><span class="mrow-v" style="color:var(--or);">R$ 1.500/mês</span></div>
+      <div class="mrow"><span class="mrow-l">Coworking</span><span class="mrow-v tg">R$ 1.000/mês</span></div>
+      <div style="margin-top:6px;padding:6px 10px;background:rgba(0,230,118,.08);border-radius:6px;font-size:10px;"><strong class="tg">Total Hub: R$ 12.000/mês</strong> · Receita extra sem custo de frota</div>
+    </div>
+    <div class="card card-b">
+      <h3 style="margin-bottom:7px;color:var(--b);">📍 Localização Ideal</h3>
+      <ul class="il ck" style="font-size:10px;">
+        <li>Próximo ao centro de BC (raio 2km)</li>
+        <li>Acesso fácil a rodovias (BR-101)</li>
+        <li>Área com fluxo de motoristas de app</li>
+        <li>Espaço mínimo: 400m² (galpão)</li>
+        <li>Custo estimado: R$ 5.000/mês aluguel</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="sfooter"><span>LuxDrive EV · 2025</span><span>10 / 17</span></div>
+</div>
+<!-- S11 PLATAFORMA DE CURSOS -->
+<div class="slide" id="s11">
+<div class="tag">Seção 6 · Plataforma de Cursos</div>
+<h2>LuxDrive Academy: <span class="hl">Educação que Gera Receita</span></h2>
+<p class="sub">Cursos obrigatórios e opcionais que aumentam a qualidade do motorista e criam nova fonte de receita</p>
+<div style="margin-top:12px;" class="g2">
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <div class="card">
+      <h3 style="margin-bottom:7px;color:var(--g);">📚 Cursos Obrigatórios (incluso no plano)</h3>
+      <ul class="il ck" style="font-size:11px;">
+        <li>Direção econômica com EV (autonomia máxima)</li>
+        <li>Atendimento premium ao passageiro</li>
+        <li>Segurança no trânsito e prevenção de acidentes</li>
+        <li>Uso e cuidados com veículo elétrico</li>
+        <li>Regras e políticas dos apps (Uber, 99)</li>
+      </ul>
+    </div>
+    <div class="card card-b">
+      <h3 style="margin-bottom:7px;color:var(--b);">🎓 Cursos Premium (venda avulsa)</h3>
+      <div class="mrow"><span class="mrow-l">Educação financeira para motoristas</span><span class="mrow-v tg">R$ 197</span></div>
+      <div class="mrow"><span class="mrow-l">Como sair do aluguel e virar dono</span><span class="mrow-v hlb">R$ 297</span></div>
+      <div class="mrow"><span class="mrow-l">Mentoria individual (4 sessões)</span><span class="mrow-v hlg">R$ 497</span></div>
+      <div class="mrow"><span class="mrow-l">Curso de inglês para turistas</span><span class="mrow-v" style="color:var(--or);">R$ 147</span></div>
+      <div class="mrow"><span class="mrow-l">Marketing pessoal no app</span><span class="mrow-v tg">R$ 97</span></div>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <div class="card card-g">
+      <h3 style="margin-bottom:7px;color:var(--gold);">💰 Modelo de Monetização</h3>
+      <div style="margin-bottom:6px;"><span class="badge bg">Plano Básico</span><div style="font-size:10px;margin-top:2px;color:var(--mt);">Incluso na locação — cursos obrigatórios + 1 premium/mês</div></div>
+      <div style="margin-bottom:6px;"><span class="badge bb">Plano Premium</span><div style="font-size:10px;margin-top:2px;color:var(--mt);">+R$ 99/mês — todos os cursos + mentoria em grupo mensal</div></div>
+      <div><span class="badge bgd">Venda Avulsa</span><div style="font-size:10px;margin-top:2px;color:var(--mt);">Acesso individual por curso — sem necessidade de ser locatário</div></div>
+    </div>
+    <div class="card">
+      <h3 style="margin-bottom:7px;color:var(--g);">📊 Projeção de Receita — Academy</h3>
+      <div class="mrow"><span class="mrow-l">Plano Premium (30% dos locatários)</span><span class="mrow-v tg">R$ 2.970/mês</span></div>
+      <div class="mrow"><span class="mrow-l">Venda avulsa (externos)</span><span class="mrow-v hlb">R$ 1.500/mês</span></div>
+      <div class="mrow"><span class="mrow-l">Mentoria individual</span><span class="mrow-v hlg">R$ 1.000/mês</span></div>
+      <div style="margin-top:6px;padding:6px 10px;background:rgba(0,230,118,.08);border-radius:6px;font-size:10px;"><strong class="tg">Total Academy: R$ 5.470/mês</strong> · Margem ~85% (digital)</div>
+    </div>
+  </div>
+</div>
+<div class="sfooter"><span>LuxDrive EV · 2025</span><span>11 / 17</span></div>
+</div>
+<!-- S12 ANÁLISE DE RISCOS -->
+<div class="slide" id="s12">
+<div class="tag">Seção 7 · Análise de Riscos</div>
+<h2>Riscos: <span class="hl">Identificados e Mitigados</span></h2>
+<p class="sub">Gestão proativa de riscos com planos de contingência para cada cenário</p>
+<div style="margin-top:12px;" class="g2">
+  <div>
+    <div class="risk-item"><div class="risk-level risk-high">ALTO</div><div><div style="font-size:11px;font-weight:600;">Depreciação acelerada dos EVs</div><div style="font-size:10px;color:var(--mt);">Mitigação: Rotação de frota a cada 36m + contrato de recompra com montadora</div></div></div>
+    <div class="risk-item"><div class="risk-level risk-high">ALTO</div><div><div style="font-size:11px;font-weight:600;">Inadimplência do locatário</div><div style="font-size:10px;color:var(--mt);">Mitigação: Rastreador GPS + bloqueio remoto + caução de 2 semanas + score de crédito</div></div></div>
+    <div class="risk-item"><div class="risk-level risk-med">MÉDIO</div><div><div style="font-size:11px;font-weight:600;">Mudança nas regras dos apps (Uber/99)</div><div style="font-size:10px;color:var(--mt);">Mitigação: Diversificação (Uber, 99, InDriver, turismo) + contrato de locação independente</div></div></div>
+    <div class="risk-item"><div class="risk-level risk-med">MÉDIO</div><div><div style="font-size:11px;font-weight:600;">Variação no preço da energia elétrica</div><div style="font-size:10px;color:var(--mt);">Mitigação: Contrato de energia com tarifa fixa + painéis solares no hub (Ano 2)</div></div></div>
+    <div class="risk-item"><div class="risk-level risk-med">MÉDIO</div><div><div style="font-size:11px;font-weight:600;">Concorrência agressiva (Kovi, Flua)</div><div style="font-size:10px;color:var(--mt);">Mitigação: Diferenciação pelo ecossistema + fidelização + localização exclusiva em BC</div></div></div>
+    <div class="risk-item"><div class="risk-level risk-low">BAIXO</div><div><div style="font-size:11px;font-weight:600;">Risco regulatório (DETRAN, ANTT)</div><div style="font-size:10px;color:var(--mt);">Mitigação: Estrutura jurídica de locação (não financiamento) + assessoria jurídica especializada</div></div></div>
+    <div class="risk-item"><div class="risk-level risk-low">BAIXO</div><div><div style="font-size:11px;font-weight:600;">Concentração geográfica (BC)</div><div style="font-size:10px;color:var(--mt);">Mitigação: Expansão planejada para Florianópolis e Joinville no Ano 2</div></div></div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <div class="card">
+      <h3 style="margin-bottom:8px;color:var(--g);">🛡️ Proteções Estruturais</h3>
+      <ul class="il ck" style="font-size:11px;">
+        <li>Rastreador GPS em todos os veículos</li>
+        <li>Bloqueio remoto por inadimplência</li>
+        <li>Seguro total (colisão, roubo, terceiros)</li>
+        <li>Caução equivalente a 2 semanas de aluguel</li>
+        <li>Contrato com cláusula de retenção de crédito</li>
+        <li>Score de crédito mínimo para locação</li>
+        <li>Fundo de reserva: 5% da receita mensal</li>
+      </ul>
+    </div>
+    <div class="card card-g">
+      <h3 style="margin-bottom:7px;color:var(--gold);">📊 Análise de Sensibilidade</h3>
+      <table>
+        <tr><th>Cenário</th><th>Ocupação</th><th>EBITDA/mês</th></tr>
+        <tr><td>Pessimista</td><td class="tr">65%</td><td class="tr">R$ 6.000</td></tr>
+        <tr><td>Base</td><td class="tm">88%</td><td class="tg">R$ 27.000</td></tr>
+        <tr><td>Otimista</td><td class="tg">95%</td><td class="tg">R$ 31.000</td></tr>
+        <tr><td>Break-even</td><td class="tm">55%</td><td class="tm">R$ 0</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="sfooter"><span>LuxDrive EV · 2025</span><span>12 / 17</span></div>
+</div>
+<!-- S13 ESG E DIFERENCIAIS -->
+<div class="slide" id="s13">
+<div class="tag">Seção 8 · ESG e Diferenciais Competitivos</div>
+<h2>ESG: <span class="hl">Sustentabilidade que Gera Valor</span></h2>
+<p class="sub">Posicionamento ESG não é apenas marketing — gera acesso a crédito verde, incentivos fiscais e parcerias estratégicas</p>
+<div style="margin-top:12px;" class="g3">
+  <div class="card">
+    <h3 style="margin-bottom:8px;color:var(--g);">🌱 Impacto Ambiental</h3>
+    <div class="mrow"><span class="mrow-l">CO₂ evitado por carro/ano</span><span class="mrow-v tg">~4,2 ton</span></div>
+    <div class="mrow"><span class="mrow-l">CO₂ evitado (10 carros/ano)</span><span class="mrow-v tg">~42 ton</span></div>
+    <div class="mrow"><span class="mrow-l">Equivalente em árvores plantadas</span><span class="mrow-v hlb">~1.900/ano</span></div>
+    <div class="mrow"><span class="mrow-l">Redução de ruído urbano</span><span class="mrow-v hlg">-70% vs. combustão</span></div>
+    <div style="margin-top:8px;font-size:10px;color:var(--mt);">Certificação de crédito de carbono possível a partir do Ano 2 (VERRA/Gold Standard)</div>
+  </div>
+  <div class="card card-b">
+    <h3 style="margin-bottom:8px;color:var(--b);">💰 Incentivos e Crédito Verde</h3>
+    <ul class="il ck" style="font-size:11px;">
+      <li>BNDES Finem — linha verde para EVs (TJLP + 1,5%)</li>
+      <li>Isenção de IPI para veículos elétricos (Lei 14.302)</li>
+      <li>ICMS reduzido em SC para EVs (Decreto 1.503/2022)</li>
+      <li>Crédito de carbono: R$ 30–50/ton CO₂ evitado</li>
+      <li>Parceria com Prefeitura BC: isenção IPTU do hub</li>
+      <li>Fundo Clima (MMA): até R$ 500K para projetos EV</li>
+    </ul>
+  </div>
+  <div class="card card-g">
+    <h3 style="margin-bottom:8px;color:var(--gold);">🤝 Parcerias Estratégicas</h3>
+    <ul class="il st" style="font-size:11px;">
+      <li>BYD Brasil — desconto de frota 8–12%</li>
+      <li>Uber Green — prioridade no algoritmo</li>
+      <li>99 Eco — selo de parceiro oficial</li>
+      <li>Prefeitura BC — mobilidade sustentável</li>
+      <li>CELESC — tarifa especial para recarga</li>
+      <li>Sebrae SC — capacitação e mentoria</li>
+      <li>Bancos ESG — Itaú, Bradesco, Santander</li>
+    </ul>
+  </div>
+</div>
+<div style="margin-top:10px;padding:10px 14px;background:rgba(0,230,118,.06);border:1px solid rgba(0,230,118,.15);border-radius:10px;">
+  <h3 style="color:var(--g);margin-bottom:6px;">🏆 Posicionamento Premium: "A Locadora que Transforma Motoristas em Proprietários"</h3>
+  <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:11px;">
+    <span>🌱 <strong>Sustentável</strong> — 100% elétrico</span>
+    <span>📱 <strong>Digital</strong> — App próprio + integração</span>
+    <span>🎓 <strong>Educacional</strong> — Academy inclusa</span>
+    <span>🔋 <strong>Proprietário</strong> — Rent-to-own</span>
+    <span>🤝 <strong>Comunidade</strong> — Hub físico</span>
+  </div>
+</div>
+<div class="sfooter"><span>LuxDrive EV · 2025</span><span>13 / 17</span></div>
+</div>
+<!-- S14 ESTRATÉGIA DE ESCALA -->
+<div class="slide" id="s14">
+<div class="tag">Seção 9 · Estratégia de Escala</div>
+<h2>Expansão: <span class="hl">De BC para o Brasil</span></h2>
+<p class="sub">Modelo validado em BC → expansão para SC → modelo de franquia nacional</p>
+<div style="margin-top:12px;" class="g2">
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <div class="card">
+      <h3 style="margin-bottom:8px;color:var(--g);">🗺️ Plano de Expansão SC</h3>
+      <div class="mrow"><span class="mrow-l" style="font-weight:600;">Fase 1 — BC (Q3 2025)</span><span class="mrow-v tg">5–10 carros</span></div>
+      <div class="mrow"><span class="mrow-l" style="font-weight:600;">Fase 2 — Florianópolis (Q1 2026)</span><span class="mrow-v hlb">15–20 carros</span></div>
+      <div class="mrow"><span class="mrow-l" style="font-weight:600;">Fase 3 — Joinville (Q3 2026)</span><span class="mrow-v hlg">15–20 carros</span></div>
+      <div class="mrow"><span class="mrow-l" style="font-weight:600;">Fase 4 — Itajaí + Blumenau (Q1 2027)</span><span class="mrow-v" style="color:var(--or);">20–25 carros</span></div>
+      <div class="mrow"><span class="mrow-l" style="font-weight:600;">Fase 5 — Curitiba (Q3 2027)</span><span class="mrow-v tg">30+ carros</span></div>
+      <div style="margin-top:8px;padding:6px 10px;background:rgba(0,230,118,.08);border-radius:6px;font-size:10px;"><strong class="tg">Meta Ano 3:</strong> 100+ carros em 5 cidades · EBITDA R$ 2,7M/ano</div>
+    </div>
+    <div class="card card-b">
+      <h3 style="margin-bottom:8px;color:var(--b);">🏢 Modelo de Franquia</h3>
+      <div class="mrow"><span class="mrow-l">Taxa de franquia</span><span class="mrow-v tg">R$ 80.000</span></div>
+      <div class="mrow"><span class="mrow-l">Royalties mensais</span><span class="mrow-v hlb">8% da receita</span></div>
+      <div class="mrow"><span class="mrow-l">Frota mínima franqueado</span><span class="mrow-v hlg">10 carros</span></div>
+      <div class="mrow"><span class="mrow-l">Suporte operacional</span><span class="mrow-v tg">Incluso</span></div>
+      <div class="mrow"><span class="mrow-l">Receita por franquia/ano</span><span class="mrow-v hlg">R$ 57.600</span></div>
+      <div class="mrow"><span class="mrow-l">Meta: 10 franquias (Ano 5)</span><span class="mrow-v tg">R$ 576K/ano</span></div>
+    </div>
+  </div>
+  <div>
+    <div class="card" style="margin-bottom:10px;">
+      <h3 style="margin-bottom:8px;color:var(--gold);">📊 Projeção de Escala — 5 Anos</h3>
+      <table>
+        <tr><th>Ano</th><th>Cidades</th><th>Frota Total</th><th>EBITDA Anual</th></tr>
+        <tr><td>2025</td><td class="tm">BC</td><td class="tm">5–10</td><td class="tr">R$ 76–207K</td></tr>
+        <tr><td>2026</td><td class="tm">BC + Floripa</td><td class="tm">25–30</td><td class="tg">R$ 520K</td></tr>
+        <tr><td>2027</td><td class="tm">4 cidades SC</td><td class="tm">60–70</td><td class="tg">R$ 1,3M</td></tr>
+        <tr><td>2028</td><td class="tm">SC + Curitiba</td><td class="tm">100+</td><td class="tg">R$ 2,7M</td></tr>
+        <tr><td>2029</td><td class="tm">Franquias Sul</td><td class="tm">200+</td><td class="tg">R$ 5,4M</td></tr>
+      </table>
+    </div>
+    <div class="card card-r">
+      <h3 style="margin-bottom:7px;color:var(--rd);">⚡ Modelo Híbrido (Alternativo)</h3>
+      <ul class="il ck" style="font-size:11px;">
+        <li>Frota própria nas cidades principais</li>
+        <li>Franquias em cidades menores</li>
+        <li>Parceria com locadoras existentes</li>
+        <li>White-label da plataforma tecnológica</li>
+        <li>Licenciamento do modelo Academy</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="sfooter"><span>LuxDrive EV · 2025</span><span>14 / 17</span></div>
+</div>
+<!-- S15 ESTRUTURA PARA INVESTIDOR -->
+<div class="slide" id="s15">
+<div class="tag">Seção 10 · Estrutura para Investidor</div>
+<h2>Tese de Investimento: <span class="hl">Por que Investir Agora?</span></h2>
+<p class="sub">Janela de oportunidade única — primeiro mover advantage em mercado de R$ 2,1B em SC</p>
+<div style="margin-top:12px;" class="g3">
+  <div class="card">
+    <h3 style="margin-bottom:8px;color:var(--g);">💰 Estrutura da Captação</h3>
+    <div class="mrow"><span class="mrow-l">Cenário A (5 carros)</span><span class="mrow-v tg">R$ 900.000</span></div>
+    <div class="mrow"><span class="mrow-l">Cenário B (10 carros)</span><span class="mrow-v hlb">R$ 1.750.000</span></div>
+    <div class="mrow"><span class="mrow-l">Instrumento sugerido</span><span class="mrow-v hlg">Equity + Mútuo</span></div>
+    <div class="mrow"><span class="mrow-l">Participação ofertada</span><span class="mrow-v" style="color:var(--or);">30–40%</span></div>
+    <div class="mrow"><span class="mrow-l">Valuation pré-money</span><span class="mrow-v tg">R$ 2,5–4M</span></div>
+    <div class="mrow"><span class="mrow-l">Horizonte de investimento</span><span class="mrow-v hlb">3–5 anos</span></div>
+  </div>
+  <div class="card card-b">
+    <h3 style="margin-bottom:8px;color:var(--b);">📈 Potencial de Valuation</h3>
+    <div class="mrow"><span class="mrow-l">Múltiplo EBITDA (setor)</span><span class="mrow-v tg">8–12x</span></div>
+    <div class="mrow"><span class="mrow-l">EBITDA Ano 3 (10 carros)</span><span class="mrow-v hlb">R$ 324K</span></div>
+    <div class="mrow"><span class="mrow-l">Valuation Ano 3 (10 carros)</span><span class="mrow-v hlg">R$ 2,6–3,9M</span></div>
+    <div class="mrow"><span class="mrow-l">EBITDA Ano 5 (escala)</span><span class="mrow-v" style="color:var(--or);">R$ 5,4M</span></div>
+    <div class="mrow"><span class="mrow-l">Valuation Ano 5 (escala)</span><span class="mrow-v tg">R$ 43–65M</span></div>
+    <div style="margin-top:8px;padding:6px 10px;background:rgba(0,230,118,.08);border-radius:6px;font-size:10px;"><strong class="tg">Retorno potencial:</strong> 10–25x em 5 anos (cenário agressivo)</div>
+  </div>
+  <div class="card card-g">
+    <h3 style="margin-bottom:8px;color:var(--gold);">🚪 Estratégias de Saída (Exit)</h3>
+    <div style="margin-bottom:6px;"><span class="badge bg">M&A</span><div style="font-size:10px;margin-top:2px;color:var(--mt);">Aquisição por Localiza, Movida, Kovi ou montadora (BYD, Stellantis)</div></div>
+    <div style="margin-bottom:6px;"><span class="badge bb">IPO</span><div style="font-size:10px;margin-top:2px;color:var(--mt);">Abertura de capital no Novo Mercado B3 (Ano 5–7)</div></div>
+    <div style="margin-bottom:6px;"><span class="badge bgd">Secondary</span><div style="font-size:10px;margin-top:2px;color:var(--mt);">Venda de participação para fundo de PE/VC em rodada Série B</div></div>
+    <div><span class="badge bo">Dividendos</span><div style="font-size:10px;margin-top:2px;color:var(--mt);">Distribuição de lucros a partir do Ano 2 (fluxo de caixa positivo)</div></div>
+  </div>
+</div>
+<div style="margin-top:10px;padding:10px 14px;background:rgba(255,214,0,.06);border:1px solid rgba(255,214,0,.15);border-radius:10px;">
+  <h3 style="color:var(--gold);margin-bottom:6px;">🏆 Por que Agora? — Janela de Oportunidade</h3>
+  <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:11px;">
+    <span>⚡ <strong>EVs em alta:</strong> +340% em 2 anos</span>
+    <span>🏖️ <strong>BC em expansão:</strong> +R$ 2B em obras até 2026</span>
+    <span>📱 <strong>Apps crescendo:</strong> +18%/ano em SC</span>
+    <span>🏆 <strong>Sem concorrente:</strong> mercado virgem em BC</span>
+    <span>💚 <strong>ESG obrigatório:</strong> fundos exigem portfólio verde</span>
+  </div>
+</div>
+<div class="sfooter"><span>LuxDrive EV · 2025</span><span>15 / 17</span></div>
+</div>
+<!-- S16 ROADMAP 5 ANOS -->
+<div class="slide" id="s16">
+<div class="tag">Seção 10 · Roadmap</div>
+<h2>Roadmap: <span class="hl">5 Anos de Execução</span></h2>
+<p class="sub">Milestones claros, mensuráveis e alcançáveis — da operação piloto ao exit</p>
+<div style="margin-top:14px;" class="g2">
+  <div style="display:flex;flex-direction:column;gap:8px;">
+    <div class="rm-phase">
+      <div class="rm-yr">Q3–Q4 2025 · FASE 1: LANÇAMENTO</div>
+      <div class="rm-title">Operação Piloto — Balneário Camboriú</div>
+      <div class="rm-items">✅ Constituição jurídica · ✅ Aquisição 5–10 EVs · ✅ Hub físico operacional · ✅ Primeiros 10 locatários · ✅ Sistema de gestão ativo</div>
+    </div>
+    <div class="rm-phase">
+      <div class="rm-yr">Q1–Q2 2026 · FASE 2: VALIDAÇÃO</div>
+      <div class="rm-title">Escala em BC + Início Florianópolis</div>
+      <div class="rm-items">✅ 20+ locatários ativos · ✅ EBITDA positivo · ✅ Academy lançada · ✅ Abertura hub Floripa · ✅ Parceria BYD formalizada</div>
+    </div>
+    <div class="rm-phase">
+      <div class="rm-yr">Q3 2026 – Q2 2027 · FASE 3: EXPANSÃO SC</div>
+      <div class="rm-title">4 Cidades + Modelo de Franquia</div>
+      <div class="rm-items">✅ Joinville + Itajaí · ✅ 60+ carros · ✅ Primeira franquia vendida · ✅ App próprio lançado · ✅ Série A (R$ 5–10M)</div>
+    </div>
+    <div class="rm-phase">
+      <div class="rm-yr">Q3 2027 – Q4 2028 · FASE 4: ESCALA SUL</div>
+      <div class="rm-title">Curitiba + Modelo Nacional</div>
+      <div class="rm-items">✅ 100+ carros · ✅ 5+ franquias · ✅ EBITDA R$ 2,7M · ✅ Certificação ESG · ✅ Preparação para exit</div>
+    </div>
+    <div class="rm-phase" style="margin-bottom:0;">
+      <div class="rm-yr">2029 · FASE 5: EXIT / IPO</div>
+      <div class="rm-title">Saída Estratégica ou IPO</div>
+      <div class="rm-items">✅ 200+ carros · ✅ 10+ franquias · ✅ EBITDA R$ 5,4M · ✅ M&A ou Série B · ✅ Retorno 10–25x</div>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <div class="card">
+      <h3 style="margin-bottom:8px;color:var(--g);">🎯 KPIs de Sucesso</h3>
+      <table>
+        <tr><th>Métrica</th><th>Ano 1</th><th>Ano 3</th><th>Ano 5</th></tr>
+        <tr><td>Frota ativa</td><td class="tm">10</td><td class="tg">70</td><td class="tg">200+</td></tr>
+        <tr><td>Locatários ativos</td><td class="tm">9</td><td class="tg">63</td><td class="tg">180+</td></tr>
+        <tr><td>Cidades</td><td class="tm">1</td><td class="tg">4</td><td class="tg">10+</td></tr>
+        <tr><td>EBITDA anual</td><td class="tm">R$ 207K</td><td class="tg">R$ 1,3M</td><td class="tg">R$ 5,4M</td></tr>
+        <tr><td>NPS motoristas</td><td class="tm">>70</td><td class="tg">>80</td><td class="tg">>85</td></tr>
+      </table>
+    </div>
+    <div class="card card-b">
+      <h3 style="margin-bottom:7px;color:var(--b);">📋 Próximos Passos Imediatos</h3>
+      <ul class="il ck" style="font-size:11px;">
+        <li>Constituição da empresa (LTDA ou SA)</li>
+        <li>Negociação com BYD Brasil (desconto frota)</li>
+        <li>Identificação e locação do hub em BC</li>
+        <li>Contratação do gestor operacional</li>
+        <li>Desenvolvimento do sistema de gestão</li>
+        <li>Campanha de pré-cadastro de motoristas</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="sfooter"><span>LuxDrive EV · 2025</span><span>16 / 17</span></div>
+</div>
+<!-- S17 CALL TO ACTION -->
+<div class="slide" id="s17">
+<div class="cover-bg"></div>
+<div style="position:relative;z-index:1;display:flex;flex-direction:column;justify-content:center;height:100%;text-align:center;align-items:center;">
+  <div style="font-size:48px;margin-bottom:16px;">⚡</div>
+  <div class="tag" style="text-align:center;">Seção 10 · Tese de Investimento</div>
+  <h1 style="max-width:700px;margin:0 auto;">O Futuro da <span class="hl">Mobilidade Urbana</span> Começa em Balneário Camboriú</h1>
+  <p style="max-width:560px;margin:16px auto;font-size:14px;color:var(--mt);line-height:1.7;">A LuxDrive EV não é apenas uma locadora de carros elétricos. É um ecossistema completo que transforma motoristas de app em proprietários, gera impacto ESG mensurável e oferece ao investidor um ativo real com receita recorrente, valor residual e tese de saída clara.</p>
+  <div style="display:flex;gap:16px;margin:20px auto;flex-wrap:wrap;justify-content:center;">
+    <div style="background:rgba(0,230,118,.1);border:1px solid rgba(0,230,118,.3);border-radius:12px;padding:16px 24px;min-width:140px;">
+      <div style="font-size:24px;font-weight:800;color:var(--g);">R$ 900K</div>
+      <div style="font-size:10px;color:var(--mt);margin-top:3px;">Captação Mínima</div>
+      <div style="font-size:11px;color:var(--tx);">5 carros · BC</div>
+    </div>
+    <div style="background:rgba(0,176,255,.1);border:1px solid rgba(0,176,255,.3);border-radius:12px;padding:16px 24px;min-width:140px;">
+      <div style="font-size:24px;font-weight:800;color:var(--b);">R$ 1,75M</div>
+      <div style="font-size:10px;color:var(--mt);margin-top:3px;">Captação Ideal</div>
+      <div style="font-size:11px;color:var(--tx);">10 carros · BC</div>
+    </div>
+    <div style="background:rgba(255,214,0,.1);border:1px solid rgba(255,214,0,.3);border-radius:12px;padding:16px 24px;min-width:140px;">
+      <div style="font-size:24px;font-weight:800;color:var(--gold);">19,7%</div>
+      <div style="font-size:10px;color:var(--mt);margin-top:3px;">ROI Anual</div>
+      <div style="font-size:11px;color:var(--tx);">Cenário moderado</div>
+    </div>
+    <div style="background:rgba(255,152,0,.1);border:1px solid rgba(255,152,0,.3);border-radius:12px;padding:16px 24px;min-width:140px;">
+      <div style="font-size:24px;font-weight:800;color:var(--or);">2,8 anos</div>
+      <div style="font-size:10px;color:var(--mt);margin-top:3px;">Payback</div>
+      <div style="font-size:11px;color:var(--tx);">Com valor residual</div>
+    </div>
+  </div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:8px;">
+    <span class="badge bg" style="font-size:11px;padding:5px 14px;">🌱 ESG Certificado</span>
+    <span class="badge bb" style="font-size:11px;padding:5px 14px;">⚡ 100% Elétrico</span>
+    <span class="badge bgd" style="font-size:11px;padding:5px 14px;">🔋 Rent-to-Own</span>
+    <span class="badge bo" style="font-size:11px;padding:5px 14px;">📈 Escalável</span>
+    <span class="badge br" style="font-size:11px;padding:5px 14px;">🏆 First Mover BC</span>
+  </div>
+  <div style="margin-top:24px;padding:14px 28px;background:rgba(0,230,118,.08);border:1px solid rgba(0,230,118,.25);border-radius:12px;font-size:13px;">
+    <strong style="color:var(--g);">📩 Próximo Passo:</strong> Reunião de due diligence · Acesso ao data room completo · Proposta de term sheet
+  </div>
+</div>
+<div class="sfooter"><span>LuxDrive EV · Pitch Deck 2025 · CONFIDENCIAL</span><span>17 / 17</span></div>
+</div>
+<!-- SLIDES_END -->
+</div>
+<div class="nav">
+  <button id="btnPrev" onclick="go(-1)" disabled>&#8592;</button>
+  <span id="sc">1 / 1</span>
+  <button id="btnNext" onclick="go(1)">&#8594;</button>
+  <span style="color:var(--mt);font-size:10px;margin-left:6px;">ESC=menu</span>
+</div>
+<div class="dots" id="dots"></div>
+<script>
+let cur=0;
+const slides=document.querySelectorAll('.slide');
+const total=slides.length;
+function go(d){
+  slides[cur].classList.remove('active');
+  document.querySelectorAll('.dot')[cur].classList.remove('active');
+  cur=Math.max(0,Math.min(total-1,cur+d));
+  slides[cur].classList.add('active');
+  document.querySelectorAll('.dot')[cur].classList.add('active');
+  document.getElementById('sc').textContent=(cur+1)+' / '+total;
+  document.getElementById('btnPrev').disabled=cur===0;
+  document.getElementById('btnNext').disabled=cur===total-1;
+  document.getElementById('pbar').style.width=((cur+1)/total*100)+'%';
+  renderCharts();
+}
+const dots=document.getElementById('dots');
+slides.forEach((_,i)=>{const d=document.createElement('div');d.className='dot'+(i===0?' active':'');d.onclick=()=>go(i-cur);dots.appendChild(d);});
+document.getElementById('sc').textContent='1 / '+total;
+document.getElementById('pbar').style.width=(1/total*100)+'%';
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowDown')go(1);if(e.key==='ArrowLeft'||e.key==='ArrowUp')go(-1);});
+let chartsRendered={};
+function renderCharts(){
+  const id=slides[cur].id;
+  if(chartsRendered[id])return;
+  chartsRendered[id]=true;
+  if(id==='s7'){renderEbitdaChart();}
+  if(id==='s8'){renderProjectionChart();}
+  if(id==='s9'){renderRentoOwnChart();}
+}
+function renderEbitdaChart(){
+  const ctx=document.getElementById('ebitdaChart');
+  if(!ctx)return;
+  new Chart(ctx,{type:'bar',data:{labels:['Mês 1','Mês 3','Mês 6','Mês 9','Mês 12'],datasets:[{label:'5 Carros (R$)',data:[2000,5000,8500,8500,8500],backgroundColor:'rgba(255,82,82,.7)',borderRadius:6},{label:'10 Carros (R$)',data:[5000,14000,27000,27000,27000],backgroundColor:'rgba(0,230,118,.7)',borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#8899AA',font:{size:10}}}},scales:{x:{ticks:{color:'#8899AA',font:{size:9}},grid:{color:'rgba(255,255,255,.05)'}},y:{ticks:{color:'#8899AA',font:{size:9},callback:v=>'R$'+v.toLocaleString('pt-BR')},grid:{color:'rgba(255,255,255,.05)'}}}}});
+}
+function renderProjectionChart(){
+  const ctx=document.getElementById('projChart');
+  if(!ctx)return;
+  new Chart(ctx,{type:'line',data:{labels:['M1','M3','M6','M9','M12','M18','M24','M30','M36'],datasets:[{label:'5 Carros — EBITDA Acum.',data:[2,15,51,76.5,102,204,306,408,510],borderColor:'#FF5252',backgroundColor:'rgba(255,82,82,.1)',fill:true,tension:.4,pointRadius:3},{label:'10 Carros — EBITDA Acum.',data:[5,42,162,243,324,648,972,1296,1620],borderColor:'#00E676',backgroundColor:'rgba(0,230,118,.1)',fill:true,tension:.4,pointRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#8899AA',font:{size:10}}}},scales:{x:{ticks:{color:'#8899AA',font:{size:9}},grid:{color:'rgba(255,255,255,.05)'}},y:{ticks:{color:'#8899AA',font:{size:9},callback:v=>'R$'+v+'K'},grid:{color:'rgba(255,255,255,.05)'}}}}});
+}
+function renderRentoOwnChart(){
+  const ctx=document.getElementById('rtoChart');
+  if(!ctx)return;
+  new Chart(ctx,{type:'doughnut',data:{labels:['Receita Locação 36m','Valor Residual','Custo Operacional','Custo Veículo'],datasets:[{data:[216,90,48.6,150],backgroundColor:['rgba(0,230,118,.8)','rgba(0,176,255,.8)','rgba(255,152,0,.6)','rgba(255,82,82,.6)'],borderWidth:0,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{color:'#8899AA',font:{size:10},padding:12}}}}});
+}
+</script>
+</body>
+</html>
