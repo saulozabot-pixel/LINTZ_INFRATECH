@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Saulo Zabot Luciano — Desenvolvedor de Software</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#f1f5f9;color:#1e293b;line-height:1.6;font-size:14px}
+a{color:#2563eb;text-decoration:none}
+a:hover{text-decoration:underline}
+
+.page{max-width:860px;margin:32px auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 32px rgba(0,0,0,.1)}
+
+/* HEADER */
+.header{background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 60%,#1d4ed8 100%);color:#fff;padding:40px 48px 36px;position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;top:-80px;right:-80px;width:260px;height:260px;background:rgba(255,255,255,.04);border-radius:50%}
+.header::after{content:'';position:absolute;bottom:-60px;left:200px;width:180px;height:180px;background:rgba(99,102,241,.15);border-radius:50%}
+.header-inner{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:flex-start;gap:24px;flex-wrap:wrap}
+.header-left{}
+.name{font-size:clamp(26px,4vw,38px);font-weight:800;letter-spacing:-0.5px;margin-bottom:4px}
+.role{font-size:16px;color:#93c5fd;font-weight:500;margin-bottom:20px}
+.contact-list{display:flex;flex-direction:column;gap:6px}
+.contact-item{display:flex;align-items:center;gap:8px;font-size:13px;color:#cbd5e1}
+.contact-item strong{color:#e2e8f0}
+.header-right{display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.availability{background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.4);color:#6ee7b7;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:700;letter-spacing:.05em}
+.github-btn{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#e2e8f0;padding:8px 16px;border-radius:10px;font-size:13px;font-weight:600;transition:all .2s}
+.github-btn:hover{background:rgba(255,255,255,.2);text-decoration:none}
+
+/* SKILLS STRIP */
+.skills-strip{background:#1e293b;padding:14px 48px;display:flex;flex-wrap:wrap;gap:8px}
+.skill-tag{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:3px 12px;border-radius:20px;font-size:12px;font-weight:600}
+.skill-tag.main{background:rgba(37,99,235,.2);border-color:rgba(37,99,235,.4);color:#93c5fd}
+.skill-tag.green{background:rgba(16,185,129,.15);border-color:rgba(16,185,129,.3);color:#6ee7b7}
+
+/* BODY */
+.body{display:grid;grid-template-columns:1fr 300px;gap:0}
+.main-col{padding:36px 40px;border-right:1px solid #e2e8f0}
+.side-col{padding:36px 32px;background:#f8fafc}
+
+/* SECTIONS */
+.section{margin-bottom:32px}
+.section:last-child{margin-bottom:0}
+.section-title{font-size:11px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:#2563eb;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.section-title::after{content:'';flex:1;height:1px;background:#e2e8f0}
+
+/* SUMMARY */
+.summary{font-size:14px;color:#475569;line-height:1.75;background:#eff6ff;border-left:3px solid #2563eb;padding:14px 16px;border-radius:0 8px 8px 0}
+
+/* PROJECTS */
+.project{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:18px 20px;margin-bottom:14px;transition:box-shadow .2s}
+.project:hover{box-shadow:0 4px 16px rgba(0,0,0,.08)}
+.project-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;gap:12px}
+.project-name{font-size:15px;font-weight:700;color:#0f172a}
+.project-status{font-size:11px;font-weight:700;padding:2px 10px;border-radius:20px}
+.status-live{background:#dcfce7;color:#16a34a}
+.status-dev{background:#dbeafe;color:#1d4ed8}
+.project-desc{font-size:13px;color:#64748b;margin-bottom:10px;line-height:1.6}
+.project-stack{display:flex;flex-wrap:wrap;gap:5px}
+.stack-tag{background:#f1f5f9;color:#475569;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:600}
+.project-link{font-size:12px;color:#2563eb;margin-top:8px;display:inline-block}
+
+/* EXPERIENCE */
+.exp-item{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid #f1f5f9}
+.exp-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.exp-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;gap:8px}
+.exp-role{font-size:14px;font-weight:700;color:#0f172a}
+.exp-period{font-size:12px;color:#94a3b8;white-space:nowrap}
+.exp-company{font-size:13px;color:#2563eb;font-weight:600;margin-bottom:4px}
+.exp-desc{font-size:13px;color:#64748b;line-height:1.6}
+
+/* SIDE */
+.side-section{margin-bottom:28px}
+.side-section:last-child{margin-bottom:0}
+.side-title{font-size:11px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:#64748b;margin-bottom:12px}
+
+/* SKILLS */
+.skill-row{margin-bottom:10px}
+.skill-label{display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px}
+.skill-name{font-weight:600;color:#1e293b}
+.skill-level{font-size:11px;color:#94a3b8}
+.skill-bar{height:5px;background:#e2e8f0;border-radius:3px;overflow:hidden}
+.skill-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,#2563eb,#7c3aed)}
+
+/* EDUCATION */
+.edu-item{margin-bottom:12px}
+.edu-course{font-size:13px;font-weight:700;color:#1e293b}
+.edu-inst{font-size:12px;color:#64748b}
+.edu-year{font-size:11px;color:#94a3b8}
+
+/* CERTS */
+.cert-item{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;font-size:12px;color:#475569}
+.cert-dot{width:6px;height:6px;border-radius:50%;background:#2563eb;margin-top:5px;flex-shrink:0}
+
+/* LANGS */
+.lang-item{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.lang-name{font-size:13px;font-weight:600;color:#1e293b}
+.lang-level{font-size:11px;color:#64748b;background:#e2e8f0;padding:2px 8px;border-radius:10px}
+
+/* PRINT */
+@media print{
+  body{background:#fff}
+  .page{box-shadow:none;border-radius:0;margin:0;max-width:100%}
+  .project:hover{box-shadow:none}
+  .print-btn{display:none!important}
+}
+
+/* PRINT BTN */
+.print-btn{position:fixed;bottom:24px;right:24px;background:#2563eb;color:#fff;border:none;padding:12px 20px;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(37,99,235,.4);display:flex;align-items:center;gap:8px;z-index:100}
+.print-btn:hover{background:#1d4ed8}
+
+@media(max-width:700px){
+  .body{grid-template-columns:1fr}
+  .main-col{border-right:none;border-bottom:1px solid #e2e8f0;padding:24px}
+  .side-col{padding:24px}
+  .header{padding:28px 24px}
+  .skills-strip{padding:12px 24px}
+  .header-right{align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<button class="print-btn" onclick="window.print()">🖨️ Imprimir / Salvar PDF</button>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-inner">
+      <div class="header-left">
+        <div class="name">Saulo Zabot Luciano</div>
+        <div class="role">Desenvolvedor de Software Full Stack &amp; Mobile</div>
+        <div class="contact-list">
+          <div class="contact-item">📍 <span>Gaspar, SC — Brasil</span></div>
+          <div class="contact-item">📱 <strong>(47) 98818-2649</strong></div>
+          <div class="contact-item">✉️ <a href="mailto:saulozabot@hotmail.com" style="color:#93c5fd">saulozabot@hotmail.com</a></div>
+          <div class="contact-item">🔗 <a href="https://github.com/saulozabot-pixel" target="_blank" rel="noopener" style="color:#93c5fd">github.com/saulozabot-pixel</a></div>
+          <div class="contact-item">🌐 <a href="https://lux-driver-assistent-18y8.vercel.app" target="_blank" rel="noopener" style="color:#93c5fd">lux-driver-assistent-18y8.vercel.app</a></div>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="availability">✅ Disponível para oportunidades</div>
+        <a class="github-btn" href="https://github.com/saulozabot-pixel" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          Ver GitHub
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- SKILLS STRIP -->
+  <div class="skills-strip">
+    <span class="skill-tag main">React</span>
+    <span class="skill-tag main">TypeScript</span>
+    <span class="skill-tag main">Node.js</span>
+    <span class="skill-tag main">Android</span>
+    <span class="skill-tag main">Capacitor</span>
+    <span class="skill-tag green">Python</span>
+    <span class="skill-tag green">Vercel</span>
+    <span class="skill-tag">JavaScript</span>
+    <span class="skill-tag">HTML/CSS</span>
+    <span class="skill-tag">Git</span>
+    <span class="skill-tag">REST API</span>
+    <span class="skill-tag">Vite</span>
+    <span class="skill-tag">Tailwind CSS</span>
+    <span class="skill-tag">SQL</span>
+  </div>
+
+  <div class="body">
+
+    <!-- MAIN COLUMN -->
+    <div class="main-col">
+
+      <!-- SUMMARY -->
+      <div class="section">
+        <div class="section-title">Sobre mim</div>
+        <div class="summary">
+          Desenvolvedor de software autodidata com foco em aplicações mobile e web. Construí do zero o <strong>Lux Driver Assistant</strong> — um app Android publicado na Play Store que usa AccessibilityService para calcular lucro em tempo real para motoristas de Uber e 99. Tenho experiência prática com React, TypeScript, Capacitor, Node.js e Python. Minha base em engenharia mecânica e gestão de processos me dá uma visão sistêmica única para resolver problemas complexos com código.
+        </div>
+      </div>
+
+      <!-- PROJECTS -->
+      <div class="section">
+        <div class="section-title">Projetos</div>
+
+        <div class="project">
+          <div class="project-header">
+            <div class="project-name">🚗 Lux Driver Assistant</div>
+            <span class="project-status status-live">🟢 Em produção</span>
+          </div>
+          <div class="project-desc">
+            App Android para motoristas de Uber e 99. Usa AccessibilityService para ler corridas em tempo real e exibir um overlay com lucro líquido, R$/hora e semáforo de aceitação. Sistema de assinatura com pagamento via PIX e painel admin de gestão de assinantes.
+          </div>
+          <div class="project-stack">
+            <span class="stack-tag">React</span>
+            <span class="stack-tag">TypeScript</span>
+            <span class="stack-tag">Capacitor</span>
+            <span class="stack-tag">Android (Java/Kotlin)</span>
+            <span class="stack-tag">Node.js</span>
+            <span class="stack-tag">Vercel</span>
+            <span class="stack-tag">AccessibilityService</span>
+          </div>
+          <a class="project-link" href="https://lux-driver-assistent-18y8.vercel.app" target="_blank" rel="noopener">🔗 lux-driver-assistent-18y8.vercel.app</a>
+        </div>
+
+        <div class="project">
+          <div class="project-header">
+            <div class="project-name">💳 API de Pagamento PIX</div>
+            <span class="project-status status-live">🟢 Em produção</span>
+          </div>
+          <div class="project-desc">
+            API serverless para processamento de pagamentos via PIX integrada com PushinPay. Inclui webhook para confirmação automática de pagamentos e geração de códigos de ativação únicos por algoritmo hash determinístico.
+          </div>
+          <div class="project-stack">
+            <span class="stack-tag">Node.js</span>
+            <span class="stack-tag">Vercel Serverless</span>
+            <span class="stack-tag">REST API</span>
+            <span class="stack-tag">Webhook</span>
+            <span class="stack-tag">PIX / PushinPay</span>
+          </div>
+        </div>
+
+        <div class="project">
+          <div class="project-header">
+            <div class="project-name">📊 Painel Admin SaaS</div>
+            <span class="project-status status-live">🟢 Em produção</span>
+          </div>
+          <div class="project-desc">
+            Dashboard web para gestão de assinantes do Lux Driver. Funcionalidades: cadastro de clientes, gerador de códigos de ativação, envio automático via WhatsApp, relatórios de receita (MRR/ARR), exportação CSV. Protegido por autenticação com senha.
+          </div>
+          <div class="project-stack">
+            <span class="stack-tag">HTML/CSS/JS</span>
+            <span class="stack-tag">LocalStorage</span>
+            <span class="stack-tag">WhatsApp API</span>
+            <span class="stack-tag">Algoritmo Hash</span>
+          </div>
+        </div>
+
+        <div class="project">
+          <div class="project-header">
+            <div class="project-name">🏗️ Arquitetura de Solução — Hackathon InfraTech</div>
+            <span class="project-status status-dev">🔵 Apresentado</span>
+          </div>
+          <div class="project-desc">
+            Documentação técnica interativa de arquitetura de solução para hackathon. Desenvolvida com React + Vite + Tailwind CSS, com diagramas de fluxo, hierarquia de sistemas e seções de segurança e governança.
+          </div>
+          <div class="project-stack">
+            <span class="stack-tag">React</span>
+            <span class="stack-tag">Vite</span>
+            <span class="stack-tag">Tailwind CSS</span>
+            <span class="stack-tag">Vercel</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- EXPERIENCE -->
+      <div class="section">
+        <div class="section-title">Experiência Profissional</div>
+
+        <div class="exp-item">
+          <div class="exp-header">
+            <div class="exp-role">Desenvolvedor de Software (Autônomo)</div>
+            <div class="exp-period">2024 — atual</div>
+          </div>
+          <div class="exp-company">Lux Driver — Produto próprio</div>
+          <div class="exp-desc">Desenvolvimento completo de app Android (React + Capacitor), API de pagamentos, sistema de assinatura SaaS, painel admin e landing page. Deploy em produção na Play Store e Vercel.</div>
+        </div>
+
+        <div class="exp-item">
+          <div class="exp-header">
+            <div class="exp-role">Gerente Operacional</div>
+            <div class="exp-period">Nov/2018 — Abr/2019</div>
+          </div>
+          <div class="exp-company">RC Empreendimentos Hoteleiros</div>
+          <div class="exp-desc">Gestão de operações, processos e equipes. Implementação de automações com Python para controle de dados e relatórios.</div>
+        </div>
+
+        <div class="exp-item">
+          <div class="exp-header">
+            <div class="exp-role">Supervisor — Acabamento Avançado</div>
+            <div class="exp-period">Abr/2014 — Dez/2015</div>
+          </div>
+          <div class="exp-company">Estaleiro Vard-Promar</div>
+          <div class="exp-desc">Supervisão de equipes em projetos offshore. Gestão de subcontratadas, controle de qualidade e cronograma.</div>
+        </div>
+
+        <div class="exp-item">
+          <div class="exp-header">
+            <div class="exp-role">Coordenador de Construção e Montagem</div>
+            <div class="exp-period">Dez/2011 — Jun/2013</div>
+          </div>
+          <div class="exp-company">CCI Construções Offshore</div>
+          <div class="exp-desc">Coordenação de projetos de construção offshore. Leitura e interpretação de projetos civis, elétricos e mecânicos.</div>
+        </div>
+
+        <div class="exp-item">
+          <div class="exp-header">
+            <div class="exp-role">Gerente de Produção</div>
+            <div class="exp-period">Dez/2009 — Dez/2010</div>
+          </div>
+          <div class="exp-company">PORCELLANATI</div>
+          <div class="exp-desc">Gestão de produção industrial com ferramentas Lean, Kaizen e 5S. Melhoria de processos e KPIs de qualidade.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SIDE COLUMN -->
+    <div class="side-col">
+
+      <!-- TECH SKILLS -->
+      <div class="side-section">
+        <div class="side-title">Habilidades Técnicas</div>
+
+        <div class="skill-row">
+          <div class="skill-label"><span class="skill-name">React / TypeScript</span><span class="skill-level">Avançado</span></div>
+          <div class="skill-bar"><div class="skill-fill" style="width:85%"></div></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-label"><span class="skill-name">Android / Capacitor</span><span class="skill-level">Avançado</span></div>
+          <div class="skill-bar"><div class="skill-fill" style="width:82%"></div></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-label"><span class="skill-name">Node.js / REST API</span><span class="skill-level">Intermediário</span></div>
+          <div class="skill-bar"><div class="skill-fill" style="width:75%"></div></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-label"><span class="skill-name">Python</span><span class="skill-level">Intermediário</span></div>
+          <div class="skill-bar"><div class="skill-fill" style="width:70%"></div></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-label"><span class="skill-name">HTML / CSS / JS</span><span class="skill-level">Avançado</span></div>
+          <div class="skill-bar"><div class="skill-fill" style="width:88%"></div></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-label"><span class="skill-name">Git / GitHub</span><span class="skill-level">Intermediário</span></div>
+          <div class="skill-bar"><div class="skill-fill" style="width:72%"></div></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-label"><span class="skill-name">Vercel / Deploy</span><span class="skill-level">Avançado</span></div>
+          <div class="skill-bar"><div class="skill-fill" style="width:85%"></div></div>
+        </div>
+      </div>
+
+      <!-- EDUCATION -->
+      <div class="side-section">
+        <div class="side-title">Formação Acadêmica</div>
+
+        <div class="edu-item">
+          <div class="edu-course">Engenharia Mecânica</div>
+          <div class="edu-inst">ESTÁCIO / UNIP</div>
+          <div class="edu-year">8º período — em andamento</div>
+        </div>
+        <div class="edu-item">
+          <div class="edu-course">Técnico em Mecânica</div>
+          <div class="edu-inst">SENAI</div>
+        </div>
+        <div class="edu-item">
+          <div class="edu-course">Eletrotécnica</div>
+          <div class="edu-inst">CEDUP</div>
+        </div>
+      </div>
+
+      <!-- CERTS -->
+      <div class="side-section">
+        <div class="side-title">Cursos &amp; Certificações</div>
+        <div class="cert-item"><div class="cert-dot"></div>Inspetor Dimensional de Caldeiraria e Tubulação — FRAEND</div>
+        <div class="cert-item"><div class="cert-dot"></div>Hidráulica e Pneumática — SENAI</div>
+        <div class="cert-item"><div class="cert-dot"></div>Gerenciamento da Rotina — INDG / PAMESA</div>
+        <div class="cert-item"><div class="cert-dot"></div>Ferramentas Lean / Kaizen / 5S — PAMESA do Brasil</div>
+        <div class="cert-item"><div class="cert-dot"></div>Pacote Office Avançado — SENAI-PE</div>
+        <div class="cert-item"><div class="cert-dot"></div>CAD 2D e 3D — ESTÁCIO</div>
+        <div class="cert-item"><div class="cert-dot"></div>Programação Python — Autodidata</div>
+      </div>
+
+      <!-- LANGUAGES -->
+      <div class="side-section">
+        <div class="side-title">Idiomas</div>
+        <div class="lang-item">
+          <span class="lang-name">Português</span>
+          <span class="lang-level">Nativo</span>
+        </div>
+        <div class="lang-item">
+          <span class="lang-name">Inglês</span>
+          <span class="lang-level">Técnico / Leitura</span>
+        </div>
+      </div>
+
+      <!-- DIFFERENTIALS -->
+      <div class="side-section">
+        <div class="side-title">Diferenciais</div>
+        <div class="cert-item"><div class="cert-dot" style="background:#10b981"></div>App publicado na Play Store (produto próprio)</div>
+        <div class="cert-item"><div class="cert-dot" style="background:#10b981"></div>Experiência com AccessibilityService Android</div>
+        <div class="cert-item"><div class="cert-dot" style="background:#10b981"></div>Desenvolvimento full stack (front + back + mobile)</div>
+        <div class="cert-item"><div class="cert-dot" style="background:#10b981"></div>Visão de produto e negócio (SaaS)</div>
+        <div class="cert-item"><div class="cert-dot" style="background:#10b981"></div>Base sólida em engenharia e gestão de processos</div>
+        <div class="cert-item"><div class="cert-dot" style="background:#10b981"></div>CNH AB</div>
+      </div>
+
+    </div><!-- /side-col -->
+  </div><!-- /body -->
+
+</div><!-- /page -->
+
+</body>
+</html>
