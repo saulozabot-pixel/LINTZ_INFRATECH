@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>LUX Admin</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,sans-serif;background:#0a0a0d;color:#e0e0e0;display:flex;min-height:100vh}
+
+/* ── LOGIN SCREEN ── */
+#login-screen{position:fixed;inset:0;background:#0a0a0d;z-index:9999;display:flex;align-items:center;justify-content:center}
+.login-box{background:#13131a;border:1px solid #1e1e2a;border-radius:20px;padding:36px 32px;width:100%;max-width:360px;text-align:center}
+.login-logo{font-size:28px;font-weight:900;color:#FFD700;margin-bottom:4px}
+.login-logo small{display:block;font-size:11px;color:#666;font-weight:400;letter-spacing:.1em;margin-top:2px}
+.login-box h2{font-size:15px;color:#888;margin:20px 0 24px;font-weight:400}
+.login-input{width:100%;background:#0a0a0d;border:1px solid #1e1e2a;border-radius:10px;padding:12px 16px;color:#e0e0e0;font-size:15px;outline:none;text-align:center;letter-spacing:2px;margin-bottom:14px}
+.login-input:focus{border-color:#FFD700}
+.login-btn{width:100%;background:#FFD700;color:#000;border:none;border-radius:10px;padding:13px;font-size:15px;font-weight:900;cursor:pointer;transition:opacity .2s}
+.login-btn:hover{opacity:.9}
+.login-err{color:#F44336;font-size:13px;margin-top:10px;min-height:18px}
+.login-shake{animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+
+/* ── ADMIN PANEL ── */
+.sb{width:190px;background:#13131a;border-right:1px solid #1e1e2a;padding:18px 10px;display:flex;flex-direction:column;gap:2px;flex-shrink:0;position:sticky;top:0;height:100vh}
+.logo{font-size:18px;font-weight:900;color:#FFD700;margin-bottom:18px;padding:0 8px}
+.logo small{display:block;font-size:10px;color:#666;font-weight:400}
+.nav{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:10px;cursor:pointer;font-size:13px;color:#666;border:none;background:none;width:100%;text-align:left}
+.nav:hover,.nav.on{background:rgba(255,215,0,.08);color:#FFD700}
+.nav-logout{margin-top:auto;color:#F44336!important}
+.nav-logout:hover{background:rgba(244,67,54,.08)!important;color:#F44336!important}
+.main{flex:1;padding:24px;overflow-y:auto}
+.page{display:none}.page.on{display:block}
+.ptitle{font-size:18px;font-weight:900;margin-bottom:18px}
+.card{background:#13131a;border:1px solid #1e1e2a;border-radius:14px;padding:16px;margin-bottom:14px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.stat{background:#13131a;border:1px solid #1e1e2a;border-radius:12px;padding:16px}
+.stat .l{font-size:11px;color:#666;margin-bottom:6px}
+.stat .v{font-size:24px;font-weight:900}
+.stat .s{font-size:11px;color:#666;margin-top:3px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:8px 12px;color:#666;font-size:11px;text-transform:uppercase;border-bottom:1px solid #1e1e2a}
+td{padding:10px 12px;border-bottom:1px solid #1e1e2a;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,.02)}
+.badge{display:inline-flex;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700}
+.ba{background:rgba(76,175,80,.15);color:#4CAF50}
+.bs{background:rgba(255,193,7,.15);color:#FFC107}
+.bg{background:rgba(100,100,120,.2);color:#888}
+.be{background:rgba(244,67,54,.15);color:#F44336}
+.bm{background:rgba(33,150,243,.15);color:#2196F3}
+.bq{background:rgba(156,39,176,.15);color:#9C27B0}
+.bn{background:rgba(255,215,0,.15);color:#FFD700}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;border:none;transition:opacity .15s}
+.btn:hover{opacity:.85}
+.bp{background:#FFD700;color:#000}
+.bgh{background:rgba(255,255,255,.05);color:#e0e0e0;border:1px solid #1e1e2a}
+.bgr{background:rgba(76,175,80,.1);color:#4CAF50;border:1px solid rgba(76,175,80,.3)}
+.brd{background:rgba(244,67,54,.1);color:#F44336;border:1px solid rgba(244,67,54,.2)}
+.toolbar{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+input[type=text],input[type=number],input[type=date],select,textarea{background:#0a0a0d;border:1px solid #1e1e2a;border-radius:9px;padding:8px 12px;color:#e0e0e0;font-size:13px;outline:none}
+input:focus,select:focus{border-color:#FFD700}
+.si{width:200px}
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:11px;color:#666;margin-bottom:5px}
+.fg input,.fg select,.fg textarea{width:100%}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;align-items:center;justify-content:center}
+.mo.open{display:flex}
+.mbox{background:#13131a;border:1px solid #1e1e2a;border-radius:18px;padding:24px;width:100%;max-width:460px}
+.mbox h3{font-size:16px;font-weight:900;margin-bottom:18px}
+.ma{display:flex;gap:8px;margin-top:16px}
+.ma .btn{flex:1;justify-content:center}
+.toast{position:fixed;bottom:20px;right:20px;background:#1a2a1a;border:1px solid #4CAF50;color:#4CAF50;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:700;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.show{opacity:1}
+.code-mono{font-family:'Courier New',monospace;color:#FFD700;letter-spacing:1px;font-size:13px}
+.empty{text-align:center;padding:40px;color:#444;font-size:14px}
+.actions{display:flex;gap:5px}
+#admin-panel{display:none;width:100%;min-height:100vh}
+@media(max-width:700px){.g4{grid-template-columns:1fr 1fr}.sb{width:50px}.logo,.nav span{display:none}}
+</style>
+</head>
+<body>
+
+<!-- ── LOGIN SCREEN ── -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">LUX <small>ADMIN PANEL</small></div>
+    <h2>Digite a senha para continuar</h2>
+    <input class="login-input" type="password" id="pwd" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/>
+    <button class="login-btn" onclick="doLogin()">🔐 Entrar</button>
+    <div class="login-err" id="login-err"></div>
+  </div>
+</div>
+
+<!-- ── ADMIN PANEL ── -->
+<div id="admin-panel">
+
+<nav class="sb">
+  <div class="logo">LUX<small>ADMIN</small></div>
+  <button class="nav on" onclick="go('dash',this)">📊 <span>Dashboard</span></button>
+  <button class="nav" onclick="go('subs',this)">👥 <span>Assinantes</span></button>
+  <button class="nav" onclick="go('codes',this)">🔑 <span>Códigos</span></button>
+  <button class="nav" onclick="go('rev',this)">💰 <span>Receita</span></button>
+  <button class="nav nav-logout" onclick="doLogout()" style="margin-top:auto">🚪 <span>Sair</span></button>
+</nav>
+
+<main class="main">
+
+<!-- DASHBOARD -->
+<div id="p-dash" class="page on">
+  <div class="ptitle">📊 Dashboard</div>
+  <div class="g4" id="dash-stats"></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+    <div class="card"><b>📅 Últimos assinantes</b><div id="dash-recent" style="margin-top:12px"></div></div>
+    <div class="card"><b>💰 Receita por plano</b><div id="dash-chart" style="margin-top:12px"></div></div>
+  </div>
+</div>
+
+<!-- ASSINANTES -->
+<div id="p-subs" class="page">
+  <div class="ptitle">👥 Assinantes</div>
+  <div class="toolbar">
+    <input class="si" type="text" placeholder="🔍 Buscar nome ou telefone..." oninput="renderSubs()" id="q"/>
+    <select onchange="renderSubs()" id="fs"><option value="">Todos status</option><option value="active">Ativo</option><option value="sent">Enviado</option><option value="generated">Gerado</option><option value="expired">Expirado</option></select>
+    <select onchange="renderSubs()" id="fp"><option value="">Todos planos</option><option value="monthly">Mensal</option><option value="quarterly">Trimestral</option><option value="annual">Anual</option></select>
+    <button class="btn bp" onclick="openAdd()">+ Novo</button>
+    <button class="btn bgh" onclick="exportCSV()">📤 CSV</button>
+  </div>
+  <div class="card" style="padding:0;overflow:hidden">
+    <div style="overflow-x:auto">
+      <table><thead><tr><th>#</th><th>Nome</th><th>Telefone</th><th>Plano</th><th>Código</th><th>Status</th><th>Vencimento</th><th>Valor</th><th>Ações</th></tr></thead>
+      <tbody id="subs-body"></tbody></table>
+    </div>
+    <div id="subs-empty" class="empty" style="display:none">Nenhum assinante. <button class="btn bp" style="margin-left:8px" onclick="openAdd()">+ Adicionar</button></div>
+  </div>
+</div>
+
+<!-- CÓDIGOS -->
+<div id="p-codes" class="page">
+  <div class="ptitle">🔑 Gerador de Códigos</div>
+  <div style="display:grid;grid-template-columns:300px 1fr;gap:14px">
+    <div class="card">
+      <b>Gerar códigos</b>
+      <div class="fg" style="margin-top:14px"><label>Índice inicial</label><input type="number" id="gi" value="1" min="1" max="500"/></div>
+      <div class="fg"><label>Índice final</label><input type="number" id="gf" value="10" min="1" max="500"/></div>
+      <button class="btn bp" style="width:100%" onclick="genCodes()">⚡ Gerar</button>
+      <p style="font-size:12px;color:#666;margin-top:10px">Próximo disponível: <b id="next-idx" style="color:#FFD700">—</b></p>
+    </div>
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <b>Códigos gerados</b>
+        <button class="btn bgh" onclick="copyAllCodes()">📋 Copiar todos</button>
+      </div>
+      <div id="codes-out" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px"></div>
+    </div>
+  </div>
+</div>
+
+<!-- RECEITA -->
+<div id="p-rev" class="page">
+  <div class="ptitle">💰 Receita</div>
+  <div class="g4" id="rev-stats"></div>
+  <div class="card">
+    <b>Histórico de pagamentos</b>
+    <div style="overflow-x:auto;margin-top:12px">
+      <table><thead><tr><th>Data</th><th>Assinante</th><th>Plano</th><th>Valor</th><th>Status</th></tr></thead>
+      <tbody id="pay-body"></tbody></table>
+    </div>
+  </div>
+</div>
+
+</main>
+</div><!-- /admin-panel -->
+
+<!-- MODAL -->
+<div class="mo" id="modal">
+  <div class="mbox">
+    <h3 id="modal-title">+ Novo Assinante</h3>
+    <input type="hidden" id="eid"/>
+    <div class="fr">
+      <div class="fg"><label>Nome</label><input type="text" id="sn" placeholder="João Silva"/></div>
+      <div class="fg"><label>Telefone (WhatsApp)</label><input type="text" id="sp" placeholder="47999999999"/></div>
+    </div>
+    <div class="fr">
+      <div class="fg"><label>Plano</label>
+        <select id="spl" onchange="updAmt()">
+          <option value="monthly">Mensal — R$ 9,90</option>
+          <option value="quarterly">Trimestral — R$ 24,90</option>
+          <option value="annual" selected>Anual — R$ 79,90</option>
+        </select>
+      </div>
+      <div class="fg"><label>Valor pago (R$)</label><input type="number" id="sam" value="79.90" step="0.01"/></div>
+    </div>
+    <div class="fr">
+      <div class="fg"><label>Índice do código (1–500)</label><input type="number" id="sci" placeholder="Ex: 1" min="1" max="500" oninput="prevCode()"/></div>
+      <div class="fg"><label>Código gerado</label><input type="text" id="scp" readonly style="color:#FFD700;font-family:monospace;letter-spacing:1px" placeholder="LUX-XXXX-XXXX"/></div>
+    </div>
+    <div class="fr">
+      <div class="fg"><label>Data de início</label><input type="date" id="sd"/></div>
+      <div class="fg"><label>Status</label>
+        <select id="ss">
+          <option value="generated">Gerado</option>
+          <option value="sent">Enviado</option>
+          <option value="active">Ativo</option>
+          <option value="expired">Expirado</option>
+        </select>
+      </div>
+    </div>
+    <div class="fg"><label>Observações</label><textarea id="sno" rows="2" style="width:100%;resize:vertical" placeholder="Ex: Pagou PIX em 01/01/2025"></textarea></div>
+    <div class="ma">
+      <button class="btn bgh" onclick="closeModal()">Cancelar</button>
+      <button class="btn bp" onclick="saveSub()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── AUTH ──────────────────────────────────────────────────────────────────────
+const PASS_HASH = '7f3d9a2b1e8c4f6a'; // hash interno
+function hashPass(s){let h=0;for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h=h|0}return Math.abs(h).toString(16)}
+function checkPass(p){return hashPass(p)===hashPass('S@021ulo')}
+
+function doLogin(){
+  const p=document.getElementById('pwd').value;
+  const err=document.getElementById('login-err');
+  if(checkPass(p)){
+    sessionStorage.setItem('lux_auth','1');
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('admin-panel').style.display='flex';
+    renderDash();
+  } else {
+    err.textContent='Senha incorreta. Tente novamente.';
+    const box=document.querySelector('.login-box');
+    box.classList.remove('login-shake');
+    void box.offsetWidth;
+    box.classList.add('login-shake');
+    document.getElementById('pwd').value='';
+    document.getElementById('pwd').focus();
+  }
+}
+
+function doLogout(){
+  sessionStorage.removeItem('lux_auth');
+  document.getElementById('admin-panel').style.display='none';
+  document.getElementById('login-screen').style.display='flex';
+  document.getElementById('pwd').value='';
+  document.getElementById('login-err').textContent='';
+}
+
+// Verifica sessão ao carregar
+window.addEventListener('DOMContentLoaded',()=>{
+  if(sessionStorage.getItem('lux_auth')==='1'){
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('admin-panel').style.display='flex';
+    renderDash();
+  } else {
+    setTimeout(()=>document.getElementById('pwd').focus(),100);
+  }
+});
+
+// ── Algoritmo (IDÊNTICO ao PaywallScreen.tsx) ─────────────────────────────────
+const SECRET='LUX_SAULO_2025_DRIVER';
+function djb2(s){let h=5381;for(let i=0;i<s.length;i++){h=((h<<5)+h)+s.charCodeAt(i);h=h&h}return Math.abs(h)}
+function genCode(idx){const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let n1=djb2(SECRET+idx+'A'),n2=djb2(SECRET+idx+'B'),p1='',p2='';for(let i=0;i<4;i++){p1+=c[n1%c.length];n1=Math.floor(n1/c.length);p2+=c[n2%c.length];n2=Math.floor(n2/c.length)}return`LUX-${p1}-${p2}`}
+
+// ── Storage ───────────────────────────────────────────────────────────────────
+const KEY='lux_admin_v1';
+function getSubs(){return JSON.parse(localStorage.getItem(KEY)||'[]')}
+function setSubs(d){localStorage.setItem(KEY,JSON.stringify(d))}
+
+// ── Plans ─────────────────────────────────────────────────────────────────────
+const PL={monthly:{l:'Mensal',a:9.90,d:30,cls:'bm'},quarterly:{l:'Trimestral',a:24.90,d:90,cls:'bq'},annual:{l:'Anual',a:79.90,d:365,cls:'bn'}};
+const SL={active:{l:'Ativo',cls:'ba'},sent:{l:'Enviado',cls:'bs'},generated:{l:'Gerado',cls:'bg'},expired:{l:'Expirado',cls:'be'}};
+function endDate(start,plan){const d=new Date(start);d.setDate(d.getDate()+(PL[plan]?.d||30));return d.toISOString().split('T')[0]}
+function fmt(v){return'R$ '+Number(v).toFixed(2).replace('.',',')}
+
+// ── Navigation ────────────────────────────────────────────────────────────────
+function go(name,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.nav').forEach(n=>n.classList.remove('on'));
+  document.getElementById('p-'+name).classList.add('on');
+  btn.classList.add('on');
+  if(name==='dash')renderDash();
+  if(name==='subs')renderSubs();
+  if(name==='codes')renderNextIdx();
+  if(name==='rev')renderRev();
+}
+
+// ── Dashboard ─────────────────────────────────────────────────────────────────
+function renderDash(){
+  const s=getSubs();
+  const active=s.filter(x=>x.status==='active').length;
+  const rev=s.reduce((a,x)=>a+(x.amount||0),0);
+  const mrr=s.filter(x=>x.status==='active').reduce((a,x)=>a+(x.plan==='monthly'?9.90:x.plan==='quarterly'?24.90/3:79.90/12),0);
+  document.getElementById('dash-stats').innerHTML=`
+    <div class="stat"><div class="l">Total assinantes</div><div class="v" style="color:#FFD700">${s.length}</div><div class="s">${active} ativos</div></div>
+    <div class="stat"><div class="l">Receita total</div><div class="v" style="color:#4CAF50">${fmt(rev)}</div><div class="s">acumulado</div></div>
+    <div class="stat"><div class="l">MRR estimado</div><div class="v" style="color:#FFC107">${fmt(mrr)}</div><div class="s">por mês</div></div>
+    <div class="stat"><div class="l">Próximo código</div><div class="v" style="color:#888">#${getNextIdx()}</div><div class="s">disponível</div></div>`;
+  const recent=[...s].reverse().slice(0,5);
+  document.getElementById('dash-recent').innerHTML=recent.length?recent.map(x=>`
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #1e1e2a">
+      <div><div style="font-size:13px;font-weight:700">${x.name||'—'}</div><div style="font-size:11px;color:#666">${PL[x.plan]?.l} • ${x.startDate||'—'}</div></div>
+      <span class="badge ${SL[x.status]?.cls}">${SL[x.status]?.l}</span>
+    </div>`).join(''):'<div style="color:#444;font-size:13px">Nenhum assinante ainda.</div>';
+  const byPlan={monthly:0,quarterly:0,annual:0};
+  s.forEach(x=>{byPlan[x.plan]=(byPlan[x.plan]||0)+(x.amount||0)});
+  const mx=Math.max(...Object.values(byPlan),1);
+  const colors={monthly:'#2196F3',quarterly:'#9C27B0',annual:'#FFD700'};
+  document.getElementById('dash-chart').innerHTML=`
+    <div style="display:flex;gap:8px;align-items:flex-end;height:80px;margin-bottom:24px">
+      ${Object.entries(byPlan).map(([p,v])=>`
+        <div style="flex:1;position:relative">
+          <div style="height:${Math.max(6,(v/mx)*80)}px;background:${colors[p]};border-radius:6px 6px 0 0;position:relative">
+            <div style="position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:700;white-space:nowrap">${fmt(v)}</div>
+          </div>
+          <div style="text-align:center;font-size:10px;color:#666;margin-top:4px">${PL[p].l}</div>
+        </div>`).join('')}
+    </div>`;
+}
+
+// ── Subscribers ───────────────────────────────────────────────────────────────
+function renderSubs(){
+  const s=getSubs();
+  const q=(document.getElementById('q')?.value||'').toLowerCase();
+  const fs=document.getElementById('fs')?.value||'';
+  const fp=document.getElementById('fp')?.value||'';
+  const f=s.filter(x=>
+    (!q||(x.name||'').toLowerCase().includes(q)||(x.phone||'').includes(q))&&
+    (!fs||x.status===fs)&&(!fp||x.plan===fp));
+  const tbody=document.getElementById('subs-body');
+  const empty=document.getElementById('subs-empty');
+  if(!f.length){tbody.innerHTML='';empty.style.display='block';return}
+  empty.style.display='none';
+  tbody.innerHTML=f.map((x,i)=>`
+    <tr>
+      <td style="color:#666">${x.id}</td>
+      <td><div style="font-weight:700">${x.name||'—'}</div><div style="font-size:11px;color:#666">${x.notes||''}</div></td>
+      <td><a href="https://wa.me/${x.phone}" target="_blank" style="color:#25D366;font-size:12px">📱 ${x.phone||'—'}</a></td>
+      <td><span class="badge ${PL[x.plan]?.cls}">${PL[x.plan]?.l}</span></td>
+      <td><span class="code-mono">${x.code||'—'}</span> <button onclick="navigator.clipboard.writeText('${x.code||''}');toast('Copiado!')" style="background:none;border:none;cursor:pointer;color:#666;font-size:11px">📋</button></td>
+      <td><span class="badge ${SL[x.status]?.cls}">${SL[x.status]?.l}</span></td>
+      <td style="font-size:12px">${x.endDate||'—'}</td>
+      <td style="font-weight:700;color:#4CAF50">${fmt(x.amount||0)}</td>
+      <td><div class="actions">
+        <button class="btn bgh" style="padding:4px 8px;font-size:11px" onclick="openEdit(${x.id})">✏️</button>
+        <button class="btn bgh" style="padding:4px 8px;font-size:11px" onclick="sendWA(${x.id})">💬</button>
+        <button class="btn brd" style="padding:4px 8px;font-size:11px" onclick="delSub(${x.id})">🗑</button>
+      </div></td>
+    </tr>`).join('');
+}
+
+function sendWA(id){
+  const s=getSubs().find(x=>x.id===id);
+  if(!s)return;
+  const msg=encodeURIComponent(`Olá ${s.name}! Seu código de ativação do *LUX Driver Premium* é:\n\n*${s.code}*\n\nDigite no app em: Ajustes → LUX Premium → Tenho um código.\n\nQualquer dúvida, estou aqui! 😊`);
+  window.open(`https://wa.me/${s.phone}?text=${msg}`,'_blank');
+  const all=getSubs();
+  const idx=all.findIndex(x=>x.id===id);
+  if(idx>=0&&all[idx].status==='generated'){all[idx].status='sent';setSubs(all);renderSubs()}
+}
+
+function delSub(id){
+  if(!confirm('Remover este assinante?'))return;
+  setSubs(getSubs().filter(x=>x.id!==id));
+  renderSubs();toast('Removido!');
+}
+
+// ── Modal ─────────────────────────────────────────────────────────────────────
+function openAdd(){
+  document.getElementById('modal-title').textContent='+ Novo Assinante';
+  document.getElementById('eid').value='';
+  document.getElementById('sn').value='';
+  document.getElementById('sp').value='';
+  document.getElementById('spl').value='annual';
+  document.getElementById('sam').value='79.90';
+  document.getElementById('sci').value=getNextIdx();
+  document.getElementById('scp').value=genCode(getNextIdx());
+  document.getElementById('sd').value=new Date().toISOString().split('T')[0];
+  document.getElementById('ss').value='generated';
+  document.getElementById('sno').value='';
+  document.getElementById('modal').classList.add('open');
+}
+
+function openEdit(id){
+  const x=getSubs().find(s=>s.id===id);if(!x)return;
+  document.getElementById('modal-title').textContent='✏️ Editar Assinante';
+  document.getElementById('eid').value=id;
+  document.getElementById('sn').value=x.name||'';
+  document.getElementById('sp').value=x.phone||'';
+  document.getElementById('spl').value=x.plan||'annual';
+  document.getElementById('sam').value=x.amount||'';
+  document.getElementById('sci').value=x.codeIndex||'';
+  document.getElementById('scp').value=x.code||'';
+  document.getElementById('sd').value=x.startDate||'';
+  document.getElementById('ss').value=x.status||'generated';
+  document.getElementById('sno').value=x.notes||'';
+  document.getElementById('modal').classList.add('open');
+}
+
+function closeModal(){document.getElementById('modal').classList.remove('open')}
+
+function saveSub(){
+  const name=document.getElementById('sn').value.trim();
+  const phone=document.getElementById('sp').value.trim();
+  const plan=document.getElementById('spl').value;
+  const amount=parseFloat(document.getElementById('sam').value)||0;
+  const codeIndex=parseInt(document.getElementById('sci').value)||0;
+  const code=document.getElementById('scp').value;
+  const startDate=document.getElementById('sd').value;
+  const status=document.getElementById('ss').value;
+  const notes=document.getElementById('sno').value.trim();
+  if(!name){alert('Informe o nome.');return}
+  if(!codeIndex){alert('Informe o índice do código.');return}
+  const all=getSubs();
+  const editId=document.getElementById('eid').value;
+  if(editId){
+    const idx=all.findIndex(x=>x.id===parseInt(editId));
+    if(idx>=0)all[idx]={...all[idx],name,phone,plan,amount,codeIndex,code,startDate,endDate:endDate(startDate,plan),status,notes};
+  } else {
+    const id=all.length?Math.max(...all.map(x=>x.id))+1:1;
+    all.push({id,name,phone,plan,amount,codeIndex,code,startDate,endDate:endDate(startDate,plan),status,notes,createdAt:new Date().toISOString()});
+  }
+  setSubs(all);closeModal();renderSubs();toast('Salvo com sucesso!');
+}
+
+function updAmt(){
+  const p=document.getElementById('spl').value;
+  document.getElementById('sam').value=PL[p]?.a||0;
+}
+
+function prevCode(){
+  const idx=parseInt(document.getElementById('sci').value);
+  document.getElementById('scp').value=idx>=1&&idx<=500?genCode(idx):'';
+}
+
+// ── Codes ─────────────────────────────────────────────────────────────────────
+let lastCodes=[];
+function getNextIdx(){
+  const used=getSubs().map(x=>x.codeIndex).filter(Boolean);
+  for(let i=1;i<=500;i++){if(!used.includes(i))return i}
+  return 501;
+}
+function renderNextIdx(){document.getElementById('next-idx').textContent=getNextIdx()}
+
+function genCodes(){
+  const s=parseInt(document.getElementById('gi').value);
+  const e=parseInt(document.getElementById('gf').value);
+  if(isNaN(s)||isNaN(e)||s<1||e>500||s>e){alert('Intervalo inválido (1–500)');return}
+  lastCodes=[];
+  for(let i=s;i<=e;i++)lastCodes.push({idx:i,code:genCode(i)});
+  const used=getSubs().map(x=>x.codeIndex);
+  document.getElementById('codes-out').innerHTML=lastCodes.map(({idx,code})=>`
+    <div style="background:#0a0a0d;border:1px solid ${used.includes(idx)?'#F44336':'#1e1e2a'};border-radius:10px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px">
+      <span style="color:#666;font-size:11px;min-width:24px">#${idx}</span>
+      <span class="code-mono" style="flex:1">${code}</span>
+      ${used.includes(idx)?'<span style="font-size:10px;color:#F44336">usado</span>':''}
+      <button onclick="navigator.clipboard.writeText('${code}');toast('Copiado!')" style="background:#1e1e2a;border:none;border-radius:6px;padding:3px 8px;color:#aaa;cursor:pointer;font-size:11px">📋</button>
+    </div>`).join('');
+}
+
+function copyAllCodes(){
+  if(!lastCodes.length){alert('Gere os códigos primeiro.');return}
+  const txt=lastCodes.map(({idx,code})=>`${idx}\t${code}`).join('\n');
+  navigator.clipboard.writeText(txt).then(()=>toast('Todos copiados! Cole no Excel.'));
+}
+
+// ── Revenue ───────────────────────────────────────────────────────────────────
+function renderRev(){
+  const s=getSubs();
+  const total=s.reduce((a,x)=>a+(x.amount||0),0);
+  const active=s.filter(x=>x.status==='active');
+  const mrr=active.reduce((a,x)=>a+(x.plan==='monthly'?9.90:x.plan==='quarterly'?24.90/3:79.90/12),0);
+  const arr=mrr*12;
+  document.getElementById('rev-stats').innerHTML=`
+    <div class="stat"><div class="l">Receita total</div><div class="v" style="color:#4CAF50">${fmt(total)}</div><div class="s">acumulado</div></div>
+    <div class="stat"><div class="l">MRR</div><div class="v" style="color:#FFC107">${fmt(mrr)}</div><div class="s">mensal recorrente</div></div>
+    <div class="stat"><div class="l">ARR estimado</div><div class="v" style="color:#FFD700">${fmt(arr)}</div><div class="s">anual recorrente</div></div>
+    <div class="stat"><div class="l">Assinantes ativos</div><div class="v" style="color:#2196F3">${active.length}</div><div class="s">de ${s.length} total</div></div>`;
+  document.getElementById('pay-body').innerHTML=s.length?[...s].reverse().map(x=>`
+    <tr>
+      <td style="font-size:12px;color:#666">${x.startDate||'—'}</td>
+      <td><div style="font-weight:700">${x.name||'—'}</div><div style="font-size:11px;color:#666">${x.phone||''}</div></td>
+      <td><span class="badge ${PL[x.plan]?.cls}">${PL[x.plan]?.l}</span></td>
+      <td style="font-weight:700;color:#4CAF50">${fmt(x.amount||0)}</td>
+      <td><span class="badge ${SL[x.status]?.cls}">${SL[x.status]?.l}</span></td>
+    </tr>`).join(''):'<tr><td colspan="5" style="text-align:center;color:#444;padding:24px">Nenhum pagamento registrado.</td></tr>';
+}
+
+// ── Export CSV ────────────────────────────────────────────────────────────────
+function exportCSV(){
+  const s=getSubs();
+  if(!s.length){alert('Nenhum assinante para exportar.');return}
+  const h='ID,Nome,Telefone,Plano,Código,Status,Início,Vencimento,Valor,Observações';
+  const rows=s.map(x=>[x.id,x.name,x.phone,PL[x.plan]?.l,x.code,SL[x.status]?.l,x.startDate,x.endDate,x.amount,x.notes].map(v=>`"${v||''}"`).join(','));
+  const csv=[h,...rows].join('\n');
+  const a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);
+  a.download='lux-assinantes-'+new Date().toISOString().split('T')[0]+'.csv';
+  a.click();
+  toast('CSV exportado!');
+}
+
+// ── Toast ─────────────────────────────────────────────────────────────────────
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+</script>
+</body>
+</html>
