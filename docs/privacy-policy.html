@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Política de Privacidade — Lux Driver Assistant</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0f0f0f;
+      color: #e0e0e0;
+      line-height: 1.7;
+      padding: 0;
+    }
+    header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      border-bottom: 2px solid #f59e0b;
+      padding: 32px 24px;
+      text-align: center;
+    }
+    header h1 {
+      font-size: 2rem;
+      color: #f59e0b;
+      margin-bottom: 8px;
+    }
+    header p {
+      color: #9ca3af;
+      font-size: 0.95rem;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+    .badge {
+      display: inline-block;
+      background: #065f46;
+      color: #6ee7b7;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 32px;
+    }
+    h2 {
+      font-size: 1.25rem;
+      color: #f59e0b;
+      margin: 36px 0 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #2d2d2d;
+    }
+    p { margin-bottom: 16px; color: #d1d5db; }
+    ul { margin: 0 0 16px 24px; color: #d1d5db; }
+    ul li { margin-bottom: 8px; }
+    .highlight-box {
+      background: #1a2e1a;
+      border: 1px solid #166534;
+      border-left: 4px solid #22c55e;
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin: 24px 0;
+    }
+    .highlight-box p { color: #86efac; margin: 0; font-weight: 500; }
+    .warning-box {
+      background: #1c1a0a;
+      border: 1px solid #854d0e;
+      border-left: 4px solid #f59e0b;
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin: 24px 0;
+    }
+    .warning-box p { color: #fde68a; margin: 0; }
+    .contact-box {
+      background: #1a1a2e;
+      border: 1px solid #3730a3;
+      border-radius: 12px;
+      padding: 24px;
+      margin-top: 40px;
+      text-align: center;
+    }
+    .contact-box h3 { color: #818cf8; margin-bottom: 8px; }
+    .contact-box p { color: #9ca3af; margin: 0; }
+    footer {
+      text-align: center;
+      padding: 24px;
+      color: #4b5563;
+      font-size: 0.85rem;
+      border-top: 1px solid #1f1f1f;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🚗 Lux Driver Assistant</h1>
+  <p>Política de Privacidade</p>
+</header>
+
+<div class="container">
+
+  <span class="badge">✅ Nenhum dado pessoal coletado</span>
+
+  <p>
+    Esta Política de Privacidade descreve como o aplicativo <strong>Lux Driver Assistant</strong>
+    ("o App") trata as informações dos usuários. Ao usar o App, você concorda com os termos
+    descritos neste documento.
+  </p>
+
+  <div class="highlight-box">
+    <p>
+      🔒 O Lux Driver Assistant <strong>NÃO coleta, armazena, transmite nem compartilha</strong>
+      nenhum dado pessoal do usuário. Todas as informações processadas pelo App
+      permanecem exclusivamente no dispositivo do usuário.
+    </p>
+  </div>
+
+  <h2>1. Informações que o App Acessa</h2>
+  <p>
+    O Lux Driver Assistant utiliza o <strong>Serviço de Acessibilidade do Android</strong>
+    para ler informações exibidas na tela do dispositivo. Especificamente:
+  </p>
+  <ul>
+    <li>Valores de corridas exibidos pelos apps Uber e 99 (ex: R$ 12,50)</li>
+    <li>Tempo estimado de corridas exibido na tela</li>
+    <li>Distância estimada exibida na tela</li>
+  </ul>
+  <p>
+    Essas informações são lidas <strong>em tempo real</strong> apenas para realizar
+    cálculos de rentabilidade (R$/minuto) e exibir o resultado ao motorista.
+    <strong>Nenhuma dessas informações é salva, enviada ou compartilhada.</strong>
+  </p>
+
+  <h2>2. Uso do Serviço de Acessibilidade</h2>
+  <p>
+    O App declara o uso do <code>AccessibilityService</code> do Android com a
+    finalidade exclusiva de:
+  </p>
+  <ul>
+    <li>Ler valores de corridas exibidos na tela por apps de transporte</li>
+    <li>Calcular automaticamente a rentabilidade da corrida em R$/minuto</li>
+    <li>Exibir um overlay visual com o resultado do cálculo</li>
+  </ul>
+  <div class="warning-box">
+    <p>
+      ⚠️ O Serviço de Acessibilidade do Lux Driver Assistant <strong>não é usado</strong>
+      para coletar dados pessoais, senhas, informações bancárias ou qualquer outro
+      dado sensível. O App não interfere no funcionamento dos apps de transporte.
+    </p>
+  </div>
+
+  <h2>3. Permissões Utilizadas</h2>
+  <ul>
+    <li>
+      <strong>SYSTEM_ALERT_WINDOW</strong> — Necessária para exibir o overlay
+      flutuante com o resultado do cálculo sobre outros apps.
+    </li>
+    <li>
+      <strong>FOREGROUND_SERVICE</strong> — Necessária para manter o serviço
+      ativo em segundo plano enquanto o motorista usa o app de transporte.
+    </li>
+    <li>
+      <strong>REQUEST_IGNORE_BATTERY_OPTIMIZATIONS</strong> — Necessária para
+      evitar que o sistema encerre o serviço durante corridas longas.
+    </li>
+    <li>
+      <strong>INTERNET</strong> — Usada apenas para funcionalidades futuras
+      (ex: sincronização de configurações). Não é usada para enviar dados pessoais.
+    </li>
+  </ul>
+
+  <h2>4. Dados que NÃO Coletamos</h2>
+  <ul>
+    <li>Nome, CPF, e-mail ou qualquer dado de identificação pessoal</li>
+    <li>Localização GPS ou histórico de rotas</li>
+    <li>Dados bancários ou financeiros</li>
+    <li>Histórico de corridas ou ganhos</li>
+    <li>Informações do dispositivo (IMEI, número de telefone, etc.)</li>
+    <li>Dados de uso ou analytics</li>
+  </ul>
+
+  <h2>5. Armazenamento Local</h2>
+  <p>
+    O App pode salvar <strong>preferências do usuário</strong> localmente no dispositivo
+    (ex: configurações do semáforo de corridas, custos do veículo). Esses dados:
+  </p>
+  <ul>
+    <li>Ficam armazenados apenas no dispositivo do usuário</li>
+    <li>Não são enviados para nenhum servidor</li>
+    <li>São apagados ao desinstalar o App</li>
+  </ul>
+
+  <h2>6. Serviços de Terceiros</h2>
+  <p>
+    O App não integra serviços de analytics, publicidade ou rastreamento de terceiros
+    (como Google Analytics, Firebase Analytics, Facebook SDK, etc.).
+  </p>
+
+  <h2>7. Segurança</h2>
+  <p>
+    Como o App não coleta nem transmite dados pessoais, o risco de exposição de
+    informações do usuário é mínimo. Todas as operações são realizadas localmente
+    no dispositivo.
+  </p>
+
+  <h2>8. Crianças</h2>
+  <p>
+    O Lux Driver Assistant é destinado a motoristas adultos de aplicativos de
+    transporte. O App não é direcionado a crianças menores de 13 anos e não
+    coleta intencionalmente informações de crianças.
+  </p>
+
+  <h2>9. Alterações nesta Política</h2>
+  <p>
+    Podemos atualizar esta Política de Privacidade periodicamente. Notificaremos
+    sobre mudanças significativas através de uma atualização do App na Play Store.
+    A data da última atualização está indicada abaixo.
+  </p>
+
+  <h2>10. Contato</h2>
+  <div class="contact-box">
+    <h3>Dúvidas sobre privacidade?</h3>
+    <p>
+      Se você tiver dúvidas sobre esta Política de Privacidade ou sobre o
+      tratamento de dados pelo Lux Driver Assistant, entre em contato:
+    </p>
+    <p style="margin-top: 12px; color: #818cf8;">
+      📧 luxdriverassistant@gmail.com
+    </p>
+  </div>
+
+  <p style="margin-top: 40px; color: #6b7280; font-size: 0.9rem;">
+    <strong>Última atualização:</strong> Fevereiro de 2026<br/>
+    <strong>Versão do App:</strong> 1.0<br/>
+    <strong>Desenvolvedor:</strong> Lux Driver Assistant
+  </p>
+
+</div>
+
+<footer>
+  © 2026 Lux Driver Assistant · Todos os direitos reservados
+</footer>
+
+</body>
+</html>
