@@ -45,7 +45,7 @@ async function sendWhatsApp(phone, message) {
 
   if (!apiUrl || !apiKey || !instance) {
     console.error('Evolution API não configurada — verifique as env vars');
-    return false;
+    return { ok: false, error: 'env_vars_missing' };
   }
 
   // Formata número: remove não-dígitos, garante DDI 55
@@ -64,15 +64,15 @@ async function sendWhatsApp(phone, message) {
       body: JSON.stringify({ number, text: message }),
     });
 
+    const body = await res.text();
     if (!res.ok) {
-      const err = await res.text();
-      console.error('Evolution API error:', err);
-      return false;
+      console.error('Evolution API error:', res.status, body);
+      return { ok: false, status: res.status, error: body };
     }
-    return true;
+    return { ok: true };
   } catch (err) {
     console.error('sendWhatsApp error:', err);
-    return false;
+    return { ok: false, error: err.message };
   }
 }
 
@@ -163,6 +163,12 @@ export default async function handler(req, res) {
     phone,
     plan,
     code,
-    whatsapp_sent: sent,
+    whatsapp_sent: sent?.ok === true,
+    _debug: {
+      evolution_url: (process.env.EVOLUTION_API_URL || '').trim(),
+      evolution_instance: (process.env.EVOLUTION_INSTANCE || '').trim(),
+      evolution_key_set: !!(process.env.EVOLUTION_API_KEY || '').trim(),
+      whatsapp_result: sent,
+    },
   });
 }

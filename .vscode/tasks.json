@@ -1,0 +1,239 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "🔨 Build Web (React + Vite)",
+      "type": "shell",
+      "command": "npm run build",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      },
+      "problemMatcher": ["$tsc"],
+      "detail": "Compila TypeScript + Vite → pasta dist/"
+    },
+    {
+      "label": "🚀 Deploy Vercel (Produção)",
+      "type": "shell",
+      "command": "npx vercel --prod",
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Faz deploy direto para produção no Vercel"
+    },
+    {
+      "label": "🔨 Build + Deploy Vercel",
+      "type": "shell",
+      "command": "npm run build && npx vercel --prod",
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      },
+      "problemMatcher": ["$tsc"],
+      "detail": "Build completo + deploy Vercel em sequência"
+    },
+    {
+      "label": "📱 Sync Android (Capacitor)",
+      "type": "shell",
+      "command": "npm run build && npx cap sync android",
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      },
+      "problemMatcher": [],
+      "detail": "Build web + sincroniza com projeto Android"
+    },
+    {
+      "label": "📱 Abrir Android Studio",
+      "type": "shell",
+      "command": "npx cap open android",
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Abre o projeto Android no Android Studio"
+    },
+    {
+      "label": "🌐 Dev Server (localhost:5173)",
+      "type": "shell",
+      "command": "npm run dev",
+      "group": "test",
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "^$"
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "VITE",
+          "endsPattern": "Local:"
+        }
+      },
+      "detail": "Inicia servidor de desenvolvimento local"
+    },
+    {
+      "label": "🔍 Lint (ESLint)",
+      "type": "shell",
+      "command": "npm run lint",
+      "group": "test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": ["$eslint-stylish"],
+      "detail": "Verifica erros de código com ESLint"
+    },
+    {
+      "label": "📦 Instalar Dependências",
+      "type": "shell",
+      "command": "npm install",
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Instala/atualiza pacotes npm"
+    },
+    {
+      "label": "🔄 Git: Commit + Push",
+      "type": "shell",
+      "command": "git add -A && git commit -m \"${input:commitMessage}\" && git push",
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Adiciona, commita e faz push para o repositório"
+    },
+    {
+      "label": "📊 Build Arquitetura (React sub-app)",
+      "type": "shell",
+      "command": "cd docs/arquitetura-solucao && npm install && npm run build",
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      },
+      "problemMatcher": [],
+      "detail": "Compila o sub-app React da arquitetura de solução"
+    },
+    {
+      "label": "🚀 DEPLOY COMPLETO (Build + Git + Vercel)",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "🔨 Build Web (React + Vite)",
+        "🔄 Git: Commit + Push",
+        "🚀 Deploy Vercel (Produção)"
+      ],
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "detail": "Pipeline completo: build → git push → vercel deploy"
+    },
+    {
+      "label": "🤖 Browser Agent (Puppeteer)",
+      "type": "shell",
+      "command": "node tools/agents/browser-agent.js",
+      "group": "test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "problemMatcher": [],
+      "detail": "Agente interativo de browser: screenshot, PDF, testar deploy, verificar links"
+    },
+    {
+      "label": "📸 Screenshot do Site LUX",
+      "type": "shell",
+      "command": "node tools/agents/quick-screenshot.js",
+      "group": "test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      },
+      "problemMatcher": [],
+      "detail": "Tira screenshot completo do site LUX no Vercel"
+    },
+    {
+      "label": "📸 Screenshot de URL personalizada",
+      "type": "shell",
+      "command": "node tools/agents/quick-screenshot.js ${input:screenshotUrl}",
+      "group": "test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      },
+      "problemMatcher": [],
+      "detail": "Tira screenshot de qualquer URL"
+    },
+    {
+      "label": "🖥️ Desktop Agent",
+      "type": "shell",
+      "command": ".\\tools\\desktop-agent.ps1",
+      "group": "test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "problemMatcher": [],
+      "detail": "Agente desktop: abre apps, browser, Android Studio, VS Code, faz deploy"
+    },
+    {
+      "label": "🤖 Open Interpreter (Agente IA)",
+      "type": "shell",
+      "command": ".\\tools\\agents\\run-interpreter.ps1",
+      "group": "test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "problemMatcher": [],
+      "detail": "Agente IA que controla o computador via linguagem natural (Python)"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "commitMessage",
+      "type": "promptString",
+      "description": "Mensagem do commit Git:",
+      "default": "feat: atualização"
+    },
+    {
+      "id": "screenshotUrl",
+      "type": "promptString",
+      "description": "URL para screenshot:",
+      "default": "https://lux-driver-assistent-18y8.vercel.app"
+    }
+  ]
+}

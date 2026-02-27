@@ -1,0 +1,95 @@
+========================================
+PLAY CONSOLE — ENGLISH (en-US) FIELDS
+Copy and paste each field below
+========================================
+
+----------------------------------------
+APP NAME (max 30 chars)
+----------------------------------------
+Lux Driver Assistant
+
+
+----------------------------------------
+SHORT DESCRIPTION (max 80 chars)
+----------------------------------------
+Calculate your real earnings in real time while driving for Uber & 99
+
+
+----------------------------------------
+FULL DESCRIPTION (max 4000 chars)
+COPY FROM THE LINE BELOW THIS ONE:
+----------------------------------------
+Lux Driver Assistant — Your Profitability Co-Pilot
+
+Do you know how much you really earn per minute on each ride? Lux Driver Assistant automatically calculates your profitability in real time, right on your screen, while you drive.
+
+HOW IT WORKS
+
+The app reads ride information displayed by Uber and 99 (fare, time, and distance) and instantly calculates:
+
+- Real net profit (after deducting fuel, maintenance, and depreciation)
+- Profitability in BRL/minute
+- Visual traffic light: Green = accept / Yellow = caution / Red = decline
+
+FEATURES
+
+SMART OVERLAY
+- Floating card appears automatically when a ride is offered
+- Shows net value prominently (large font, easy to read while driving)
+- Colors: green (good ride), yellow (caution), red (not worth it)
+
+CUSTOMIZABLE TRAFFIC LIGHT
+- Set your own profitability thresholds
+- Dual slider to adjust minimum and ideal values
+- Adapts to your cost of living and vehicle type
+
+REAL COST CALCULATION
+- Configure: vehicle fuel consumption, fuel price
+- Configure: maintenance cost per km
+- Configure: vehicle depreciation
+- Result: how much you REALLY take home
+
+SIMPLE SETUP
+- Guided onboarding in 3 steps
+- Runs in the background without slowing your phone
+- Compatible with Uber and 99
+
+PRIVACY AND SECURITY
+
+- No personal data is collected or transmitted
+- Works 100% offline
+- Does not interfere with Uber or 99 operation
+- Uses Accessibility Service only to read values displayed on screen
+
+REQUIREMENTS
+
+- Android 7.0 or higher
+- Accessibility Permission (to read the ride card)
+- Overlay Permission (to display the floating card)
+
+Stop accepting rides in the dark. With Lux, every decision is based on real data.
+
+Drive smarter. Earn more.
+----------------------------------------
+END OF FULL DESCRIPTION
+----------------------------------------
+
+
+========================================
+STEPS TO FIX THE ERROR IN PLAY CONSOLE:
+========================================
+
+1. Clear the "Descricao completa" field completely
+   (select all text in the field and delete it)
+
+2. Copy ONLY the text between the lines:
+   "COPY FROM THE LINE BELOW THIS ONE:"
+   and
+   "END OF FULL DESCRIPTION"
+
+3. Paste into the "Descricao completa" field
+
+4. Click "Salvar" (Save)
+
+The error "Alguns idiomas apresentam erros" should disappear.
+========================================

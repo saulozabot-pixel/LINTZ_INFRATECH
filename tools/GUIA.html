@@ -86,6 +86,19 @@ tr:last-child td{border-bottom:none}
   <a href="#codigos">🔑 Gerador de Códigos</a>
   <a href="#landing">🌐 Landing Page</a>
 
+  <h3>🤖 Automação</h3>
+  <a href="#automacao">⚡ Workflow automatizado</a>
+  <a href="#vscode-tasks">🔧 VS Code Tasks</a>
+  <a href="#scripts">📜 Scripts Windows</a>
+  <a href="#env">🔐 Variáveis de ambiente</a>
+  <a href="#blackbox">🤖 Blackbox AI</a>
+
+  <h3>💳 Pagamentos</h3>
+  <a href="#pagamentos">💳 Fluxo PIX completo</a>
+  <a href="#pushinpay">🔑 Configurar PushinPay</a>
+  <a href="#evolution">📱 Configurar WhatsApp</a>
+  <a href="#vercel-env">⚙️ Variáveis no Vercel</a>
+
   <h3>Fluxo de Venda</h3>
   <a href="#fluxo">💰 Como vender</a>
   <a href="#ativar">✅ Ativar assinante</a>
@@ -136,6 +149,455 @@ tr:last-child td{border-bottom:none}
       <p>(47) 98818-2649 — link direto para receber clientes</p>
     </div>
     <a class="link-card-btn" href="https://wa.me/47988182649" target="_blank" rel="noopener">Abrir →</a>
+  </div>
+</div>
+
+<!-- AUTOMAÇÃO -->
+<div class="section" id="automacao">
+  <div class="section-badge">⚡ Automação</div>
+  <h2>Workflow Automatizado</h2>
+  <p>O projeto agora tem scripts e tasks configurados para automatizar build, deploy e sync Android — tudo com confirmações de segurança antes de executar.</p>
+
+  <div class="card">
+    <h3>🗂️ Arquivos criados</h3>
+    <table>
+      <tr><th>Arquivo</th><th>O que faz</th></tr>
+      <tr><td><code>.vscode/tasks.json</code></td><td>Tasks de build/deploy acessíveis com Ctrl+Shift+B</td></tr>
+      <tr><td><code>tools/deploy.bat</code></td><td>Script Windows com menu interativo (clique duplo)</td></tr>
+      <tr><td><code>tools/deploy.ps1</code></td><td>Script PowerShell colorido e robusto</td></tr>
+      <tr><td><code>.env.example</code></td><td>Template seguro para tokens e variáveis</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>🔄 Fluxo real do projeto</h3>
+    <div class="code-block">
+[VS Code Agent / Blackbox]  →  gera e revisa código
+         ↓
+[Ctrl+Shift+B → Build]      →  npm run build (TypeScript + Vite)
+         ↓
+[Git Commit + Push]         →  git add -A && git commit && git push
+         ↓
+[Deploy Vercel]             →  npx vercel --prod
+         ↓
+[Sync Android]              →  npx cap sync android → Android Studio → APK</div>
+  </div>
+
+  <div class="tip">
+    <strong>💡 Regra de ouro:</strong> Use o agente do VS Code (Blackbox) para <strong>escrever e revisar código</strong>. Use os scripts/tasks para <strong>executar e fazer deploy</strong>. Isso equilibra o consumo dos créditos.
+  </div>
+</div>
+
+<!-- VS CODE TASKS -->
+<div class="section" id="vscode-tasks">
+  <div class="section-badge">🔧 VS Code Tasks</div>
+  <h2>Como usar as Tasks no VS Code</h2>
+  <p>As tasks ficam em <code>.vscode/tasks.json</code> e são acessíveis diretamente pelo VS Code sem precisar digitar comandos.</p>
+
+  <div class="card">
+    <h3>⌨️ Como abrir</h3>
+    <ul>
+      <li><strong style="color:#e0e0e0">Ctrl + Shift + B</strong> → abre a task de build padrão (Build Web)</li>
+      <li><strong style="color:#e0e0e0">Ctrl + Shift + P</strong> → digita <code>Tasks: Run Task</code> → escolhe qualquer task</li>
+      <li><strong style="color:#e0e0e0">Terminal → Executar Tarefa</strong> → menu visual</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>📋 Tasks disponíveis</h3>
+    <table>
+      <tr><th>Task</th><th>Comando executado</th></tr>
+      <tr><td>🔨 Build Web</td><td><code>npm run build</code></td></tr>
+      <tr><td>🚀 Deploy Vercel</td><td><code>npx vercel --prod</code></td></tr>
+      <tr><td>🔨 Build + Deploy</td><td><code>npm run build && npx vercel --prod</code></td></tr>
+      <tr><td>📱 Sync Android</td><td><code>npm run build && npx cap sync android</code></td></tr>
+      <tr><td>📱 Abrir Android Studio</td><td><code>npx cap open android</code></td></tr>
+      <tr><td>🌐 Dev Server</td><td><code>npm run dev</code> (localhost:5173)</td></tr>
+      <tr><td>🔍 Lint</td><td><code>npm run lint</code></td></tr>
+      <tr><td>📦 Instalar Deps</td><td><code>npm install</code></td></tr>
+      <tr><td>🔄 Git Commit + Push</td><td><code>git add -A && git commit && git push</code></td></tr>
+      <tr><td>📊 Build Arquitetura</td><td>Compila sub-app React em docs/arquitetura-solucao</td></tr>
+      <tr><td>🚀 DEPLOY COMPLETO</td><td>Build → Git Push → Vercel (pipeline sequencial)</td></tr>
+    </table>
+  </div>
+
+  <div class="warn">
+    <strong>⚠️ Nota:</strong> A task "🔄 Git: Commit + Push" vai pedir a mensagem do commit em um input box no VS Code. Digite a mensagem e pressione Enter.
+  </div>
+</div>
+
+<!-- SCRIPTS WINDOWS -->
+<div class="section" id="scripts">
+  <div class="section-badge">📜 Scripts Windows</div>
+  <h2>Scripts de Deploy para Windows</h2>
+  <p>Dois scripts prontos para usar no Windows — com menu interativo e confirmações antes de cada ação crítica.</p>
+
+  <div class="card">
+    <h3>🦇 deploy.bat — Script Batch (mais simples)</h3>
+    <p>Clique duplo no arquivo ou execute no terminal:</p>
+    <div class="code-block">tools\deploy.bat</div>
+    <p style="margin-top:8px">Menu com 5 opções:</p>
+    <ul>
+      <li>[1] Deploy Web (Build + Vercel)</li>
+      <li>[2] Sync Android (Build + cap sync)</li>
+      <li>[3] Deploy Completo (Build + Git + Vercel)</li>
+      <li>[4] Apenas Build</li>
+      <li>[5] Apenas Git Push</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>💙 deploy.ps1 — Script PowerShell (mais robusto)</h3>
+    <p>Execute no terminal do VS Code:</p>
+    <div class="code-block">.\tools\deploy.ps1</div>
+    <p style="margin-top:8px">Ou clique direito no arquivo → <strong style="color:#e0e0e0">"Executar com PowerShell"</strong></p>
+    <p style="margin-top:8px">Vantagens sobre o .bat:</p>
+    <ul>
+      <li>Saída colorida (verde = sucesso, vermelho = erro)</li>
+      <li>Tratamento de erros mais robusto</li>
+      <li>Opção extra: Build do sub-app Arquitetura</li>
+    </ul>
+  </div>
+
+  <div class="tip">
+    <strong>💡 Primeira vez com PowerShell?</strong> Se aparecer erro de "execução de scripts desabilitada", execute no terminal como Administrador:<br>
+    <code>Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser</code>
+  </div>
+
+  <div class="card">
+    <h3>⌨️ Executar direto no terminal do VS Code</h3>
+    <div class="code-block"># Abrir terminal: Ctrl + ` (acento grave)
+
+# Script Batch:
+tools\deploy.bat
+
+# Script PowerShell:
+.\tools\deploy.ps1
+
+# Ou comandos diretos:
+npm run build
+npx vercel --prod
+npx cap sync android</div>
+  </div>
+</div>
+
+<!-- VARIÁVEIS DE AMBIENTE -->
+<div class="section" id="env">
+  <div class="section-badge">🔐 Variáveis de Ambiente</div>
+  <h2>Configurando Variáveis de Ambiente</h2>
+  <p>Tokens e senhas nunca devem ficar no código. Use o arquivo <code>.env</code> para guardá-los com segurança.</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h4>Copie o arquivo de exemplo</h4>
+        <p>No terminal do VS Code: <code>copy .env.example .env</code></p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h4>Edite o .env com seus tokens reais</h4>
+        <p>Abra o <code>.env</code> e substitua os valores de exemplo pelos seus tokens reais (Vercel, PushinPay, Blackbox, etc.)</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h4>O .env está protegido pelo .gitignore</h4>
+        <p>O arquivo <code>.env</code> nunca será enviado ao GitHub. Apenas o <code>.env.example</code> (sem valores reais) é versionado.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📋 Variáveis disponíveis</h3>
+    <table>
+      <tr><th>Variável</th><th>Para que serve</th><th>Onde obter</th></tr>
+      <tr><td><code>VERCEL_TOKEN</code></td><td>Deploy via CLI sem login</td><td>vercel.com/account/tokens</td></tr>
+      <tr><td><code>PUSHINPAY_TOKEN</code></td><td>API de pagamentos PIX</td><td>pushinpay.com.br → API</td></tr>
+      <tr><td><code>BLACKBOX_API_KEY</code></td><td>Créditos API Blackbox</td><td>blackbox.ai → Account</td></tr>
+      <tr><td><code>VITE_APP_URL</code></td><td>URL do app em produção</td><td>Definir manualmente</td></tr>
+    </table>
+  </div>
+
+  <div class="warn">
+    <strong>⚠️ Segurança:</strong> Nunca compartilhe o arquivo <code>.env</code>. Nunca cole tokens em chats, issues do GitHub ou mensagens. Se um token vazar, revogue-o imediatamente no painel do serviço.
+  </div>
+</div>
+
+<!-- BLACKBOX AI -->
+<div class="section" id="blackbox">
+  <div class="section-badge">🤖 Blackbox AI</div>
+  <h2>Como usar o Blackbox AI no seu workflow</h2>
+  <p>O Blackbox tem dois tipos de créditos com usos diferentes. Entender isso evita gastar desnecessariamente.</p>
+
+  <div class="card">
+    <h3>💳 Créditos de Assinatura — Use para código</h3>
+    <table>
+      <tr><th>Use para</th><th>Exemplo prático</th></tr>
+      <tr><td>Gerar componentes React</td><td>"Crie um componente de card para exibir métricas"</td></tr>
+      <tr><td>Revisar e corrigir bugs</td><td>"Por que esse useEffect está causando loop?"</td></tr>
+      <tr><td>Refatorar código</td><td>"Melhore a performance desse componente"</td></tr>
+      <tr><td>Gerar tipos TypeScript</td><td>"Crie a interface para esse objeto de dados"</td></tr>
+      <tr><td>Escrever documentação</td><td>"Documente essa função com JSDoc"</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>🔑 Créditos API — Use para integrações</h3>
+    <table>
+      <tr><th>Use para</th><th>Exemplo prático</th></tr>
+      <tr><td>Automações via script</td><td>Chamar a API em scripts Node.js ou Python</td></tr>
+      <tr><td>Integração em apps</td><td>Adicionar IA ao seu app React/Android</td></tr>
+      <tr><td>Processamento em lote</td><td>Analisar múltiplos arquivos automaticamente</td></tr>
+      <tr><td>CI/CD com IA</td><td>Revisão automática de código no pipeline</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>💡 Prompts úteis para o seu projeto</h3>
+    <div class="code-block">// Para gerar código novo:
+"Você é um dev React/TypeScript especialista.
+Crie um componente [nome] que [descrição].
+Use Tailwind CSS, hooks modernos e TypeScript strict."
+
+// Para revisar código:
+"Revise esse código e aponte: bugs, problemas de
+performance, melhorias de UX e boas práticas React."
+
+// Para deploy e automação:
+"Analise o vercel.json e sugira otimizações para
+o build command do projeto LUX Driver."
+
+// Para Android/Capacitor:
+"Explique como implementar [feature] no Capacitor
+para Android, com código Kotlin e TypeScript."</div>
+  </div>
+
+  <div class="tip">
+    <strong>💡 Dica de produtividade:</strong> Abra o Blackbox no VS Code (<strong style="color:#e0e0e0">Ctrl+Shift+P → Blackbox</strong>) e mantenha o contexto do projeto ativo. Assim ele entende melhor o seu código e gera respostas mais precisas.
+  </div>
+</div>
+
+<!-- PAGAMENTOS PIX -->
+<div class="section" id="pagamentos">
+  <div class="section-badge">💳 Pagamentos PIX</div>
+  <h2>Fluxo de Pagamento Automático</h2>
+  <p>O projeto tem um sistema completo de pagamento PIX integrado com geração automática de código e envio via WhatsApp. Tudo acontece sem intervenção manual.</p>
+
+  <div class="card">
+    <h3>🔄 Como funciona o fluxo completo</h3>
+    <div class="code-block">
+[Cliente acessa /checkout.html]
+         ↓
+[Escolhe plano + digita WhatsApp]
+         ↓
+[api/create-payment.js] → PushinPay API → gera QR Code PIX
+         ↓
+[Cliente paga o PIX]
+         ↓
+[PushinPay envia webhook → api/webhook-pushinpay.js]
+         ↓
+[Webhook gera código LUX-XXXX-XXXX]
+         ↓
+[Evolution API envia código via WhatsApp automaticamente]
+         ↓
+[Cliente ativa no app LUX] ✅</div>
+  </div>
+
+  <div class="card">
+    <h3>📋 Planos disponíveis no checkout</h3>
+    <table>
+      <tr><th>Plano</th><th>Valor (centavos)</th><th>Duração</th></tr>
+      <tr><td>Mensal</td><td><code>990</code> = R$ 9,90</td><td>30 dias</td></tr>
+      <tr><td>Trimestral</td><td><code>2490</code> = R$ 24,90</td><td>90 dias</td></tr>
+      <tr><td>Anual</td><td><code>7990</code> = R$ 79,90</td><td>365 dias</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>📁 Arquivos do sistema de pagamento</h3>
+    <table>
+      <tr><th>Arquivo</th><th>Função</th></tr>
+      <tr><td><code>docs/checkout.html</code></td><td>Página de checkout (frontend)</td></tr>
+      <tr><td><code>api/create-payment.js</code></td><td>Cria cobrança PIX via PushinPay</td></tr>
+      <tr><td><code>api/webhook-pushinpay.js</code></td><td>Recebe confirmação + gera código + envia WhatsApp</td></tr>
+    </table>
+  </div>
+
+  <div class="tip">
+    <strong>💡 URL do checkout:</strong> <a href="https://lux-driver-assistent-18y8.vercel.app/checkout.html" target="_blank">https://lux-driver-assistent-18y8.vercel.app/checkout.html</a>
+  </div>
+</div>
+
+<!-- PUSHINPAY -->
+<div class="section" id="pushinpay">
+  <div class="section-badge">🔑 PushinPay</div>
+  <h2>Configurando o PushinPay (PIX)</h2>
+  <p>O PushinPay é o gateway de pagamento PIX usado no projeto. Você precisa de uma conta e do token de API.</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h4>Criar conta no PushinPay</h4>
+        <p>Acesse <a href="https://pushinpay.com.br" target="_blank">pushinpay.com.br</a> e crie sua conta. É gratuito para começar.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h4>Obter o Token de API</h4>
+        <p>No painel PushinPay: <strong style="color:#e0e0e0">Configurações → API → Gerar Token</strong>. Copie o token gerado.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h4>Adicionar o token no Vercel</h4>
+        <p>Veja a seção <a href="#vercel-env">⚙️ Variáveis no Vercel</a> abaixo para saber como adicionar.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h4>Configurar o Webhook no PushinPay</h4>
+        <p>No painel PushinPay, configure a URL de webhook:<br>
+        <code>https://lux-driver-assistent-18y8.vercel.app/api/webhook-pushinpay</code></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="warn">
+    <strong>⚠️ Importante:</strong> O webhook é chamado automaticamente pelo PushinPay quando o pagamento é confirmado. Sem o webhook configurado, o código não será enviado ao cliente.
+  </div>
+
+  <div class="card">
+    <h3>🧪 Testar o webhook manualmente</h3>
+    <p>Para testar se o webhook está funcionando, faça uma requisição GET:</p>
+    <div class="code-block">curl https://lux-driver-assistent-18y8.vercel.app/api/webhook-pushinpay
+# Deve retornar: {"status":"webhook endpoint ativo"}</div>
+  </div>
+</div>
+
+<!-- EVOLUTION API (WHATSAPP) -->
+<div class="section" id="evolution">
+  <div class="section-badge">📱 WhatsApp</div>
+  <h2>Configurando o WhatsApp (Evolution API)</h2>
+  <p>O código de ativação é enviado automaticamente via WhatsApp usando a Evolution API. Você precisa de uma instância configurada.</p>
+
+  <div class="card">
+    <h3>📋 Variáveis necessárias</h3>
+    <table>
+      <tr><th>Variável</th><th>Exemplo</th><th>Descrição</th></tr>
+      <tr><td><code>EVOLUTION_API_URL</code></td><td><code>https://sua-api.evolution.com</code></td><td>URL da sua instância Evolution API</td></tr>
+      <tr><td><code>EVOLUTION_API_KEY</code></td><td><code>abc123xyz</code></td><td>Chave de autenticação da API</td></tr>
+      <tr><td><code>EVOLUTION_INSTANCE</code></td><td><code>lux-driver</code></td><td>Nome da instância WhatsApp</td></tr>
+      <tr><td><code>LUX_SECRET</code></td><td><code>LUX_SAULO_2025_DRIVER</code></td><td>Segredo para geração de códigos (padrão já definido)</td></tr>
+    </table>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h4>Opção A: Evolution API hospedada (recomendado)</h4>
+        <p>Use um serviço como <a href="https://evolution-api.com" target="_blank">evolution-api.com</a> ou hospede você mesmo no Railway/VPS. Obtenha a URL, API Key e nome da instância.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h4>Opção B: Hospedar localmente (desenvolvimento)</h4>
+        <p>Clone o repositório da Evolution API e rode localmente com Docker. Use ngrok para expor o endpoint.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h4>Conectar o WhatsApp à instância</h4>
+        <p>No painel da Evolution API, escaneie o QR Code com o WhatsApp do número que vai enviar os códigos.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h4>Adicionar as variáveis no Vercel</h4>
+        <p>Veja a seção <a href="#vercel-env">⚙️ Variáveis no Vercel</a> abaixo.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip">
+    <strong>💡 Sem Evolution API?</strong> O sistema ainda funciona — o código é gerado e retornado no webhook, mas não é enviado automaticamente. Você pode enviar manualmente pelo Admin Dashboard clicando em 💬.
+  </div>
+</div>
+
+<!-- VARIÁVEIS NO VERCEL -->
+<div class="section" id="vercel-env">
+  <div class="section-badge">⚙️ Vercel</div>
+  <h2>Configurando Variáveis de Ambiente no Vercel</h2>
+  <p>As variáveis de ambiente das funções serverless (pagamento, webhook) precisam ser configuradas no painel do Vercel — não no arquivo <code>.env</code> local.</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h4>Acesse o painel do Vercel</h4>
+        <p><a href="https://vercel.com/dashboard" target="_blank">vercel.com/dashboard</a> → clique no projeto <strong style="color:#e0e0e0">lux-driver-assistent</strong></p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h4>Vá em Settings → Environment Variables</h4>
+        <p>Menu lateral: <strong style="color:#e0e0e0">Settings → Environment Variables</strong></p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h4>Adicione cada variável</h4>
+        <p>Clique em <strong style="color:#FFD700">"Add New"</strong> para cada variável abaixo. Selecione os ambientes: <strong style="color:#e0e0e0">Production + Preview + Development</strong></p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h4>Faça um novo deploy</h4>
+        <p>Após adicionar as variáveis, faça um novo deploy para que entrem em vigor: <code>npx vercel --prod</code></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📋 Todas as variáveis necessárias</h3>
+    <table>
+      <tr><th>Variável</th><th>Obrigatória</th><th>Descrição</th></tr>
+      <tr><td><code>PUSHINPAY_TOKEN</code></td><td><span class="badge badge-red">Sim</span></td><td>Token da API PushinPay para criar cobranças PIX</td></tr>
+      <tr><td><code>EVOLUTION_API_URL</code></td><td><span class="badge badge-yellow">Recomendado</span></td><td>URL da Evolution API para envio de WhatsApp</td></tr>
+      <tr><td><code>EVOLUTION_API_KEY</code></td><td><span class="badge badge-yellow">Recomendado</span></td><td>Chave de autenticação da Evolution API</td></tr>
+      <tr><td><code>EVOLUTION_INSTANCE</code></td><td><span class="badge badge-yellow">Recomendado</span></td><td>Nome da instância WhatsApp na Evolution API</td></tr>
+      <tr><td><code>LUX_SECRET</code></td><td><span class="badge badge-green">Opcional</span></td><td>Segredo para geração de códigos (padrão: LUX_SAULO_2025_DRIVER)</td></tr>
+      <tr><td><code>WEBHOOK_BASE_URL</code></td><td><span class="badge badge-green">Opcional</span></td><td>URL base do webhook (padrão: URL automática do Vercel)</td></tr>
+    </table>
+  </div>
+
+  <div class="warn">
+    <strong>⚠️ Atenção:</strong> Sem o <code>PUSHINPAY_TOKEN</code>, o checkout retorna erro 502. Sem as variáveis da Evolution API, o código é gerado mas não enviado via WhatsApp — você precisará enviar manualmente.
+  </div>
+
+  <div class="card">
+    <h3>✅ Como verificar se está funcionando</h3>
+    <ol style="margin-top:8px">
+      <li>Acesse <a href="https://lux-driver-assistent-18y8.vercel.app/checkout.html" target="_blank">checkout.html</a></li>
+      <li>Selecione o plano Mensal</li>
+      <li>Digite seu número de WhatsApp</li>
+      <li>Clique em "Gerar PIX" — deve aparecer o QR Code</li>
+      <li>Se aparecer erro, verifique o <code>PUSHINPAY_TOKEN</code> no Vercel</li>
+    </ol>
   </div>
 </div>
 
@@ -393,11 +855,20 @@ Qualquer dúvida, é só chamar aqui! 🚗</div>
   <div class="card">
     <h3>🚀 Próximos passos recomendados</h3>
     <ol>
+      <li>
+        <strong style="color:#FFD700">💳 Configurar pagamento automático:</strong>
+        <ul style="margin-top:4px;margin-bottom:8px">
+          <li>Criar conta no <a href="https://pushinpay.com.br" target="_blank">PushinPay</a> e obter o token</li>
+          <li>Configurar <code>PUSHINPAY_TOKEN</code> no Vercel → Settings → Environment Variables</li>
+          <li>Configurar Evolution API para envio automático via WhatsApp</li>
+          <li>Testar o checkout: <a href="https://lux-driver-assistent-18y8.vercel.app/checkout.html" target="_blank">checkout.html</a></li>
+        </ul>
+      </li>
       <li>Gerar o APK no Android Studio → <strong style="color:#e0e0e0">Build → Generate Signed APK</strong></li>
       <li>Hospedar o APK no GitHub Releases</li>
       <li>Atualizar o link de download no site</li>
       <li>Tornar o repositório GitHub privado</li>
-      <li>Testar o fluxo completo: instalar APK → trial → comprar → ativar código</li>
+      <li>Testar o fluxo completo: instalar APK → trial → <a href="https://lux-driver-assistent-18y8.vercel.app/checkout.html" target="_blank">checkout</a> → pagar PIX → receber código no WhatsApp → ativar no app</li>
     </ol>
   </div>
 </div>

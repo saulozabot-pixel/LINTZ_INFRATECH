@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lux Driver — Gerador de Assets para Play Store</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0a0a0a; color: #fff; font-family: 'Segoe UI', sans-serif; padding: 30px; }
+  h1 { color: #FFD700; margin-bottom: 8px; font-size: 24px; }
+  p { color: #aaa; margin-bottom: 30px; font-size: 14px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+  .card { background: #1a1a1a; border: 1px solid #333; border-radius: 12px; padding: 24px; }
+  .card h2 { color: #FFD700; margin-bottom: 6px; font-size: 16px; }
+  .card p { color: #888; font-size: 12px; margin-bottom: 16px; }
+  canvas { display: block; max-width: 100%; border-radius: 8px; border: 1px solid #333; }
+  .btn {
+    display: inline-block; margin-top: 14px; padding: 10px 22px;
+    background: linear-gradient(135deg, #FFD700, #DAA520);
+    color: #000; font-weight: bold; border-radius: 8px;
+    cursor: pointer; border: none; font-size: 14px; text-decoration: none;
+  }
+  .btn:hover { opacity: 0.85; }
+  .info { background: #111; border: 1px solid #FFD70033; border-radius: 8px; padding: 16px; margin-top: 30px; }
+  .info h3 { color: #FFD700; margin-bottom: 10px; }
+  .info ul { color: #ccc; font-size: 13px; line-height: 2; padding-left: 20px; }
+  .info code { background: #222; padding: 2px 6px; border-radius: 4px; color: #FFD700; font-size: 12px; }
+</style>
+</head>
+<body>
+
+<h1>🌟 Lux Driver — Assets para Play Store</h1>
+<p>Clique em "Baixar" para salvar cada imagem no formato correto para o Google Play Console.</p>
+
+<div class="grid">
+  <div class="card">
+    <h2>Ícone do Desenvolvedor</h2>
+    <p>512 × 512 px · PNG sem transparência · Máx 1MB</p>
+    <canvas id="iconCanvas" width="512" height="512"></canvas>
+    <button class="btn" onclick="download('iconCanvas', 'lux-developer-icon-512x512.png')">⬇ Baixar Ícone (512×512)</button>
+  </div>
+
+  <div class="card">
+    <h2>Imagem de Cabeçalho</h2>
+    <p>4096 × 2304 px · PNG sem transparência · Máx 1MB</p>
+    <canvas id="headerCanvas" width="4096" height="2304" style="max-height:230px; width:100%;"></canvas>
+    <button class="btn" onclick="downloadJpeg('headerCanvas', 'lux-header-banner-4096x2304.jpg')">⬇ Baixar Banner (4096×2304 JPEG)</button>
+  </div>
+</div>
+
+<div class="info">
+  <h3>📋 Como usar no Google Play Console</h3>
+  <ul>
+    <li><strong>Ícone do desenvolvedor:</strong> Conta de desenvolvedor → Página do desenvolvedor → "Ícone do desenvolvedor" → Enviar <code>lux-developer-icon-512x512.png</code></li>
+    <li><strong>Imagem de cabeçalho:</strong> Mesma página → "Imagem de cabeçalho" → Enviar <code>lux-header-banner-4096x2304.png</code></li>
+    <li><strong>Site do desenvolvedor:</strong> <code>https://lux-driver-assistent-18y8.vercel.app</code></li>
+    <li><strong>Texto promocional:</strong> <code>Ferramentas inteligentes para motoristas de app. Calcule seus ganhos reais e maximize sua rentabilidade com o Lux Driver.</code></li>
+  </ul>
+</div>
+
+<script>
+// ─── Desenha o ícone 512x512 ───────────────────────────────────────────────
+function drawIcon(canvas) {
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const cx = W / 2, cy = H / 2;
+
+  // Fundo preto sólido (sem transparência — obrigatório)
+  ctx.fillStyle = '#0a0a0a';
+  ctx.fillRect(0, 0, W, H);
+
+  // Glow de fundo
+  const glow = ctx.createRadialGradient(cx, cy, 0, cx, cy, W * 0.45);
+  glow.addColorStop(0, 'rgba(255,215,0,0.25)');
+  glow.addColorStop(1, 'rgba(255,215,0,0)');
+  ctx.fillStyle = glow;
+  ctx.fillRect(0, 0, W, H);
+
+  // Raios (12 triângulos)
+  const angles = Array.from({length: 12}, (_, i) => i * 30);
+  angles.forEach(deg => {
+    const rad = (deg - 90) * Math.PI / 180;
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(rad);
+
+    const grad = ctx.createLinearGradient(0, -W*0.42, 0, -W*0.08);
+    grad.addColorStop(0, '#FFD700');
+    grad.addColorStop(0.5, '#FFFACD');
+    grad.addColorStop(1, '#DAA520');
+
+    ctx.beginPath();
+    ctx.moveTo(0, -W * 0.42);
+    ctx.lineTo(W * 0.03, -W * 0.08);
+    ctx.lineTo(-W * 0.03, -W * 0.08);
+    ctx.closePath();
+    ctx.fillStyle = grad;
+    ctx.shadowColor = '#FFD700';
+    ctx.shadowBlur = 18;
+    ctx.fill();
+    ctx.restore();
+  });
+
+  // Círculo dourado central
+  const circleGrad = ctx.createRadialGradient(cx - W*0.04, cy - W*0.04, 0, cx, cy, W * 0.2);
+  circleGrad.addColorStop(0, '#FFFACD');
+  circleGrad.addColorStop(0.5, '#FFD700');
+  circleGrad.addColorStop(1, '#DAA520');
+
+  ctx.beginPath();
+  ctx.arc(cx, cy, W * 0.2, 0, Math.PI * 2);
+  ctx.fillStyle = circleGrad;
+  ctx.shadowColor = '#FFD700';
+  ctx.shadowBlur = 30;
+  ctx.fill();
+
+  // Borda interna sutil
+  ctx.beginPath();
+  ctx.arc(cx, cy, W * 0.17, 0, Math.PI * 2);
+  ctx.strokeStyle = 'rgba(0,0,0,0.2)';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // Texto "LUX"
+  ctx.shadowBlur = 0;
+  ctx.font = `bold ${W * 0.14}px 'Segoe UI', Arial, sans-serif`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = '#000';
+  ctx.fillText('LUX', cx, cy + W * 0.005);
+}
+
+// ─── Desenha o banner 4096x2304 ───────────────────────────────────────────
+function drawHeader(canvas) {
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const cx = W / 2, cy = H / 2;
+
+  // Fundo gradiente escuro
+  const bg = ctx.createLinearGradient(0, 0, W, H);
+  bg.addColorStop(0, '#050505');
+  bg.addColorStop(0.5, '#0f0f0f');
+  bg.addColorStop(1, '#050505');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
+
+  // Glow central
+  const glow = ctx.createRadialGradient(cx, cy, 0, cx, cy, H * 0.8);
+  glow.addColorStop(0, 'rgba(255,215,0,0.12)');
+  glow.addColorStop(1, 'rgba(255,215,0,0)');
+  ctx.fillStyle = glow;
+  ctx.fillRect(0, 0, W, H);
+
+  // Raios grandes — SEM shadowBlur (reduz tamanho do arquivo)
+  const iconSize = H * 0.55;
+  const iconX = cx - H * 0.35;
+  const iconY = cy;
+
+  const angles = Array.from({length: 12}, (_, i) => i * 30);
+  angles.forEach(deg => {
+    const rad = (deg - 90) * Math.PI / 180;
+    ctx.save();
+    ctx.translate(iconX, iconY);
+    ctx.rotate(rad);
+
+    const grad = ctx.createLinearGradient(0, -iconSize * 0.42, 0, -iconSize * 0.08);
+    grad.addColorStop(0, '#FFD700');
+    grad.addColorStop(0.5, '#FFFACD');
+    grad.addColorStop(1, '#DAA520');
+
+    ctx.beginPath();
+    ctx.moveTo(0, -iconSize * 0.42);
+    ctx.lineTo(iconSize * 0.03, -iconSize * 0.08);
+    ctx.lineTo(-iconSize * 0.03, -iconSize * 0.08);
+    ctx.closePath();
+    ctx.fillStyle = grad;
+    // Sem shadowBlur aqui
+    ctx.fill();
+    ctx.restore();
+  });
+
+  // Círculo central do ícone — SEM shadowBlur
+  const circleGrad = ctx.createRadialGradient(iconX - iconSize*0.04, iconY - iconSize*0.04, 0, iconX, iconY, iconSize * 0.2);
+  circleGrad.addColorStop(0, '#FFFACD');
+  circleGrad.addColorStop(0.5, '#FFD700');
+  circleGrad.addColorStop(1, '#DAA520');
+
+  ctx.beginPath();
+  ctx.arc(iconX, iconY, iconSize * 0.2, 0, Math.PI * 2);
+  ctx.fillStyle = circleGrad;
+  ctx.fill();
+
+  // "LUX" no ícone
+  ctx.font = `bold ${iconSize * 0.14}px 'Segoe UI', Arial, sans-serif`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = '#000';
+  ctx.fillText('LUX', iconX, iconY);
+
+  // Textos à direita — SEM shadowBlur
+  const textX = cx + H * 0.05;
+
+  ctx.font = `bold ${H * 0.13}px 'Segoe UI', Arial, sans-serif`;
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = '#FFD700';
+  ctx.fillText('Lux Driver', textX, cy - H * 0.12);
+
+  ctx.font = `${H * 0.065}px 'Segoe UI', Arial, sans-serif`;
+  ctx.fillStyle = '#FFFACD';
+  ctx.fillText('Assistant', textX, cy - H * 0.12 + H * 0.14);
+
+  ctx.font = `${H * 0.045}px 'Segoe UI', Arial, sans-serif`;
+  ctx.fillStyle = '#888888';
+  ctx.fillText('Calcule seus ganhos reais em tempo real', textX, cy + H * 0.08);
+
+  // Linha decorativa simples
+  ctx.beginPath();
+  ctx.moveTo(textX, cy - H * 0.02);
+  ctx.lineTo(textX + W * 0.28, cy - H * 0.02);
+  ctx.strokeStyle = '#FFD700';
+  ctx.lineWidth = 4;
+  ctx.stroke();
+}
+
+// ─── Download PNG ──────────────────────────────────────────────────────────
+function download(canvasId, filename) {
+  const canvas = document.getElementById(canvasId);
+  const link = document.createElement('a');
+  link.download = filename;
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+// ─── Download JPEG (comprimido para caber em 1MB) ─────────────────────────
+function downloadJpeg(canvasId, filename) {
+  const canvas = document.getElementById(canvasId);
+  // Cria canvas intermediário com fundo preto (JPEG não suporta transparência)
+  const offscreen = document.createElement('canvas');
+  offscreen.width = canvas.width;
+  offscreen.height = canvas.height;
+  const ctx2 = offscreen.getContext('2d');
+  ctx2.fillStyle = '#050505';
+  ctx2.fillRect(0, 0, offscreen.width, offscreen.height);
+  ctx2.drawImage(canvas, 0, 0);
+
+  // Qualidade 0.55 → tipicamente ~400-700KB para 4096x2304 sem shadowBlur
+  const link = document.createElement('a');
+  link.download = filename;
+  link.href = offscreen.toDataURL('image/jpeg', 0.55);
+  link.click();
+}
+
+// ─── Inicializar ──────────────────────────────────────────────────────────
+window.onload = () => {
+  drawIcon(document.getElementById('iconCanvas'));
+  drawHeader(document.getElementById('headerCanvas'));
+};
+</script>
+</body>
+</html>

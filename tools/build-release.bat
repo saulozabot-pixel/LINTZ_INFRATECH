@@ -4,6 +4,12 @@ echo   LUX DRIVER - BUILD RELEASE AAB
 echo ========================================
 echo.
 
+:: Configurar JAVA_HOME (JDK do Android Studio)
+set JAVA_HOME=C:\Program Files\Android\Android Studio\jbr
+set PATH=%JAVA_HOME%\bin;%PATH%
+echo [INFO] JAVA_HOME=%JAVA_HOME%
+echo.
+
 echo [1/3] Buildando frontend (Vite)...
 cd /d c:\Users\SAULO\AndroidStudioProjects\Lux
 call npm run build

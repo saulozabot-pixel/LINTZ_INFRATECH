@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hackathon Infratech Startups 2025 — LINTZ</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{--p:#6C63FF;--c:#00D4FF;--gold:#F59E0B;--g:#10B981;--dk:#0A0E1A;--dk2:#111827;--tx:#E2E8F0;--mt:#64748B;--mt2:#94A3B8;--rd:#EF4444;--or:#F97316;--pk:#EC4899;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;background:var(--dk);color:var(--tx);font-family:'Segoe UI',system-ui,sans-serif;overflow:hidden;}
+.deck{width:100vw;height:100vh;position:relative;}
+.slide{position:absolute;inset:0;display:none;flex-direction:column;padding:24px 46px 14px;background:var(--dk);overflow:hidden;}
+.slide.active{display:flex;}
+.slide::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--p),var(--c),var(--gold),var(--g),var(--pk),var(--p));background-size:400%;animation:gb 6s linear infinite;z-index:10;}
+@keyframes gb{0%{background-position:0%}100%{background-position:400%}}
+.slide::after{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 1px 1px,rgba(108,99,255,.03) 1px,transparent 0);background-size:32px 32px;pointer-events:none;z-index:0;}
+.slide>*{position:relative;z-index:1;}
+.pbar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--p),var(--c),var(--gold));transition:width .5s;z-index:1000;}
+.nav{position:fixed;bottom:12px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;z-index:999;background:rgba(10,14,26,.96);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border:1px solid rgba(108,99,255,.3);border-radius:50px;padding:5px 16px;box-shadow:0 4px 30px rgba(108,99,255,.25);}
+.nav button{background:none;border:none;color:var(--p);font-size:16px;cursor:pointer;padding:4px 8px;border-radius:20px;transition:all .2s;}
+.nav button:hover{background:rgba(108,99,255,.2);transform:scale(1.1);}
+.nav button:disabled{color:var(--mt);cursor:default;transform:none;}
+#sc{color:var(--mt2);font-size:11px;min-width:52px;text-align:center;font-weight:600;}
+.dots{position:fixed;right:14px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:6px;z-index:999;}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--mt);cursor:pointer;transition:all .25s;}
+.dot.active{background:var(--p);transform:scale(1.8);box-shadow:0 0 8px var(--p);}
+.dot:hover{background:var(--mt2);}
+.tag{font-size:9px;font-weight:800;letter-spacing:4px;text-transform:uppercase;color:var(--p);margin-bottom:4px;display:flex;align-items:center;gap:6px;}
+.tag::before{content:'';width:18px;height:2px;background:linear-gradient(90deg,var(--p),var(--c));border-radius:2px;}
+h1{font-size:clamp(22px,3vw,46px);font-weight:900;line-height:1.05;letter-spacing:-1px;}
+h2{font-size:clamp(14px,1.9vw,26px);font-weight:800;line-height:1.15;letter-spacing:-.5px;}
+h3{font-size:clamp(10px,1vw,13px);font-weight:700;}
+.sub{font-size:clamp(9px,.9vw,12px);color:var(--mt2);margin-top:4px;line-height:1.6;}
+.hl{background:linear-gradient(135deg,var(--p),var(--c));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hlg{background:linear-gradient(135deg,var(--gold),var(--or));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hlgr{background:linear-gradient(135deg,var(--g),var(--c));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.tc{color:var(--c);}.tp{color:var(--p);}.tg{color:var(--gold);}.tgr{color:var(--g);}.tm{color:var(--mt2);}
+.card{background:rgba(17,24,39,.85);border:1px solid rgba(108,99,255,.12);border-radius:14px;padding:11px 15px;}
+.card-c{border-color:rgba(0,212,255,.18);}.card-g{border-color:rgba(245,158,11,.18);}.card-gr{border-color:rgba(16,185,129,.18);}.card-r{border-color:rgba(239,68,68,.15);}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;}.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.kpi{text-align:center;padding:8px;}.kv{font-size:clamp(13px,1.9vw,27px);font-weight:900;color:var(--p);}.kl{font-size:9px;color:var(--mt);text-transform:uppercase;letter-spacing:1.5px;margin-top:2px;}.ks{font-size:10px;color:var(--tx);margin-top:1px;}
+.gnum{font-size:clamp(22px,2.8vw,42px);font-weight:900;background:linear-gradient(135deg,var(--p),var(--c));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;}
+table{width:100%;border-collapse:collapse;font-size:10px;}
+th{background:rgba(108,99,255,.12);color:var(--p);padding:5px 9px;text-align:left;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;border-bottom:1px solid rgba(108,99,255,.2);}
+td{padding:5px 9px;border-bottom:1px solid rgba(255,255,255,.04);}tr:hover td{background:rgba(108,99,255,.05);}
+.badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;font-size:9px;font-weight:700;}
+.bp{background:rgba(108,99,255,.2);color:var(--p);border:1px solid rgba(108,99,255,.3);}.bc{background:rgba(0,212,255,.12);color:var(--c);border:1px solid rgba(0,212,255,.25);}
+.bg{background:rgba(245,158,11,.12);color:var(--gold);border:1px solid rgba(245,158,11,.25);}.bgr{background:rgba(16,185,129,.12);color:var(--g);border:1px solid rgba(16,185,129,.25);}
+.br{background:rgba(239,68,68,.12);color:var(--rd);border:1px solid rgba(239,68,68,.25);}.bo{background:rgba(249,115,22,.12);color:var(--or);border:1px solid rgba(249,115,22,.25);}
+.bpk{background:rgba(236,72,153,.12);color:var(--pk);border:1px solid rgba(236,72,153,.25);}
+.pb{height:5px;background:rgba(255,255,255,.07);border-radius:4px;overflow:hidden;margin-top:3px;}
+.pb-p{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--p),var(--c));}.pb-g{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--g),var(--c));}.pb-gold{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--gold),var(--or));}
+.il{list-style:none;}.il li{display:flex;align-items:flex-start;gap:6px;padding:2px 0;font-size:10px;line-height:1.5;}
+.il li::before{content:'\25B8';flex-shrink:0;color:var(--p);margin-top:1px;}.il.ck li::before{content:'\2713';color:var(--g);font-weight:800;}.il.st li::before{content:'\2605';color:var(--gold);}
+.mrow{display:flex;align-items:center;justify-content:space-between;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.05);}.mrow:last-child{border-bottom:none;}.mrow-l{font-size:10px;color:var(--mt2);}.mrow-v{font-size:11px;font-weight:700;}
+.cover-bg{position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse at 10% 50%,rgba(108,99,255,.18) 0%,transparent 50%),radial-gradient(ellipse at 90% 15%,rgba(0,212,255,.12) 0%,transparent 45%),radial-gradient(ellipse at 60% 90%,rgba(245,158,11,.08) 0%,transparent 45%),var(--dk);}
+.cover-c{position:relative;z-index:1;display:flex;flex-direction:column;justify-content:center;height:100%;}
+.logo-m{width:54px;height:54px;border-radius:14px;background:linear-gradient(135deg,var(--p),var(--c));display:flex;align-items:center;justify-content:center;font-size:24px;color:#fff;margin-bottom:14px;box-shadow:0 0 50px rgba(108,99,255,.6);animation:pulse 3s ease infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 30px rgba(108,99,255,.4);}50%{box-shadow:0 0 60px rgba(108,99,255,.7),0 0 100px rgba(0,212,255,.3);}}
+.sfooter{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:5px;border-top:1px solid rgba(255,255,255,.06);font-size:9px;color:var(--mt);}
+.gbox{background:linear-gradient(135deg,rgba(108,99,255,.08),rgba(0,212,255,.04));border:1px solid rgba(108,99,255,.2);border-radius:12px;padding:9px 13px;}
+.gbox-gold{background:linear-gradient(135deg,rgba(245,158,11,.08),rgba(249,115,22,.04));border:1px solid rgba(245,158,11,.2);border-radius:12px;padding:9px 13px;}
+.gbox-gr{background:linear-gradient(135deg,rgba(16,185,129,.08),rgba(0,212,255,.04));border:1px solid rgba(16,185,129,.2);border-radius:12px;padding:9px 13px;}
+.gbox-rd{background:linear-gradient(135deg,rgba(239,68,68,.08),rgba(249,115,22,.04));border:1px solid rgba(239,68,68,.2);border-radius:12px;padding:9px 13px;}
+.step{display:flex;align-items:flex-start;gap:11px;padding:8px 12px;background:rgba(17,24,39,.85);border-radius:12px;border:1px solid rgba(108,99,255,.12);}
+.snum{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--c));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:#fff;flex-shrink:0;box-shadow:0 0 12px rgba(108,99,255,.4);}
+.stitle{font-size:11px;font-weight:700;}.sdesc{font-size:10px;color:var(--mt2);margin-top:2px;line-height:1.4;}
+.vcard{background:rgba(17,24,39,.85);border:1px solid rgba(108,99,255,.1);border-radius:12px;padding:9px 11px;transition:all .25s;}
+.vcard:hover{border-color:rgba(108,99,255,.4);transform:translateY(-3px);box-shadow:0 8px 24px rgba(108,99,255,.15);}
+.vi{font-size:17px;margin-bottom:3px;}.vt{font-size:10px;font-weight:700;color:var(--p);margin-bottom:2px;}.vd{font-size:9px;color:var(--mt2);line-height:1.35;}
+.tl-item{display:flex;gap:13px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.04);}.tl-item:last-child{border-bottom:none;}
+.tl-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:4px;}.tl-date{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;}.tl-title{font-size:11px;font-weight:700;margin-top:2px;}.tl-desc{font-size:10px;color:var(--mt2);margin-top:1px;line-height:1.4;}
+.hbox{background:linear-gradient(135deg,rgba(108,99,255,.12),rgba(0,212,255,.06));border:1px solid rgba(108,99,255,.3);border-radius:12px;padding:10px 14px;position:relative;overflow:hidden;}
+.hbox::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--p),var(--c));}
+.slide.active .card,.slide.active .kpi,.slide.active h1,.slide.active h2,.slide.active .step,.slide.active .vcard,.slide.active .gbox,.slide.active .gbox-gold,.slide.active .gbox-gr,.slide.active .tl-item{animation:fu .4s ease both;}
+.slide.active .card:nth-child(2),.slide.active .step:nth-child(2),.slide.active .vcard:nth-child(2),.slide.active .tl-item:nth-child(2){animation-delay:.06s;}
+.slide.active .card:nth-child(3),.slide.active .step:nth-child(3),.slide.active .vcard:nth-child(3),.slide.active .tl-item:nth-child(3){animation-delay:.12s;}
+.slide.active .card:nth-child(4),.slide.active .step:nth-child(4),.slide.active .vcard:nth-child(4),.slide.active .tl-item:nth-child(4){animation-delay:.18s;}
+.slide.active .tl-item:nth-child(5){animation-delay:.24s;}.slide.active .tl-item:nth-child(6){animation-delay:.30s;}
+@keyframes fu{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+</style>
+</head>
+<body>
+<div class="pbar" id="pbar"></div>
+<div class="deck" id="deck">
+<div class="slide active" id="s1">
+<div class="cover-bg"></div>
+<div class="cover-c">
+  <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+    <div class="logo-m">&#x1F680;</div>
+    <div><div style="font-size:9px;font-weight:800;letter-spacing:4px;text-transform:uppercase;color:var(--p);">LINTZ ESCRITÓRIO DE PROJETOS</div><div style="font-size:11px;color:var(--mt2);margin-top:2px;">Campinas/SP &middot; Bairro Cambuí &middot; 2025</div></div>
+  </div>
+  <h1 style="max-width:720px;margin-bottom:8px;">Hackathon <span class="hl">Infratech</span><br>Startups <span class="hlg">2025</span></h1>
+  <p style="max-width:600px;font-size:14px;color:var(--mt2);line-height:1.8;margin-bottom:18px;">O programa de aceleração que transforma ideias em soluções reais para infraestrutura, mobilidade e cidades inteligentes.<br><strong style="color:var(--tx);font-size:15px;">15 vagas. 9 meses. Impacto real. Sua startup no próximo nível.</strong></p>
+  <div style="display:flex;gap:0;align-items:stretch;background:rgba(17,24,39,.7);border:1px solid rgba(108,99,255,.2);border-radius:14px;overflow:hidden;max-width:680px;margin-bottom:14px;">
+    <div style="padding:10px 15px;border-right:1px solid rgba(255,255,255,.06);"><div style="font-size:16px;margin-bottom:2px;">&#x1F3D9;</div><div style="font-size:12px;font-weight:700;color:var(--tx);">Campinas/SP</div><div style="font-size:10px;color:var(--mt2);">Espaço Infratech</div></div>
+    <div style="padding:10px 15px;border-right:1px solid rgba(255,255,255,.06);"><div style="font-size:16px;margin-bottom:2px;">&#x23F1;</div><div style="font-size:12px;font-weight:700;color:var(--tx);">9 Meses</div><div style="font-size:10px;color:var(--mt2);">+ 6 prorrogáveis</div></div>
+    <div style="padding:10px 15px;border-right:1px solid rgba(255,255,255,.06);"><div style="font-size:16px;margin-bottom:2px;">&#x1F3AF;</div><div style="font-size:12px;font-weight:700;color:var(--c);">15 Vagas</div><div style="font-size:10px;color:var(--mt2);">Seleção em 3 etapas</div></div>
+    <div style="padding:10px 15px;border-right:1px solid rgba(255,255,255,.06);"><div style="font-size:16px;margin-bottom:2px;">&#x1F310;</div><div style="font-size:12px;font-weight:700;color:var(--tx);">Híbrido</div><div style="font-size:10px;color:var(--mt2);">Online + Presencial</div></div>
+    <div style="padding:10px 15px;"><div style="font-size:16px;margin-bottom:2px;">&#x1F4C5;</div><div style="font-size:12px;font-weight:700;color:var(--gold);">Jan 2025</div><div style="font-size:10px;color:var(--mt2);">Início: 14/01</div></div>
+  </div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;">
+    <span class="badge bp">&#x1F3D7; Infratech</span><span class="badge bc">&#x1F697; Mobility</span><span class="badge bg">&#x1F3D9; Smart Cities</span><span class="badge bgr">&#x1F331; ESG</span><span class="badge bo">&#x1F4E6; LogTech</span><span class="badge br">&#x1F393; EdTech</span><span class="badge bp">&#x1F34E; FoodTech</span><span class="badge bc">&#x1F3E5; HealthTech</span><span class="badge bg">&#x1F3AE; Games</span>
+  </div>
+</div>
+<div class="sfooter"><span>LINTZ Escritório de Projetos &middot; Hackathon Infratech Startups 2025</span><span style="color:var(--rd);font-weight:700;">CONFIDENCIAL &mdash; Não distribuir sem autorização</span></div>
+</div>
+
+<div class="slide" id="s2">
+<div class="tag">O Problema</div>
+<h2>A Infraestrutura Brasileira <span class="hl">Precisa de Inovação</span> &mdash; Urgente</h2>
+<p class="sub">O Brasil investe menos de 2% do PIB em infraestrutura &mdash; metade do recomendado. A tecnologia é a alavanca que faltava. A janela está aberta agora.</p>
+<div style="margin-top:10px;" class="g2">
+  <div style="display:flex;flex-direction:column;gap:9px;">
+    <div class="card card-r"><h3 style="margin-bottom:6px;color:var(--rd);">&#x26A0; O Gap de Inovação</h3>
+      <ul class="il"><li>Setor de infraestrutura opera com tecnologia de <strong>20+ anos atrás</strong></li><li>Processos manuais, ineficientes e sem rastreabilidade digital</li><li>Falta de integração entre energia, transporte e saneamento</li><li>Startups inovadoras sem acesso ao mercado de infraestrutura</li><li>Empreendedores sem mentoria especializada em Infratech</li></ul>
+    </div>
+    <div class="card card-c"><h3 style="margin-bottom:6px;color:var(--c);">&#x1F310; A Transformação Digital Chegou</h3>
+      <ul class="il ck"><li>5G + IoT gerando dados massivos de ativos de infraestrutura</li><li>IA e Big Data permitindo manutenção preditiva e eficiência</li><li>Mobilidade elétrica e autônoma redefinindo transportes urbanos</li><li>Smart Cities demandando soluções integradas e escaláveis</li><li>G20 definiu Infratech como prioridade global de investimento</li></ul>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:9px;">
+    <div class="g2" style="gap:9px;">
+      <div class="card kpi"><div class="gnum">R$1,7T</div><div class="kl">Déficit de Infraestrutura</div><div class="ks">Brasil precisa investir até 2035</div></div>
+      <div class="card kpi"><div class="gnum" style="background:linear-gradient(135deg,var(--c),var(--g));-webkit-background-clip:text;background-clip:text;">1,8%</div><div class="kl">Investimento Atual do PIB</div><div class="ks">Meta recomendada: 4%</div></div>
+    </div>
+    <div class="g2" style="gap:9px;">
+      <div class="card kpi"><div class="gnum" style="background:linear-gradient(135deg,var(--gold),var(--or));-webkit-background-clip:text;background-clip:text;">+340%</div><div class="kl">Crescimento Infratech</div><div class="ks">Investimentos globais 2020&ndash;2024</div></div>
+      <div class="card kpi"><div class="gnum" style="background:linear-gradient(135deg,var(--g),var(--c));-webkit-background-clip:text;background-clip:text;">$2,5T</div><div class="kl">Mercado Global Infratech</div><div class="ks">Projeção 2030 (McKinsey)</div></div>
+    </div>
+    <div class="gbox"><h3 style="color:var(--p);margin-bottom:4px;">&#x1F4A1; A Janela de Oportunidade</h3><p style="font-size:10px;color:var(--mt2);line-height:1.5;">Regulação favorável, capital disponível e demanda reprimida criam a maior janela de oportunidade para startups de Infratech da última década. <strong style="color:var(--tx);">Quem entrar agora, lidera o mercado.</strong></p></div>
+  </div>
+</div>
+<div class="sfooter"><span>LINTZ &middot; Hackathon Infratech 2025</span><span>2 / 12</span></div>
+</div>
+<div class="slide" id="s3">
+<div class="tag">Quem Somos</div>
+<h2>LINTZ: <span class="hl">Onde Projetos Viram</span> <span class="hlg">Realidade</span></h2>
+<p class="sub">Mais do que uma aceleradora &mdash; somos o ecossistema completo que conecta empreendedores, mentores, investidores e mercado.</p>
+<div style="margin-top:10px;" class="g2">
+  <div style="display:flex;flex-direction:column;gap:9px;">
+    <div class="card"><h3 style="margin-bottom:7px;color:var(--p);">&#x1F3DB; Nossa Identidade</h3>
+      <ul class="il ck"><li><strong>LINTZ Escritório de Projetos</strong> &mdash; aceleradora especializada em Infratech</li><li>Fundada pelo Dr. Luís Gustavo Pilenso Lintz em Campinas/SP</li><li>Parceria com MEH &mdash; Movimento Educacional Híbrido</li><li>Plataforma DoctorCoach + QEMP (Quociente Empreendedor)</li><li>Rede de mentores, avaliadores e investidores especializados</li><li>Espaço físico no coração de Campinas &mdash; Bairro Cambuí</li></ul>
+    </div>
+    <div class="card card-c"><h3 style="margin-bottom:7px;color:var(--c);">&#x1F3AF; Nossa Especialidade</h3>
+      <div class="mrow"><span class="mrow-l">Infratech &amp; Mobilidade Urbana</span><span class="mrow-v tp">Core</span></div>
+      <div class="mrow"><span class="mrow-l">Smart Cities &amp; Sustentabilidade</span><span class="mrow-v tc">Foco</span></div>
+      <div class="mrow"><span class="mrow-l">LogTech &amp; Supply Chain</span><span class="mrow-v tg">Vertical</span></div>
+      <div class="mrow"><span class="mrow-l">EdTech &amp; Comportamento</span><span class="mrow-v tgr">Vertical</span></div>
+      <div class="mrow"><span class="mrow-l">FoodTech &amp; HealthTech</span><span class="mrow-v tm">Vertical</span></div>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:9px;">
+    <div class="g2" style="gap:9px;">
+      <div class="card kpi"><div class="kv">9 meses</div><div class="kl">Programa de Aceleração</div><div class="ks">+ 6 meses prorrogáveis</div></div>
+      <div class="card kpi"><div class="kv" style="color:var(--c);">15</div><div class="kl">Vagas por Edição</div><div class="ks">Seleção em 3 etapas</div></div>
+    </div>
+    <div class="g2" style="gap:9px;">
+      <div class="card kpi"><div class="kv" style="color:var(--gold);">3</div><div class="kl">Programas Simultâneos</div><div class="ks">Hackathon + AVOC + JEDH335</div></div>
+      <div class="card kpi"><div class="kv" style="color:var(--g);">100%</div><div class="kl">Propriedade Intelectual</div><div class="ks">Permanece com o fundador</div></div>
+    </div>
+    <div class="gbox-gold"><h3 style="color:var(--gold);margin-bottom:4px;">&#x1F3C6; Nossa Filosofia</h3><p style="font-size:10px;color:var(--mt2);line-height:1.5;font-style:italic;">"Produto você leva na mala, na caixa e transporta. Serviço leva na mente e no coração." &mdash; <strong style="color:var(--tx);">Gustavo Lintz</strong></p></div>
+  </div>
+</div>
+<div class="sfooter"><span>LINTZ &middot; Hackathon Infratech 2025</span><span>3 / 12</span></div>
+</div>
+
+<div class="slide" id="s4">
+<div class="tag">Verticais do Programa</div>
+<h2>9 Verticais de <span class="hl">Inovação</span> &mdash; Onde Sua Startup <span class="hlg">Se Encaixa?</span></h2>
+<p class="sub">Buscamos soluções que transformem infraestrutura, mobilidade e qualidade de vida nas cidades brasileiras.</p>
+<div style="margin-top:10px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+  <div class="vcard"><div class="vi">&#x1F3D7;</div><div class="vt">Inovação &amp; Infratech</div><div class="vd">Tecnologias digitais para infraestrutura: energia, saneamento, telecomunicações e transportes</div></div>
+  <div class="vcard" style="border-color:rgba(0,212,255,.15);"><div class="vi">&#x1F3D9;</div><div class="vt" style="color:var(--c);">Smart Cities</div><div class="vd">Segurança viária, mobilidade urbana, PPPs, bairros inteligentes e economia colaborativa</div></div>
+  <div class="vcard" style="border-color:rgba(245,158,11,.15);"><div class="vi">&#x1F697;</div><div class="vt" style="color:var(--gold);">Mobility</div><div class="vd">Eletrificação de frotas, combustíveis para aviação e estudos de caso sobre BRT</div></div>
+  <div class="vcard" style="border-color:rgba(16,185,129,.15);"><div class="vi">&#x1F4E6;</div><div class="vt" style="color:var(--g);">LogTech</div><div class="vd">Sensorização de cargas, Big Data com câmeras e logística reversa de baixo custo para PMEs</div></div>
+  <div class="vcard"><div class="vi">&#x1F34E;</div><div class="vt">FoodTech / SocialTech</div><div class="vd">Logística de escoamento de produções e segurança alimentar para famílias vulneráveis</div></div>
+  <div class="vcard" style="border-color:rgba(0,212,255,.15);"><div class="vi">&#x1F393;</div><div class="vt" style="color:var(--c);">EdTech</div><div class="vd">Formação de liderança multicanal e redes de especialistas em coaching e mentoring</div></div>
+  <div class="vcard" style="border-color:rgba(245,158,11,.15);"><div class="vi">&#x1F3AE;</div><div class="vt" style="color:var(--gold);">Games</div><div class="vd">Soluções acessíveis de gamificação para o setor educacional</div></div>
+  <div class="vcard" style="border-color:rgba(16,185,129,.15);"><div class="vi">&#x1F3E5;</div><div class="vt" style="color:var(--g);">HealthTech</div><div class="vd">Projetos de telemedicina e odontologia acessíveis para empresas e governos</div></div>
+  <div class="vcard"><div class="vi">&#x1F4BC;</div><div class="vt">Empreendedorismo</div><div class="vd">Programas de treinamento em Infratech para PMEs e empreendedores na América Latina</div></div>
+</div>
+<div style="margin-top:9px;" class="gbox"><p style="font-size:10px;color:var(--mt2);">&#x1F4A1; <strong style="color:var(--tx);">Não exclusivo:</strong> projetos fora dessas verticais também podem ser aceitos se apresentarem alto potencial de impacto em infraestrutura, tecnologia ou inovação social.</p></div>
+<div class="sfooter"><span>LINTZ &middot; Hackathon Infratech 2025</span><span>4 / 12</span></div>
+</div>
+<div class="slide" id="s5">
+<div class="tag">Processo de Seleção</div>
+<h2>3 Etapas para <span class="hl">Transformar Sua Ideia</span> em <span class="hlg">Startup Real</span></h2>
+<p class="sub">Processo transparente, meritocrático e focado em potencial de impacto. Não precisamos de produto pronto &mdash; precisamos de visão e determinação.</p>
+<div style="margin-top:10px;display:flex;flex-direction:column;gap:8px;">
+  <div class="step"><div class="snum">1</div><div><div class="stitle">&#x1F4DD; Inscrição Online &mdash; <span class="tp">Até 10 de Janeiro 2025</span></div><div class="sdesc">Formulário digital com pitch de 3 minutos (vídeo ou PDF). Descreva o problema, a solução e o mercado-alvo. Sem burocracia, sem taxas. Qualquer pessoa pode se inscrever.</div></div></div>
+  <div class="step"><div class="snum">2</div><div><div class="stitle">&#x1F50D; Avaliação QEMP &mdash; <span class="tc">Quociente Empreendedor</span></div><div class="sdesc">Nossa metodologia proprietária avalia: Visão de Mercado (25%), Capacidade de Execução (25%), Potencial de Impacto (25%) e Fit com Infratech (25%). Entrevistas com banca especializada.</div></div></div>
+  <div class="step"><div class="snum">3</div><div><div class="stitle">&#x1F3C6; Seleção Final &mdash; <span class="tg">15 Startups Escolhidas</span></div><div class="sdesc">Apresentação ao comitê de mentores e investidores. Resultado divulgado em 13 de Janeiro. Onboarding presencial em Campinas no dia 14/01/2025.</div></div></div>
+</div>
+<div style="margin-top:10px;" class="g2">
+  <div class="gbox"><h3 style="color:var(--p);margin-bottom:6px;">&#x2705; Quem Pode se Inscrever</h3><ul class="il ck"><li>Startups em qualquer estágio (ideia, MVP ou tração)</li><li>Empreendedores individuais ou times de até 5 pessoas</li><li>Projetos de qualquer estado do Brasil</li><li>Estrangeiros com operação no Brasil são bem-vindos</li></ul></div>
+  <div class="gbox-gold"><h3 style="color:var(--gold);margin-bottom:6px;">&#x26A1; Critérios de Avaliação</h3><ul class="il st"><li>Potencial de impacto em infraestrutura ou mobilidade</li><li>Inovação tecnológica e diferencial competitivo</li><li>Viabilidade de mercado e modelo de negócio</li><li>Comprometimento e capacidade de execução do time</li></ul></div>
+</div>
+<div class="sfooter"><span>LINTZ &middot; Hackathon Infratech 2025</span><span>5 / 12</span></div>
+</div>
+
+<div class="slide" id="s6">
+<div class="tag">O Programa</div>
+<h2>9 Meses de <span class="hl">Aceleração Intensiva</span> &mdash; Do Conceito ao <span class="hlgr">Mercado</span></h2>
+<p class="sub">Uma jornada estruturada em 3 fases que transforma empreendedores em fundadores de startups de alto impacto.</p>
+<div style="margin-top:10px;" class="g2">
+  <div style="display:flex;flex-direction:column;gap:8px;">
+    <div class="card" style="border-color:rgba(108,99,255,.3);"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><div style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--p),var(--c));display:flex;align-items:center;justify-content:center;font-size:13px;">&#x1F9E0;</div><div><div style="font-size:11px;font-weight:800;color:var(--p);">FASE 1 &mdash; Validação</div><div style="font-size:9px;color:var(--mt2);">Meses 1&ndash;3</div></div></div><ul class="il ck"><li>Diagnóstico QEMP e mapeamento de gaps</li><li>Validação de hipóteses com clientes reais</li><li>Definição de MVP e métricas de sucesso</li><li>Workshops semanais com mentores especializados</li></ul></div>
+    <div class="card card-g"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><div style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--gold),var(--or));display:flex;align-items:center;justify-content:center;font-size:13px;">&#x1F680;</div><div><div style="font-size:11px;font-weight:800;color:var(--gold);">FASE 2 &mdash; Aceleração</div><div style="font-size:9px;color:var(--mt2);">Meses 4&ndash;6</div></div></div><ul class="il ck"><li>Desenvolvimento do produto com feedback contínuo</li><li>Conexão com primeiros clientes e parceiros</li><li>Pitch training e preparação para investidores</li><li>Acesso ao espaço físico Infratech em Campinas</li></ul></div>
+    <div class="card card-gr"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><div style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--g),var(--c));display:flex;align-items:center;justify-content:center;font-size:13px;">&#x1F4B0;</div><div><div style="font-size:11px;font-weight:800;color:var(--g);">FASE 3 &mdash; Escala</div><div style="font-size:9px;color:var(--mt2);">Meses 7&ndash;9</div></div></div><ul class="il ck"><li>Demo Day com investidores e grandes empresas</li><li>Rodada de captação e due diligence</li><li>Expansão para novos mercados e regiões</li><li>Prorrogação de 6 meses para startups de destaque</li></ul></div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:8px;">
+    <div class="gbox"><h3 style="color:var(--p);margin-bottom:6px;">&#x1F4CB; O Que Está Incluído</h3><ul class="il ck"><li>Mentoria individual semanal (1h/semana por mentor)</li><li>Acesso à plataforma DoctorCoach 24/7</li><li>Espaço de coworking em Campinas (presencial)</li><li>Conexão com rede de 50+ mentores e investidores</li><li>Participação em eventos nacionais de Infratech</li><li>Suporte jurídico e contábil para formalização</li></ul></div>
+    <div class="g2" style="gap:8px;">
+      <div class="card kpi"><div class="kv">50+</div><div class="kl">Mentores Ativos</div><div class="ks">Especialistas em Infratech</div></div>
+      <div class="card kpi"><div class="kv" style="color:var(--c);">R$0</div><div class="kl">Custo para Startup</div><div class="ks">Programa 100% gratuito</div></div>
+    </div>
+  </div>
+</div>
+<div class="sfooter"><span>LINTZ &middot; Hackathon Infratech 2025</span><span>6 / 12</span></div>
+</div>
+<div class="slide" id="s7">
+<div class="tag">Benefícios</div>
+<h2>Por Que a <span class="hl">LINTZ</span> é a Melhor Escolha para <span class="hlg">Sua Startup?</span></h2>
+<p class="sub">Não somos apenas uma aceleradora. Somos o atalho mais inteligente entre a sua ideia e o mercado de infraestrutura.</p>
+<div style="margin-top:10px;" class="g4">
+  <div class="card" style="text-align:center;padding:12px 8px;"><div style="font-size:22px;margin-bottom:6px;">&#x1F9E0;</div><div style="font-size:11px;font-weight:800;color:var(--p);margin-bottom:4px;">Metodologia QEMP</div><div style="font-size:9px;color:var(--mt2);line-height:1.4;">Diagnóstico proprietário que mapeia seu potencial empreendedor e acelera seu crescimento</div></div>
+  <div class="card card-c" style="text-align:center;padding:12px 8px;"><div style="font-size:22px;margin-bottom:6px;">&#x1F310;</div><div style="font-size:11px;font-weight:800;color:var(--c);margin-bottom:4px;">Rede Global</div><div style="font-size:9px;color:var(--mt2);line-height:1.4;">Acesso a investidores, parceiros e clientes no Brasil e América Latina</div></div>
+  <div class="card card-g" style="text-align:center;padding:12px 8px;"><div style="font-size:22px;margin-bottom:6px;">&#x1F4B0;</div><div style="font-size:11px;font-weight:800;color:var(--gold);margin-bottom:4px;">Captação Facilitada</div><div style="font-size:9px;color:var(--mt2);line-height:1.4;">Demo Day com investidores reais e suporte completo para rodadas de captação</div></div>
+  <div class="card card-gr" style="text-align:center;padding:12px 8px;"><div style="font-size:22px;margin-bottom:6px;">&#x1F3AF;</div><div style="font-size:11px;font-weight:800;color:var(--g);margin-bottom:4px;">Mercado Garantido</div><div style="font-size:9px;color:var(--mt2);line-height:1.4;">Conexão direta com empresas de infraestrutura que buscam soluções inovadoras</div></div>
+</div>
+<div style="margin-top:9px;" class="g2">
+  <div style="display:flex;flex-direction:column;gap:8px;">
+    <div class="gbox"><h3 style="color:var(--p);margin-bottom:6px;">&#x1F4CA; Resultados Comprovados</h3>
+      <div class="mrow"><span class="mrow-l">Taxa de sobrevivência das startups aceleradas</span><span class="mrow-v tgr">87%</span></div>
+      <div class="mrow"><span class="mrow-l">Receita média após 12 meses de aceleração</span><span class="mrow-v tp">R$ 380K</span></div>
+      <div class="mrow"><span class="mrow-l">Captação média por startup no Demo Day</span><span class="mrow-v tc">R$ 250K</span></div>
+      <div class="mrow"><span class="mrow-l">Empregos gerados por edição do programa</span><span class="mrow-v tg">120+</span></div>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:8px;">
+    <div class="gbox-gold"><h3 style="color:var(--gold);margin-bottom:6px;">&#x1F91D; Diferenciais Exclusivos</h3>
+      <ul class="il st"><li><strong>100% da PI</strong> permanece com o fundador &mdash; sem equity obrigatório</li><li>Programa <strong>100% gratuito</strong> &mdash; sem taxas de inscrição ou mensalidade</li><li>Espaço físico premium em Campinas &mdash; Bairro Cambuí</li><li>Plataforma DoctorCoach com IA para desenvolvimento pessoal</li><li>Certificação LINTZ reconhecida pelo ecossistema Infratech</li></ul>
+    </div>
+  </div>
+</div>
+<div class="sfooter"><span>LINTZ &middot; Hackathon Infratech 2025</span><span>7 / 12</span></div>
+</div>
+
+<div class="slide" id="s8">
+<div class="tag">Mentores &amp; Ecossistema</div>
+<h2>50+ Mentores <span class="hl">Especialistas</span> &mdash; Sua Startup <span class="hlg">Nunca Estará Sozinha</span></h2>
+<p class="sub">Nossa rede de mentores inclui ex-executivos de grandes empresas de infraestrutura, investidores experientes e empreendedores de sucesso.</p>
+<div style="margin-top:10px;" class="g2">
+  <div style="display:flex;flex-direction:column;gap:8px;">
+    <div class="card"><h3 style="margin-bottom:7px;color:var(--p);">&#x1F9D1;&#x200D;&#x1F4BC; Perfil dos Mentores</h3>
+      <div class="mrow"><span class="mrow-l">Ex-executivos de infraestrutura (C-Level)</span><span class="mrow-v tp">18</span></div>
+      <div class="mrow"><span class="mrow-l">Investidores anjo e VCs especializados</span><span class="mrow-v tc">12</span></div>
+      <div class="mrow"><span class="mrow-l">Fundadores de startups de sucesso</span><span class="mrow-v tg">15</span></div>
+      <div class="mrow"><span class="mrow-l">Especialistas técnicos (IA, IoT, Mobilidade)</span><span class="mrow-v tgr">8</span></div>
+      <div class="mrow"><span class="mrow-l">Consultores jurídicos e financeiros</span><span class="mrow-v tm">5+</span></div>
+    </div>
+    <div class="card card-c"><h3 style="margin-bottom:7px;color:var(--c);">&#x1F3E2; Parceiros Institucionais</h3>
+      <ul class="il ck"><li>MEH &mdash; Movimento Educacional Híbrido</li><li>Prefeitura de Campinas &mdash; Programa Smart City</li><li>SEBRAE &mdash; Suporte a PMEs e startups</li><li>FAPESP &mdash; Financiamento de P&amp;D tecnológico</li><li>Associações de Infraestrutura e Mobilidade</li></ul>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:8px;">
+    <div class="g2" style="gap:8px;">
+      <div class="card kpi"><div class="kv">50+</div><div class="kl">Mentores Ativos</div><div class="ks">Disponíveis 24/7</div></div>
+      <div class="card kpi"><div class="kv" style="color:var(--c);">R$2M+</div><div class="kl">Capital Conectado</div><div class="ks">Via rede de investidores</div></div>
+    </div>
+    <div class="g2" style="gap:8px;">
+      <div class="card kpi"><div class="kv" style="color:var(--gold);">30+</div><div class="kl">Empresas Parceiras</div><div class="ks">Potenciais clientes</div></div>
+      <div class="card kpi"><div class="kv" style="color:var(--g);">5</div><div class="kl">Estados Cobertos</div><div class="ks">SP, RJ, MG, RS, DF</div></div>
+    </div>
+    <div class="gbox-gr"><h3 style="color:var(--g);margin-bottom:4px;">&#x1F4AC; DoctorCoach Platform</h3><p style="font-size:10px;color:var(--mt2);line-height:1.5;">Plataforma proprietária com IA que conecta empreendedores a mentores, gera planos de ação personalizados e acompanha o progresso em tempo real. <strong style="color:var(--tx);">Disponível 24/7 para todos os participantes.</strong></p></div>
+  </div>
+</div>
+<div class="sfooter"><span>LINTZ &middot; Hackathon Infratech 2025</span><span>8 / 12</span></div>
+</div>
+<div class="slide" id="s9">
+<div class="tag">Modelo de Negócio</div>
+<h2>Como a <span class="hl">LINTZ Sustenta</span> o Programa &mdash; <span class="hlg">Win-Win para Todos</span></h2>
+<p class="sub">Modelo inovador que alinha os interesses de startups, mentores, parceiros e investidores. Sem equity obrigatório. Sem taxas. Sustentabilidade real.</p>
+<div style="margin-top:10px;" class="g2">
+  <div style="display:flex;flex-direction:column;gap:8px;">
+    <div class="card"><h3 style="margin-bottom:7px;color:var(--p);">&#x1F4B3; Fontes de Receita LINTZ</h3>
+      <div class="mrow"><span class="mrow-l">&#x1F3E2; Patrocínio Corporativo (empresas de infraestrutura)</span><span class="mrow-v tp">40%</span></div>
+      <div class="mrow"><span class="mrow-l">&#x1F4DA; Licenciamento da Plataforma DoctorCoach</span><span class="mrow-v tc">25%</span></div>
+      <div class="mrow"><span class="mrow-l">&#x1F91D; Serviços de Consultoria e Matchmaking</span><span class="mrow-v tg">20%</span></div>
+      <div class="mrow"><span class="mrow-l">&#x1F3C6; Eventos, Demo Days e Certificações</span><span class="mrow-v tgr">15%</span></div>
+    </div>
+    <div class="card card-gr"><h3 style="margin-bottom:7px;color:var(--g);">&#x1F4C8; Modelo para Startups</h3>
+      <ul class="il ck"><li>Programa <strong>100% gratuito</strong> para startups selecionadas</li><li>Equity opcional apenas para startups que captam via LINTZ</li><li>Participação nos lucros somente após captação bem-sucedida</li><li>Propriedade intelectual 100% do fundador em todos os casos</li></ul>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:8px;">
+    <div class="g2" style="gap:8px;">
+      <div class="card kpi"><div class="kv">R$2,4M</div><div class="kl">Receita Projetada 2025</div><div class="ks">3 programas simultâneos</div></div>
+      <div class="card kpi"><div class="kv" style="color:var(--c);">45</div><div class="kl">Startups por Ano</div><div class="ks">3 edições anuais</div></div>
+    </div>
+    <div class="gbox-gold"><h3 style="color:var(--gold);margin-bottom:6px;">&#x1F4B0; Proposta de Valor para Patrocinadores</h3>
+      <ul class="il st"><li>Acesso antecipado a startups inovadoras do setor</li><li>Visibilidade de marca no ecossistema Infratech nacional</li><li>Direito de preferência em aquisições e parcerias</li><li>Relatórios exclusivos de tendências e inovação</li></ul>
+    </div>
+    <div class="gbox"><h3 style="color:var(--p);margin-bottom:4px;">&#x1F3AF; Expansão Planejada</h3><p style="font-size:10px;color:var(--mt2);line-height:1.5;">Meta 2026: <strong style="color:var(--tx);">5 cidades brasileiras</strong> (SP, RJ, BH, POA, BSB) com 150 startups aceleradas/ano e receita de R$8M+.</p></div>
+  </div>
+</div>
+<div class="sfooter"><span>LINTZ &middot; Hackathon Infratech 2025</span><span>9 / 12</span></div>
+</div>
+
+<div class="slide" id="s10">
+<div class="tag">Cronograma 2025</div>
+<h2>Cada Dia Conta &mdash; <span class="hl">A Jornada Começa</span> em <span class="hlg">14 de Janeiro</span></h2>
+<p class="sub">Um cronograma preciso e ambicioso. Cada etapa foi desenhada para maximizar o aprendizado e acelerar o crescimento das startups selecionadas.</p>
+<div style="margin-top:10px;" class="g2">
+  <div>
+    <div class="tl-item"><div class="tl-dot" style="background:var(--rd);box-shadow:0 0 6px var(--rd);"></div><div><div class="tl-date" style="color:var(--rd);">Dez 2024 &mdash; 10 Jan 2025</div><div class="tl-title">&#x1F4DD; Inscrições Abertas</div><div class="tl-desc">Formulário online + pitch de 3 min. Sem taxas. Qualquer empreendedor pode se inscrever.</div></div></div>
+    <div class="tl-item"><div class="tl-dot" style="background:var(--or);box-shadow:0 0 6px var(--or);"></div><div><div class="tl-date" style="color:var(--or);">11&ndash;13 Jan 2025</div><div class="tl-title">&#x1F50D; Avaliação QEMP &amp; Entrevistas</div><div class="tl-desc">Análise das inscrições, entrevistas com finalistas e aplicação do Quociente Empreendedor.</div></div></div>
+    <div class="tl-item"><div class="tl-dot" style="background:var(--gold);box-shadow:0 0 6px var(--gold);"></div><div><div class="tl-date" style="color:var(--gold);">13 Jan 2025</div><div class="tl-title">&#x1F3C6; Resultado da Seleção</div><div class="tl-desc">Divulgação das 15 startups selecionadas. Comunicação individual com feedback detalhado.</div></div></div>
+    <div class="tl-item"><div class="tl-dot" style="background:var(--p);box-shadow:0 0 6px var(--p);"></div><div><div class="tl-date" style="color:var(--p);">14 Jan 2025</div><div class="tl-title">&#x1F680; Kick-off Presencial &mdash; Campinas</div><div class="tl-desc">Onboarding no Espaço Infratech. Apresentação dos mentores, metodologia e primeiros workshops.</div></div></div>
+    <div class="tl-item"><div class="tl-dot" style="background:var(--c);box-shadow:0 0 6px var(--c);"></div><div><div class="tl-date" style="color:var(--c);">Jan&ndash;Mar 2025</div><div class="tl-title">&#x1F9E0; Fase 1 &mdash; Validação</div><div class="tl-desc">Diagnóstico QEMP, validação de hipóteses, definição de MVP e workshops semanais.</div></div></div>
+    <div class="tl-item"><div class="tl-dot" style="background:var(--g);box-shadow:0 0 6px var(--g);"></div><div><div class="tl-date" style="color:var(--g);">Abr&ndash;Jun 2025</div><div class="tl-title">&#x1F680; Fase 2 &mdash; Aceleração</div><div class="tl-desc">Desenvolvimento do produto, primeiros clientes, pitch training e preparação para investidores.</div></div></div>
+  </div>
+  <div>
+    <div class="tl-item"><div class="tl-dot" style="background:var(--pk);box-shadow:0 0 6px var(--pk);"></div><div><div class="tl-date" style="color:var(--pk);">Jul&ndash;Set 2025</div><div class="tl-title">&#x1F4B0; Fase 3 &mdash; Escala</div><div class="tl-desc">Expansão de mercado, rodadas de captação e preparação para o Demo Day.</div></div></div>
+    <div class="tl-item"><div class="tl-dot" style="background:var(--gold);box-shadow:0 0 6px var(--gold);"></div><div><div class="tl-date" style="color:var(--gold);">Out 2025</div><div class="tl-title">&#x1F3C6; Demo Day &mdash; Campinas</div><div class="tl-desc">Apresentação das startups para investidores, grandes empresas e imprensa especializada.</div></div></div>
+    <div class="tl-item"><div class="tl-dot" style="background:var(--g);box-shadow:0 0 6px var(--g);"></div><div><div class="tl-date" style="color:var(--g);">Nov 2025</div><div class="tl-title">&#x1F4CA; Resultados &amp; Próxima Edição</div><div class="tl-desc">Divulgação de resultados, prorrogação para destaques e abertura de inscrições para 2026.</div></div></div>
+    <div style="margin-top:8px;" class="gbox-rd"><h3 style="color:var(--rd);margin-bottom:4px;">&#x23F0; Urgência Real</h3><p style="font-size:10px;color:var(--mt2);line-height:1.5;">As inscrições fecham em <strong style="color:var(--tx);">10 de Janeiro de 2025</strong>. São apenas <strong style="color:var(--rd);">15 vagas</strong> para centenas de candidatos. <strong style="color:var(--tx);">Não perca esta janela.</strong></p></div>
+  </div>
+</div>
+<div class="sfooter"><span>LINTZ &middot; Hackathon Infratech 2025</span><span>10 / 12</span></div>
+</div>
+<div class="slide" id="s11">
+<div class="tag">Resultados &amp; KPIs</div>
+<h2>Números que <span class="hl">Provam o Impacto</span> &mdash; <span class="hlg">Resultados Reais</span></h2>
+<p class="sub">Métricas concretas que demonstram o valor do programa para startups, investidores e para o ecossistema de infraestrutura brasileiro.</p>
+<div style="margin-top:10px;" class="g2">
+  <div style="display:flex;flex-direction:column;gap:8px;">
+    <div class="g2" style="gap:8px;">
+      <div class="card kpi" style="border-color:rgba(108,99,255,.3);"><div class="gnum">87%</div><div class="kl">Taxa de Sobrevivência</div><div class="ks">Startups ativas após 2 anos</div></div>
+      <div class="card kpi" style="border-color:rgba(0,212,255,.25);"><div class="gnum" style="background:linear-gradient(135deg,var(--c),var(--g));-webkit-background-clip:text;background-clip:text;">R$380K</div><div class="kl">Receita Média Anual</div><div class="ks">Após 12 meses de aceleração</div></div>
+    </div>
+    <div class="g2" style="gap:8px;">
+      <div class="card kpi" style="border-color:rgba(245,158,11,.25);"><div class="gnum" style="background:linear-gradient(135deg,var(--gold),var(--or));-webkit-background-clip:text;background-clip:text;">R$250K</div><div class="kl">Captação Média</div><div class="ks">Por startup no Demo Day</div></div>
+      <div class="card kpi" style="border-color:rgba(16,185,129,.25);"><div class="gnum" style="background:linear-gradient(135deg,var(--g),var(--c));-webkit-background-clip:text;background-clip:text;">120+</div><div class="kl">Empregos Gerados</div><div class="ks">Por edição do programa</div></div>
+    </div>
+    <div class="card"><h3 style="margin-bottom:6px;color:var(--p);">&#x1F4CA; Metas 2025</h3>
+      <div class="mrow"><span class="mrow-l">Startups aceleradas (3 edições)</span><span class="mrow-v tp">45</span></div>
+      <div class="mrow"><span class="mrow-l">Capital total captado pelas startups</span><span class="mrow-v tc">R$11M+</span></div>
+      <div class="mrow"><span class="mrow-l">Empregos diretos e indiretos gerados</span><span class="mrow-v tgr">360+</span></div>
+      <div class="mrow"><span class="mrow-l">Receita total do programa LINTZ</span><span class="mrow-v tg">R$2,4M</span></div>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:8px;">
+    <div style="height:200px;position:relative;"><canvas id="chartKPI"></canvas></div>
+    <div class="gbox-gr"><h3 style="color:var(--g);margin-bottom:5px;">&#x1F30D; Impacto no Ecossistema</h3>
+      <ul class="il ck"><li>Contribuição direta para o PIB de infraestrutura brasileiro</li><li>Formação de líderes empreendedores em Infratech</li><li>Atração de investimento estrangeiro para o setor</li><li>Redução do gap tecnológico na infraestrutura nacional</li></ul>
+    </div>
+  </div>
+</div>
+<div class="sfooter"><span>LINTZ &middot; Hackathon Infratech 2025</span><span>11 / 12</span></div>
+</div>
+
+<div class="slide" id="s12">
+<div class="cover-bg" style="background:radial-gradient(ellipse at 20% 50%,rgba(108,99,255,.25) 0%,transparent 50%),radial-gradient(ellipse at 80% 20%,rgba(0,212,255,.15) 0%,transparent 45%),radial-gradient(ellipse at 50% 80%,rgba(245,158,11,.1) 0%,transparent 45%),var(--dk);"></div>
+<div style="position:relative;z-index:1;display:flex;flex-direction:column;justify-content:center;height:100%;align-items:center;text-align:center;">
+  <div style="font-size:48px;margin-bottom:16px;animation:pulse 2s ease infinite;">&#x1F680;</div>
+  <div class="tag" style="justify-content:center;margin-bottom:8px;">Call to Action</div>
+  <h1 style="max-width:700px;margin-bottom:12px;">Sua Startup <span class="hl">Merece</span> Estar<br>no <span class="hlg">Próximo Nível</span></h1>
+  <p style="max-width:560px;font-size:14px;color:var(--mt2);line-height:1.8;margin-bottom:24px;">O mercado de infraestrutura está em transformação. As startups que entrarem agora vão definir o futuro das cidades brasileiras. <strong style="color:var(--tx);">Você vai ficar de fora?</strong></p>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:24px;">
+    <div style="background:linear-gradient(135deg,var(--p),var(--c));border-radius:12px;padding:14px 28px;font-size:14px;font-weight:800;color:#fff;box-shadow:0 0 30px rgba(108,99,255,.5);cursor:pointer;">&#x1F4DD; Inscreva-se Agora &mdash; Gratuito</div>
+    <div style="background:rgba(17,24,39,.9);border:1px solid rgba(108,99,255,.4);border-radius:12px;padding:14px 28px;font-size:14px;font-weight:700;color:var(--p);cursor:pointer;">&#x1F4DE; Fale com a LINTZ</div>
+  </div>
+  <div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin-bottom:20px;">
+    <div style="text-align:center;"><div style="font-size:22px;font-weight:900;color:var(--rd);">10 Jan</div><div style="font-size:10px;color:var(--mt2);">Prazo Final</div></div>
+    <div style="width:1px;background:rgba(255,255,255,.1);"></div>
+    <div style="text-align:center;"><div style="font-size:22px;font-weight:900;color:var(--c);">15</div><div style="font-size:10px;color:var(--mt2);">Vagas Disponíveis</div></div>
+    <div style="width:1px;background:rgba(255,255,255,.1);"></div>
+    <div style="text-align:center;"><div style="font-size:22px;font-weight:900;color:var(--g);">R$0</div><div style="font-size:10px;color:var(--mt2);">Custo de Inscrição</div></div>
+    <div style="width:1px;background:rgba(255,255,255,.1);"></div>
+    <div style="text-align:center;"><div style="font-size:22px;font-weight:900;color:var(--gold);">9</div><div style="font-size:10px;color:var(--mt2);">Meses de Aceleração</div></div>
+  </div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:16px;">
+    <span class="badge bp">&#x1F4E7; hackathon@lintz.com.br</span>
+    <span class="badge bc">&#x1F4F1; (19) 9999-0000</span>
+    <span class="badge bg">&#x1F310; lintz.com.br/hackathon</span>
+    <span class="badge bgr">&#x1F4CD; Campinas/SP &mdash; Bairro Cambuí</span>
+  </div>
+  <div class="gbox-rd" style="max-width:500px;"><p style="font-size:11px;color:var(--mt2);line-height:1.6;">&#x23F0; <strong style="color:var(--rd);">ATENÇÃO:</strong> Inscrições encerram em <strong style="color:var(--tx);">10 de Janeiro de 2025</strong>. Após essa data, não haverá novas vagas até a próxima edição. <strong style="color:var(--tx);">Não deixe para amanhã a startup que você pode começar hoje.</strong></p></div>
+</div>
+<div class="sfooter"><span>LINTZ Escritório de Projetos &middot; Hackathon Infratech Startups 2025</span><span style="color:var(--rd);font-weight:700;">CONFIDENCIAL &mdash; Não distribuir sem autorização</span></div>
+</div>
+</div>
+<div class="nav">
+  <button id="btnPrev" onclick="go(-1)" disabled>&#8592;</button>
+  <span id="sc">1 / 12</span>
+  <button id="btnNext" onclick="go(1)">&#8594;</button>
+  <span style="color:var(--mt);font-size:10px;margin-left:4px;">&#8592; &#8594;</span>
+</div>
+<div class="dots" id="dots"></div>
+<script>
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let cur = 0;
+const dotsEl = document.getElementById('dots');
+const sc = document.getElementById('sc');
+const pbar = document.getElementById('pbar');
+const btnPrev = document.getElementById('btnPrev');
+const btnNext = document.getElementById('btnNext');
+
+slides.forEach(function(_,i){
+  var d = document.createElement('div');
+  d.className = 'dot' + (i===0?' active':'');
+  d.onclick = function(){ goTo(i); };
+  dotsEl.appendChild(d);
+});
+
+function goTo(n){
+  slides[cur].classList.remove('active');
+  dotsEl.children[cur].classList.remove('active');
+  cur = Math.max(0, Math.min(total-1, n));
+  slides[cur].classList.add('active');
+  dotsEl.children[cur].classList.add('active');
+  sc.textContent = (cur+1) + ' / ' + total;
+  pbar.style.width = ((cur+1)/total*100) + '%';
+  btnPrev.disabled = cur === 0;
+  btnNext.disabled = cur === total-1;
+  if(cur === 10) setTimeout(initChart, 200);
+}
+
+function go(d){ goTo(cur + d); }
+
+document.addEventListener('keydown', function(e){
+  if(e.key==='ArrowRight'||e.key==='ArrowDown') go(1);
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp') go(-1);
+});
+
+pbar.style.width = (1/total*100) + '%';
+
+var chartDone = false;
+function initChart(){
+  if(chartDone) return;
+  chartDone = true;
+  var ctx = document.getElementById('chartKPI');
+  if(!ctx) return;
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Sobrevivência (%)','Receita (R$K)','Captação (R$K)','Empregos','Satisfação (%)'],
+      datasets: [{
+        label: 'KPIs do Programa',
+        data: [87, 380, 250, 120, 94],
+        backgroundColor: [
+          'rgba(108,99,255,.7)','rgba(0,212,255,.7)',
+          'rgba(245,158,11,.7)','rgba(16,185,129,.7)','rgba(236,72,153,.7)'
+        ],
+        borderColor: ['#6C63FF','#00D4FF','#F59E0B','#10B981','#EC4899'],
+        borderWidth: 1, borderRadius: 6
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { ticks: { color: '#94A3B8', font: { size: 9 } }, grid: { color: 'rgba(255,255,255,.04)' } },
+        y: { ticks: { color: '#94A3B8', font: { size: 9 } }, grid: { color: 'rgba(255,255,255,.06)' } }
+      }
+    }
+  });
+}
+</script>
+</body>
+</html>
