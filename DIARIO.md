@@ -1,4 +1,4 @@
-# 📓 Diário de Desenvolvimento — LUX Driver
+# 📓 Diárokio de Desenvolvimento — LUX Driver
 
 > Registro diário das atividades, decisões e progresso do projeto.
 
@@ -40,6 +40,67 @@
 ### 💡 Pendências / Próximos passos
 - [ ] Implementar rastreamento de downloads do APK (contador via API)
 - [ ] Verificar dados do Analytics após primeiras visitas
+
+---
+
+## 📅 2025-07-28 (Segunda-feira)
+
+### ✅ O que foi feito
+
+#### 🔥 Firebase Analytics integrado ao app Lux
+- Criado `src/utils/analytics.ts` — implementação via **Firebase Measurement Protocol** (HTTP/fetch), sem dependências npm
+- Eventos rastreados configurados:
+  - `app_open` — ao abrir o app
+  - `trial_started` — ao iniciar período de teste
+  - `onboarding_complete` — ao concluir onboarding
+  - `paywall_shown` — ao exibir tela de assinatura
+  - `premium_activated` — ao ativar plano premium
+  - `tab_changed` — ao trocar de aba
+  - `permission_configured` — ao configurar permissões
+- Firebase project: `lux-driver-assistant` (project_number: 661886047356)
+- Firebase App ID: `1:661886047356:android:3bef6f234f2bde3c18e5f9`
+- `android/app/google-services.json` adicionado (não commitado — chave privada)
+- `src/App.tsx` atualizado com chamadas de analytics em todos os pontos-chave
+
+#### 🏗️ Build Android — AAB versão 2 (1.1)
+- Corrigido problema de JAVA_HOME no Gradle:
+  - Adicionado `org.gradle.java.home=C:\\Program Files\\Android\\Android Studio\\jbr` em `android/gradle.properties`
+  - Criado `tools/build-gradle-only.bat` que limpa JAVA_HOME e adiciona Java ao PATH
+- Build bem-sucedido: `android/app/build/outputs/bundle/release/app-release.aab` (3 MB)
+- `versionCode` atualizado para **2**, `versionName` para **"1.1"**
+
+#### 🚀 Google Play Console — Teste Alpha
+- AAB versão 2 (1.1) enviado para faixa **Teste fechado - Alpha**
+- Testadores configurados (8 pessoas): AntonyPE, Emanoel PE, Everton Soares, Jobson Souza, kleyton Queiroz + lista "Motoristas SP" (3) + "Saulo Zabot" (3)
+- País adicionado: **Brasil**
+- Declaração de **ID de publicidade**: respondido **Não** (app não usa anúncios)
+- Declaração de **Serviço de acessibilidade**: declarado como funcionalidade do app
+- **13 mudanças enviadas para revisão** no Play Console
+- Status: ⏳ aguardando aprovação do Google (horas/dias)
+
+#### 📤 Deploy Vercel atualizado
+- Commitado e enviado para GitHub: `feat: integra Firebase Analytics via Measurement Protocol`
+- Vercel fez deploy automático — site atualizado com Firebase Analytics
+
+### 🐛 Problemas encontrados e soluções
+
+| Problema | Solução |
+|---|---|
+| JAVA_HOME inválido no Gradle | Adicionado `org.gradle.java.home` no `gradle.properties` + limpar JAVA_HOME no bat |
+| Compartilhamento interno exige app publicado | Usar link de teste do Alpha após aprovação |
+| Link enviado aos testadores era o de upload (admin) | Explicado: link correto é gerado após upload, formato `play.google.com/apps/test/...` |
+| `google-services.json` não pode ir para o git | Mantido fora do commit (arquivo com chave privada) |
+
+### 🔗 Links úteis
+- Firebase Console: https://console.firebase.google.com/project/lux-driver-assistant
+- Play Console Alpha: https://play.google.com/console → Lux → Teste → Teste fechado
+- Site (Vercel): https://lux-driver-assistent-18y8.vercel.app
+
+### 💡 Pendências / Próximos passos
+- [ ] Aguardar email do Google aprovando o Alpha
+- [ ] Após aprovação: copiar link de teste do Alpha e enviar para testadores via WhatsApp
+- [ ] Verificar eventos no Firebase Analytics → DebugView quando testadores usarem o app
+- [ ] Verificar se o Play Console exige vídeo de demonstração para o serviço de acessibilidade
 
 ---
 
