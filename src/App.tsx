@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Analytics } from './utils/analytics';
 import { VehicleProvider } from './context/VehicleContext';
 import DashboardScreen from './components/DashboardScreen';
 import SettingsScreen from './components/SettingsScreen';
@@ -38,24 +39,29 @@ function AppContent() {
   });
   const [trialDaysLeft, setTrialDaysLeft] = useState(() => getTrialDaysLeft());
 
-  // Inicia o trial na primeira abertura
+  // Inicia o trial na primeira abertura + rastreia abertura do app
   useEffect(() => {
-    if (!localStorage.getItem('lux_first_launch')) {
+    const isFirstLaunch = !localStorage.getItem('lux_first_launch');
+    if (isFirstLaunch) {
       localStorage.setItem('lux_first_launch', Date.now().toString());
+      Analytics.trialStarted();
     }
     setTrialDaysLeft(getTrialDaysLeft());
+    Analytics.appOpen();
   }, []);
 
   // Mostra paywall quando trial expira
   useEffect(() => {
     if (!isPremium && trialDaysLeft === 0 && !showOnboarding) {
       setShowPaywall(true);
+      Analytics.paywallShown(0);
     }
   }, [isPremium, trialDaysLeft, showOnboarding]);
 
   const handleOnboardingFinish = () => {
     localStorage.setItem('lux_onboarding_done', 'true');
     setShowOnboarding(false);
+    Analytics.onboardingComplete();
     // Mostra paywall logo após onboarding se trial já expirou
     if (getTrialDaysLeft() === 0) setShowPaywall(true);
   };
@@ -64,6 +70,7 @@ function AppContent() {
     setIsPremium(true);
     setShowPaywall(false);
     setTrialDaysLeft(999);
+    Analytics.premiumActivated();
   };
 
   const handlePaywallSkip = () => {
@@ -289,7 +296,7 @@ function AppContent() {
 
       <nav className="h-16 bg-dark-card/90 backdrop-blur-xl border-t border-dark-border flex items-center justify-around z-30 shrink-0 px-10 pb-1">
         <button
-          onClick={() => setCurrentTab('dashboard')}
+          onClick={() => { setCurrentTab('dashboard'); Analytics.tabChanged('dashboard'); }}
           className={`flex flex-col items-center justify-center p-2 rounded-2xl transition-all ${currentTab === 'dashboard' ? 'text-primary bg-primary/5' : 'text-gray-600'}`}
         >
           <LayoutDashboard size={24} />
@@ -297,7 +304,7 @@ function AppContent() {
         </button>
 
         <button
-          onClick={() => setCurrentTab('settings')}
+          onClick={() => { setCurrentTab('settings'); Analytics.tabChanged('settings'); }}
           className={`flex flex-col items-center justify-center p-2 rounded-2xl transition-all ${currentTab === 'settings' ? 'text-primary bg-primary/5' : 'text-gray-600'}`}
         >
           <Settings size={24} />
