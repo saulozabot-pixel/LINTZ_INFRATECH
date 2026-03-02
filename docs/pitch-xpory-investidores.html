@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XporY.com — Pitch Deck Investidores 2026</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bl:#0a0a0a;--dk:#111;--cd:#1a1a1a;--tl:#00c4b4;--or:#f5a623;--wh:#fff;--gy:#888;--lt:#ccc;--br:#2a2a2a}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bl);color:var(--wh);line-height:1.6}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,10,10,.96);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--br);padding:12px 60px;
+  display:flex;align-items:center;justify-content:space-between}
+.nl{font-size:20px;font-weight:800}.nl .x{color:var(--tl)}.nl .y{color:var(--or)}
+.na{display:flex;gap:24px}.na a{color:var(--gy);text-decoration:none;font-size:13px}
+.na a:hover{color:var(--wh)}
+.nb{background:var(--tl);color:var(--bl);padding:6px 16px;border-radius:20px;font-size:12px;font-weight:700}
+.s{min-height:100vh;display:flex;flex-direction:column;justify-content:center;
+  padding:100px 80px 80px;position:relative;border-bottom:1px solid var(--br)}
+.sn{position:absolute;top:80px;right:80px;font-size:12px;color:var(--gy);letter-spacing:2px}
+.st{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--tl);margin-bottom:14px;display:block}
+.dv{width:60px;height:3px;background:linear-gradient(90deg,var(--tl),var(--or));border-radius:2px;margin:14px 0 28px}
+h1{font-size:50px;font-weight:900;line-height:1.1;margin-bottom:10px}
+h2{font-size:40px;font-weight:800;line-height:1.2;margin-bottom:10px}
+.tc{color:var(--tl)}.to{color:var(--or)}
+p.d{font-size:16px;color:var(--lt);max-width:600px;margin-bottom:36px;line-height:1.75}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.c{background:var(--cd);border:1px solid var(--br);border-radius:14px;padding:24px}
+.ci{font-size:28px;margin-bottom:12px}.ct{font-size:16px;font-weight:700;margin-bottom:6px}
+.cd{font-size:13px;color:var(--lt);line-height:1.6}
+.cteal{border-color:rgba(0,196,180,.3)}.corange{border-color:rgba(245,166,35,.3)}
+/* COVER */
+.cov{background:radial-gradient(ellipse at 30% 50%,rgba(0,196,180,.07) 0%,transparent 60%),
+  radial-gradient(ellipse at 70% 50%,rgba(245,166,35,.05) 0%,transparent 60%),var(--bl);
+  align-items:center;text-align:center}
+.clogo{font-size:76px;font-weight:900;letter-spacing:-2px;margin-bottom:4px}
+.clogo .x{color:var(--tl)}.clogo .y{color:var(--or)}
+.ctag{font-size:12px;color:var(--gy);letter-spacing:4px;text-transform:uppercase;margin-bottom:32px}
+.ch{font-size:38px;font-weight:800;line-height:1.2;max-width:660px;margin:0 auto 18px}
+.cs{font-size:16px;color:var(--lt);max-width:520px;margin:0 auto 40px}
+.bgs{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.bg{padding:7px 18px;border-radius:30px;font-size:12px;font-weight:600;border:1px solid}
+.bt{border-color:var(--tl);color:var(--tl)}.bo{border-color:var(--or);color:var(--or)}
+.bw{border-color:rgba(255,255,255,.3);color:var(--wh)}
+.sb{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--br);
+  border:1px solid var(--br);border-radius:12px;overflow:hidden;margin-top:48px}
+.si{background:var(--cd);padding:24px 16px;text-align:center}
+.sv{font-size:34px;font-weight:900;color:var(--tl);line-height:1}
+.sv.o{color:var(--or)}.sl{font-size:11px;color:var(--gy);margin-top:5px}
+/* PROBLEM */
+.ps{font-size:64px;font-weight:900;color:var(--or);line-height:1}
+.ps.tc{color:var(--tl)}.psl{font-size:14px;color:var(--lt);margin-top:4px;margin-bottom:24px}
+.pl{list-style:none}.pl li{padding:14px 0;border-bottom:1px solid var(--br);
+  display:flex;gap:12px;align-items:flex-start;font-size:14px;color:var(--lt)}
+.pl li:last-child{border-bottom:none}.pi{font-size:18px;flex-shrink:0;margin-top:2px}
+/* FLOW */
+.fl{display:flex;align-items:stretch;gap:0;margin:28px 0}
+.fs{flex:1;text-align:center;padding:20px 12px;background:var(--cd);
+  border:1px solid var(--br);border-radius:12px;position:relative}
+.fs:not(:last-child)::after{content:'→';position:absolute;right:-16px;top:50%;
+  transform:translateY(-50%);color:var(--tl);font-size:16px;font-weight:700;z-index:1}
+.fs+.fs{margin-left:24px}
+.fa{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--tl),#009e90);
+  display:flex;align-items:center;justify-content:center;font-size:16px;margin:0 auto 8px}
+.fn{font-size:13px;font-weight:700;margin-bottom:2px}
+.fr{font-size:11px;color:var(--gy);margin-bottom:6px}
+.fac{font-size:11px;color:var(--tl);font-weight:600}
+/* MOEDA */
+.mb{background:linear-gradient(135deg,rgba(0,196,180,.1),rgba(0,196,180,.02));
+  border:1px solid rgba(0,196,180,.3);border-radius:18px;padding:36px;text-align:center}
+.mv{font-size:80px;font-weight:900;color:var(--tl);line-height:1;margin:10px 0}
+.meq{font-size:16px;color:var(--gy)}
+.mf{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px}
+.mfi{background:var(--cd);border-radius:10px;padding:14px;text-align:left}
+.mft{font-size:13px;font-weight:700;margin-bottom:3px}.mfd{font-size:12px;color:var(--gy)}
+/* MARKET */
+.mr{display:flex;align-items:center;gap:28px;margin:28px 0}
+.mc{border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;flex-shrink:0}
+.mtam{width:240px;height:240px;background:rgba(0,196,180,.06);border:2px solid rgba(0,196,180,.2)}
+.msam{width:175px;height:175px;background:rgba(0,196,180,.1);border:2px solid rgba(0,196,180,.4)}
+.msom{width:115px;height:115px;background:rgba(0,196,180,.18);border:2px solid var(--tl)}
+.mlb{font-size:10px;color:var(--gy);letter-spacing:1px}
+.mvl{font-size:18px;font-weight:800;color:var(--tl)}
+.mds{font-size:10px;color:var(--lt);margin-top:2px;padding:0 6px}
+.md{flex:1}.mdi{padding:14px 0;border-bottom:1px solid var(--br)}
+.mdi:last-child{border-bottom:none}
+.mdil{font-size:11px;color:var(--gy);letter-spacing:1px;margin-bottom:3px}
+.mdiv{font-size:20px;font-weight:800;color:var(--tl)}
+.mdid{font-size:12px;color:var(--lt);margin-top:2px}
+/* MONO */
+.mob{background:linear-gradient(135deg,rgba(245,166,35,.1),rgba(245,166,35,.02));
+  border:1px solid rgba(245,166,35,.3);border-radius:18px;padding:36px;text-align:center}
+.mop{font-size:88px;font-weight:900;color:var(--or);line-height:1}
+.mol{font-size:16px;color:var(--lt);margin-top:6px}
+.moe{background:var(--cd);border-radius:10px;padding:16px 24px;margin-top:16px;
+  display:flex;justify-content:space-between;align-items:center}
+.moel{font-size:12px;color:var(--gy)}.moev{font-size:18px;font-weight:700}
+/* TRACTION */
+.tc2{background:var(--cd);border:1px solid var(--br);border-radius:14px;padding:24px;text-align:center}
+.tn{font-size:44px;font-weight:900;color:var(--tl);line-height:1}
+.tn.o{color:var(--or)}.tl2{font-size:12px;color:var(--gy);margin-top:6px}
+/* RECOGNITION */
+.ri{background:var(--cd);border:1px solid var(--br);border-radius:12px;padding:20px;
+  display:flex;gap:14px;align-items:flex-start}
+.ric{font-size:26px;flex-shrink:0}.rit{font-size:14px;font-weight:700;margin-bottom:3px}
+.rid{font-size:12px;color:var(--lt)}
+/* SEBRAE */
+.seb{background:linear-gradient(135deg,rgba(0,196,180,.08),rgba(0,196,180,.02));
+  border:1px solid rgba(0,196,180,.25);border-radius:14px;padding:28px;
+  display:flex;gap:20px;align-items:center;margin-bottom:20px}
+.sebi{font-size:44px;flex-shrink:0}.sebt{font-size:17px;font-weight:700;margin-bottom:4px}
+.sebd{font-size:13px;color:var(--lt)}
+/* ROADMAP */
+.rm{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;margin-top:36px}
+.rm::before{content:'';position:absolute;top:22px;left:12%;right:12%;
+  height:2px;background:linear-gradient(90deg,var(--tl),var(--or))}
+.rmi{text-align:center;padding:0 10px}
+.rmd{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:16px;margin:0 auto 14px;position:relative;z-index:1}
+.rmd.done{background:var(--tl)}.rmd.now{background:var(--or)}
+.rmd.fut{background:var(--cd);border:2px solid var(--br)}
+.rmp{font-size:10px;color:var(--gy);letter-spacing:1px;margin-bottom:5px}
+.rmt{font-size:13px;font-weight:700;margin-bottom:4px}.rmds{font-size:11px;color:var(--lt)}
+/* ASK */
+.ask{background:radial-gradient(ellipse at 50% 50%,rgba(0,196,180,.06) 0%,transparent 70%),var(--bl)}
+.aa{font-size:72px;font-weight:900;background:linear-gradient(135deg,var(--tl),var(--or));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin:10px 0}
+.au{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:32px}
+.aui{background:var(--cd);border:1px solid var(--br);border-radius:12px;padding:22px}
+.aup{font-size:30px;font-weight:900;color:var(--tl);margin-bottom:6px}
+.aup.o{color:var(--or)}.aul{font-size:13px;font-weight:600;margin-bottom:3px}
+.aud{font-size:11px;color:var(--gy)}
+/* CONTACT */
+.con{background:radial-gradient(ellipse at 30% 70%,rgba(245,166,35,.06) 0%,transparent 60%),var(--bl);
+  text-align:center;align-items:center}
+.conl{font-size:52px;font-weight:900;margin-bottom:4px}
+.conu{font-size:20px;color:var(--tl);margin-bottom:36px}
+.cong{display:flex;gap:36px;justify-content:center;flex-wrap:wrap}
+.coni{text-align:center}.conlb{font-size:10px;color:var(--gy);letter-spacing:2px;margin-bottom:3px}
+.conv{font-size:14px;font-weight:600}
+/* CHECK */
+.ck{list-style:none}.ck li{padding:10px 0;border-bottom:1px solid var(--br);
+  display:flex;gap:10px;align-items:center;font-size:14px;color:var(--lt)}
+.ck li:last-child{border-bottom:none}.ckv{color:var(--tl);font-size:16px}
+/* FOOTER */
+footer{background:var(--dk);border-top:1px solid var(--br);padding:18px 80px;
+  display:flex;justify-content:space-between;align-items:center}
+.fll{font-size:14px;font-weight:800}.fll .x{color:var(--tl)}.fll .y{color:var(--or)}
+.fc{font-size:11px;color:var(--gy)}
+@media(max-width:768px){
+  .s{padding:80px 20px 60px}.g2,.g3,.g4{grid-template-columns:1fr}
+  .sb{grid-template-columns:1fr 1fr}.rm{grid-template-columns:1fr 1fr}
+  .au{grid-template-columns:1fr}h1{font-size:32px}h2{font-size:26px}
+  .ch{font-size:24px}.clogo{font-size:48px}nav{padding:12px 20px}.na{display:none}
+  footer{padding:16px 20px}.fl{flex-direction:column}
+  .fs::after{display:none}.fs+.fs{margin-left:0;margin-top:12px}
+  .mr{flex-direction:column}.mc{width:160px!important;height:160px!important}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nl"><span class="x">X</span>por<span class="y">Y</span>.com</div>
+  <div class="na">
+    <a href="#problema">Problema</a><a href="#solucao">Solução</a>
+    <a href="#mercado">Mercado</a><a href="#modelo">Modelo</a>
+    <a href="#tracao">Tração</a><a href="#captacao">Captação</a>
+  </div>
+  <div class="nb">CONFIDENCIAL</div>
+</nav>
+
+<!-- 01 COVER -->
+<section class="s cov" id="cover">
+  <div class="clogo"><span class="x">X</span>por<span class="y">Y</span><span style="color:var(--gy);font-size:42px">.com</span></div>
+  <div class="ctag">Compre e venda feliz. Diga Xis.</div>
+  <h1 class="ch">O maior marketplace de <span style="color:var(--tl)">transações multilaterais</span> do Brasil</h1>
+  <p class="cs">Fintech de crédito em moeda complementar que conecta empresas e pessoas através da economia colaborativa — sem desembolso em Reais.</p>
+  <div class="bgs">
+    <span class="bg bt">🏆 Parceiro Sebrae Nacional</span>
+    <span class="bg bo">📜 Lei Estadual — Goiás</span>
+    <span class="bg bw">🏛️ Audiência Pública — Senado Federal</span>
+  </div>
+  <div class="sb">
+    <div class="si"><div class="sv">900+</div><div class="sl">Depoimentos de usuários</div></div>
+    <div class="si"><div class="sv o">10%</div><div class="sl">Taxa sobre transações em X$</div></div>
+    <div class="si"><div class="sv">X$1=R$1</div><div class="sl">Paridade com o Real</div></div>
+    <div class="si"><div class="sv o">1ª</div><div class="sl">Loja física de trocas multilaterais do Brasil</div></div>
+  </div>
+</section>
+
+<!-- 02 PROBLEMA -->
+<section class="s" id="problema">
+  <div class="sn">02 / 12</div>
+  <span class="st">O Problema</span>
+  <h2>Bilhões em ativos <span class="to">desperdiçados</span> todo ano</h2>
+  <div class="dv"></div>
+  <div class="g2" style="align-items:start">
+    <div>
+      <div class="ps">22M+</div><div class="psl">MEIs e micro/pequenas empresas no Brasil com capacidade ociosa não monetizada</div>
+      <div class="ps tc">R$400B</div><div class="psl">Estimativa de ativos ociosos não aproveitados anualmente no Brasil</div>
+      <div class="ps" style="font-size:44px;color:var(--gy)">6 em 10</div><div class="psl">PMEs relatam dificuldade de fluxo de caixa para aquisição de bens e serviços</div>
+    </div>
+    <ul class="pl">
+      <li><span class="pi">🏭</span><div><strong>Capacidade ociosa não monetizada</strong><br><span style="font-size:12px">Empresas têm produtos e serviços disponíveis mas não conseguem converter em receita</span></div></li>
+      <li><span class="pi">💸</span><div><strong>Falta de liquidez para compras</strong><br><span style="font-size:12px">Pequenos negócios precisam de bens e serviços mas não têm caixa disponível em R$</span></div></li>
+      <li><span class="pi">🔗</span><div><strong>Ausência de rede colaborativa</strong><br><span style="font-size:12px">Não existe plataforma que conecte compradores e vendedores em transações multilaterais</span></div></li>
+      <li><span class="pi">📉</span><div><strong>Endividamento de MEIs e PMEs</strong><br><span style="font-size:12px">Empresas endividadas sem alternativas para quitar dívidas sem desembolso em reais</span></div></li>
+      <li><span class="pi">🌐</span><div><strong>Mercado fragmentado e ineficiente</strong><br><span style="font-size:12px">Trocas bilaterais tradicionais limitam o potencial de negócios e vendas repetidas</span></div></li>
+    </ul>
+  </div>
+</section>
+
+<!-- 03 SOLUÇÃO -->
+<section class="s" id="solucao">
+  <div class="sn">03 / 12</div>
+  <span class="st">A Solução</span>
+  <h2>O maior marketplace de <span class="tc">transações multilaterais</span> do Brasil</h2>
+  <div class="dv"></div>
+  <p class="d">A XporY.com é uma fintech de crédito em moeda complementar que permite que qualquer pessoa (CPF) ou empresa (CNPJ) realize transações multilaterais — comprando e vendendo sem necessidade de desembolso em Reais.</p>
+  <div class="g3">
+    <div class="c cteal"><div class="ci">🌐</div><div class="ct">Plataforma Web + App Mobile</div><div class="cd">Acesso completo via browser ou aplicativo para qualquer pessoa física ou jurídica de qualquer segmento</div></div>
+    <div class="c cteal"><div class="ci">💱</div><div class="ct">Moeda Complementar X$</div><div class="cd">Moeda digital com paridade 1:1 com o Real, utilizada para todas as transações dentro da plataforma</div></div>
+    <div class="c cteal"><div class="ci">🔄</div><div class="ct">Rede Multilateral</div><div class="cd">Transações em cadeia que conectam múltiplos participantes, aumentando exponencialmente as chances de negócio</div></div>
+    <div class="c corange"><div class="ci">🏪</div><div class="ct">Loja Física</div><div class="cd">Primeira loja física para trocas multilaterais do Brasil — grande variedade de produtos disponíveis em X$</div></div>
+    <div class="c corange"><div class="ci">💰</div><div class="ct">Adiantamento em X$</div><div class="cd">Usuários podem solicitar adiantamentos em X$, garantindo constante movimentação e liquidez na plataforma</div></div>
+    <div class="c corange"><div class="ci">🤝</div><div class="ct">Resolução de Dívidas</div><div class="cd">Credores e devedores resolvem pendências financeiras através de transações multilaterais sem desembolso em R$</div></div>
+  </div>
+</section>
+
+<!-- 04 COMO FUNCIONA -->
+<section class="s" id="como-funciona">
+  <div class="sn">04 / 12</div>
+  <span class="st">Como Funciona</span>
+  <h2>A <span class="tc">transação multilateral</span> em ação</h2>
+  <div class="dv"></div>
+  <p class="d">Uma transação multilateral cria uma verdadeira rede de conexões e negócios — aumentando exponencialmente as chances de efetivar negócios e ocasionar vendas repetidas.</p>
+  <div class="fl">
+    <div class="fs"><div class="fa">👩‍⚖️</div><div class="fn">Ana</div><div class="fr">Advogada</div><div class="fac">Compra na papelaria do Pedro usando X$</div></div>
+    <div class="fs"><div class="fa">🛒</div><div class="fn">Pedro</div><div class="fr">Papelaria</div><div class="fac">Compra móveis em X$ na loja da Luísa</div></div>
+    <div class="fs"><div class="fa">🛋️</div><div class="fn">Luísa</div><div class="fr">Loja de Móveis</div><div class="fac">Paga mensalidade na academia do Ricardo em X$</div></div>
+    <div class="fs"><div class="fa">🏋️</div><div class="fn">Ricardo</div><div class="fr">Academia</div><div class="fac">Contrata serviços jurídicos da Ana em X$</div></div>
+  </div>
+  <div class="g2" style="margin-top:24px">
+    <div style="background:linear-gradient(135deg,rgba(0,196,180,.08),rgba(0,196,180,.02));border:1px solid rgba(0,196,180,.25);border-radius:14px;padding:24px">
+      <div style="font-size:11px;color:var(--tl);font-weight:700;letter-spacing:2px;margin-bottom:10px">BOM PARA QUEM VENDE</div>
+      <ul class="ck"><li><span class="ckv">✓</span>Monetização da capacidade ociosa</li><li><span class="ckv">✓</span>Novos relacionamentos e clientes</li><li><span class="ckv">✓</span>Novo canal de vendas sem custo de aquisição</li><li><span class="ckv">✓</span>Vendas repetidas e recorrentes</li></ul>
+    </div>
+    <div style="background:linear-gradient(135deg,rgba(245,166,35,.08),rgba(245,166,35,.02));border:1px solid rgba(245,166,35,.25);border-radius:14px;padding:24px">
+      <div style="font-size:11px;color:var(--or);font-weight:700;letter-spacing:2px;margin-bottom:10px">BOM PARA QUEM COMPRA</div>
+      <ul class="ck"><li><span style="color:var(--or);font-size:16px">✓</span>Adquirir bens e serviços sem desembolso em R$</li><li><span style="color:var(--or);font-size:16px">✓</span>Acesso a uma rede ampla de fornecedores</li><li><span style="color:var(--or);font-size:16px">✓</span>Poder de compra ampliado com X$</li><li><span style="color:var(--or);font-size:16px">✓</span>Resolução de dívidas sem impacto no caixa</li></ul>
+    </div>
+  </div>
+</section>
+
+<!-- 05 MOEDA X$ -->
+<section class="s" id="moeda">
+  <div class="sn">05 / 12</div>
+  <span class="st">A Moeda X$</span>
+  <h2>Uma moeda digital <span class="tc">a preço de mercado</span></h2>
+  <div class="dv"></div>
+  <div class="g2" style="align-items:center">
+    <div class="mb">
+      <div style="font-size:13px;color:var(--gy);letter-spacing:2px">PARIDADE GARANTIDA</div>
+      <div class="mv">X$1,00</div>
+      <div class="meq">= R$ 1,00 (Real Brasileiro)</div>
+      <div style="margin-top:20px;font-size:13px;color:var(--gy);font-style:italic">*Valores X$ não são resgatáveis, mas podem ser utilizados a qualquer momento dentro da plataforma</div>
+      <div class="mf">
+        <div class="mfi"><div class="mft">💳 Compra</div><div class="mfd">Adquira X$ para usar na plataforma</div></div>
+        <div class="mfi"><div class="mft">💸 Venda</div><div class="mfd">Receba X$ pelas suas ofertas</div></div>
+        <div class="mfi"><div class="mft">🔄 Transferência</div><div class="mfd">Transfira X$ entre usuários</div></div>
+        <div class="mfi"><div class="mft">⚡ Adiantamento</div><div class="mfd">Solicite X$ antecipados</div></div>
+      </div>
+    </div>
+    <div>
+      <h2 style="font-size:28px;margin-bottom:16px">Por que a moeda <span class="tc">X$</span> é um diferencial?</h2>
+      <ul class="ck" style="margin-bottom:24px">
+        <li><span class="ckv">✓</span>Paridade 1:1 com o Real — sem volatilidade</li>
+        <li><span class="ckv">✓</span>Circula apenas dentro do ecossistema XporY</li>
+        <li><span class="ckv">✓</span>Gera constante movimentação e liquidez na plataforma</li>
+        <li><span class="ckv">✓</span>Adiantamentos em X$ estimulam novos negócios</li>
+        <li><span class="ckv">✓</span>Cada transação em X$ gera receita em R$ para a empresa</li>
+      </ul>
+      <div style="background:linear-gradient(135deg,rgba(245,166,35,.08),rgba(245,166,35,.02));border:1px solid rgba(245,166,35,.25);border-radius:14px;padding:24px">
+        <div style="font-size:11px;color:var(--or);font-weight:700;letter-spacing:2px;margin-bottom:10px">MODELO DE RECEITA</div>
+        <div style="font-size:32px;font-weight:900;color:var(--or)">10% em R$</div>
+        <div style="font-size:13px;color:var(--lt);margin-top:4px">sobre cada transação validada em X$ — receita real, não em moeda complementar</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 MERCADO -->
+<section class="s" id="mercado">
+  <div class="sn">06 / 12</div>
+  <span class="st">Mercado Endereçável</span>
+  <h2>Um mercado de <span class="tc">trilhões</span> esperando ser desbloqueado</h2>
+  <div class="dv"></div>
+  <div class="mr">
+    <div style="display:flex;flex-direction:column;gap:16px;align-items:center">
+      <div class="mc mtam"><div class="mlb">TAM</div><div class="mvl">R$2,5T</div><div class="mds">Total de transações B2B e B2C no Brasil</div></div>
+      <div class="mc msam"><div class="mlb">SAM</div><div class="mvl">R$400B</div><div class="mds">Ativos ociosos de MEIs e PMEs</div></div>
+      <div class="mc msom"><div class="mlb">SOM</div><div class="mvl">R$4B</div><div class="mds">Meta 5 anos</div></div>
+    </div>
+    <div class="md">
+      <div class="mdi"><div class="mdil">EMPRESAS ALVO NO BRASIL</div><div class="mdiv">22M+</div><div class="mdid">MEIs, micro e pequenas empresas — público primário da plataforma</div></div>
+      <div class="mdi"><div class="mdil">ECONOMIA COLABORATIVA GLOBAL</div><div class="mdiv">US$335B</div><div class="mdid">Tamanho do mercado global de economia colaborativa em 2025 (crescimento 17% a.a.)</div></div>
+      <div class="mdi"><div class="mdil">PARCERIA SEBRAE</div><div class="mdiv">12M+</div><div class="mdid">Empresas atendidas pelo Sebrae — canal de distribuição validado e escalável</div></div>
+      <div class="mdi"><div class="mdil">EXPANSÃO GEOGRÁFICA</div><div class="mdiv">27 estados</div><div class="mdid">Iniciado em SP, expandindo para todos os estados via Sebrae e governo estadual</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 MODELO DE NEGÓCIO -->
+<section class="s" id="modelo">
+  <div class="sn">07 / 12</div>
+  <span class="st">Modelo de Negócio</span>
+  <h2>Receita simples, <span class="to">escalável</span> e previsível</h2>
+  <div class="dv"></div>
+  <div class="g2" style="align-items:center">
+    <div class="mob">
+      <div style="font-size:11px;color:var(--gy);letter-spacing:2px">TAXA DE COMISSÃO</div>
+      <div class="mop">10%</div>
+      <div class="mol">em Reais (R$) sobre cada transação validada em X$</div>
+      <div class="moe"><div class="moel">Transação de X$1.000</div><div class="moev" style="color:var(--tl)">X$ 1.000</div></div>
+      <div class="moe"><div class="moel">Receita gerada em R$</div><div class="moev" style="color:var(--or)">R$ 100</div></div>
+      <div class="moe"><div class="moel">Usuário paga em</div><div class="moev">Reais (R$)</div></div>
+    </div>
+    <div>
+      <h2 style="font-size:24px;margin-bottom:20px">Múltiplas fontes de receita</h2>
+      <div class="g2" style="gap:14px">
+        <div class="c cteal"><div class="ci" style="font-size:22px">💸</div><div class="ct" style="font-size:14px">Taxa de Transação</div><div class="cd">10% sobre cada transação validada — receita principal</div></div>
+        <div class="c cteal"><div class="ci" style="font-size:22px">⚡</div><div class="ct" style="font-size:14px">Adiantamentos X$</div><div class="cd">Juros sobre adiantamentos de moeda complementar</div></div>
+        <div class="c corange"><div class="ci" style="font-size:22px">🏢</div><div class="ct" style="font-size:14px">Planos Corporativos</div><div class="cd">Assinaturas B2B para empresas com alto volume de transações</div></div>
+        <div class="c corange"><div class="ci" style="font-size:22px">🎯</div><div class="ct" style="font-size:14px">Rodadas de Negócio</div><div class="cd">Eventos presenciais e virtuais de networking multilateral</div></div>
+      </div>
+      <div style="background:var(--cd);border:1px solid var(--br);border-radius:12px;padding:20px;margin-top:16px">
+        <div style="font-size:11px;color:var(--gy);letter-spacing:1px;margin-bottom:8px">PROJEÇÃO DE RECEITA (5 ANOS)</div>
+        <div style="display:flex;gap:16px;align-items:flex-end">
+          <div style="text-align:center"><div style="height:40px;background:var(--tl);border-radius:4px;opacity:.4;width:32px"></div><div style="font-size:10px;color:var(--gy);margin-top:4px">Ano 1</div></div>
+          <div style="text-align:center"><div style="height:60px;background:var(--tl);border-radius:4px;opacity:.5;width:32px"></div><div style="font-size:10px;color:var(--gy);margin-top:4px">Ano 2</div></div>
+          <div style="text-align:center"><div style="height:90px;background:var(--tl);border-radius:4px;opacity:.6;width:32px"></div><div style="font-size:10px;color:var(--gy);margin-top:4px">Ano 3</div></div>
+          <div style="text-align:center"><div style="height:130px;background:var(--tl);border-radius:4px;opacity:.8;width:32px"></div><div style="font-size:10px;color:var(--gy);margin-top:4px">Ano 4</div></div>
+          <div style="text-align:center"><div style="height:180px;background:var(--tl);border-radius:4px;width:32px"></div><div style="font-size:10px;color:var(--gy);margin-top:4px">Ano 5</div></div>
+          <div style="flex:1;padding-left:16px"><div style="font-size:22px;font-weight:800;color:var(--tl)">R$40M+</div><div style="font-size:12px;color:var(--lt)">Receita projetada no Ano 5 com expansão nacional via Sebrae</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 TRAÇÃO -->
+<section class="s" id="tracao">
+  <div class="sn">08 / 12</div>
+  <span class="st">Tração e Validação</span>
+  <h2>Resultados <span class="tc">reais</span> e validação de mercado</h2>
+  <div class="dv"></div>
+  <div class="g4" style="margin-bottom:28px">
+    <div class="tc2"><div class="tn">900+</div><div class="tl2">Depoimentos de usuários satisfeitos</div></div>
+    <div class="tc2"><div class="tn o">1ª</div><div class="tl2">Loja física de trocas multilaterais do Brasil</div></div>
+    <div class="tc2"><div class="tn">2+</div><div class="tl2">Estados com operação ativa (SP + GO)</div></div>
+    <div class="tc2"><div class="tn o">27</div><div class="tl2">Estados com potencial de expansão via Sebrae</div></div>
+  </div>
+  <div class="seb">
+    <div class="sebi">🏆</div>
+    <div>
+      <div class="sebt">Plataforma escolhida pelo Sebrae Nacional via Edital Público</div>
+      <div class="sebd">A XporY.com foi selecionada pelo Sebrae Nacional como a Plataforma de Economia Colaborativa para ajudar na reativação econômica de MEIs, Micro e Pequenas Empresas. Iniciou em Sebrae-SP e está expandindo para outras unidades da federação.</div>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="c cteal">
+      <div class="ci">🎪</div>
+      <div class="ct">Feira do Empreendedor — Sebrae SP</div>
+      <div class="cd">Participação na maior feira de empreendedorismo do Brasil, apresentando a importância da Permuta Multilateral na resolução de dívidas de pequenos empresários</div>
+    </div>
+    <div class="c cteal">
+      <div class="ci">🤝</div>
+      <div class="ct">Rodadas de Negócio Sebrae</div>
+      <div class="cd">Aplicação consagrada junto ao Sebrae para Rodadas de Negócio entre Pequenos Empresários — permuta-rodada.sebraesp.com.br</div>
+    </div>
+  </div>
+</section>
+
+<!-- 09 RECONHECIMENTO -->
+<section class="s" id="reconhecimento">
+  <div class="sn">09 / 12</div>
+  <span class="st">Reconhecimento Público</span>
+  <h2>Validado pelo <span class="tc">poder público</span> e pela mídia</h2>
+  <div class="dv"></div>
+  <div class="g2">
+    <div class="ri"><div class="ric">📜</div><div><div class="rit">Lei Estadual de Economia Colaborativa — Goiás</div><div class="rid">A XporY.com contribuiu diretamente para a elaboração e aprovação da Lei Estadual de Economia Colaborativa em Goiás, já sancionada pelo Governador do Estado</div></div></div>
+    <div class="ri"><div class="ric">🏛️</div><div><div class="rit">Audiência Pública — Senado Federal</div><div class="rid">A empresa foi convidada para participar de Audiência Pública no Senado Federal, demonstrando o reconhecimento nacional do modelo de negócio</div></div></div>
+    <div class="ri"><div class="ric">🤝</div><div><div class="rit">Rodada de Conciliação com Governo de Goiás</div><div class="rid">O Governador de Goiás mencionou a aplicação da XporY juntamente com o Sebrae e o Governo do Estado na resolução do endividamento das empresas goianas</div></div></div>
+    <div class="ri"><div class="ric">📺</div><div><div class="rit">Mais de 900 Depoimentos + Destaque na Mídia</div><div class="rid">Ampla cobertura midiática e mais de 900 depoimentos de usuários e empresas que transformaram seus negócios com a plataforma</div></div></div>
+  </div>
+  <div style="background:var(--cd);border:1px solid var(--br);border-radius:12px;padding:20px;margin-top:24px;text-align:center">
+    <div style="font-size:11px;color:var(--gy);letter-spacing:2px;margin-bottom:12px">APLICAÇÕES DA SOLUÇÃO</div>
+    <div class="g4" style="gap:12px">
+      <div style="background:var(--bl);border-radius:8px;padding:12px;font-size:13px"><span style="color:var(--tl)">🔄</span> Rodadas de Negócio Multilateral</div>
+      <div style="background:var(--bl);border-radius:8px;padding:12px;font-size:13px"><span style="color:var(--tl)">⚖️</span> Resolução Credores/Devedores</div>
+      <div style="background:var(--bl);border-radius:8px;padding:12px;font-size:13px"><span style="color:var(--tl)">👥</span> Bonificação Funcionários (B2E)</div>
+      <div style="background:var(--bl);border-radius:8px;padding:12px;font-size:13px"><span style="color:var(--tl)">🚀</span> Investimento em Startups</div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 VANTAGENS COMPETITIVAS -->
+<section class="s" id="vantagens">
+  <div class="sn">10 / 12</div>
+  <span class="st">Vantagens Competitivas</span>
+  <h2>Por que a <span class="tc">XporY</span> vence?</h2>
+  <div class="dv"></div>
+  <div class="g3">
+    <div class="c cteal"><div class="ci">🥇</div><div class="ct">Pioneirismo</div><div class="cd">Primeira e maior plataforma de transações multilaterais do Brasil — vantagem de first-mover em mercado inexplorado</div></div>
+    <div class="c cteal"><div class="ci">🏛️</div><div class="ct">Validação Governamental</div><div class="cd">Parceria com Sebrae Nacional, reconhecimento no Senado Federal e contribuição para legislação estadual</div></div>
+    <div class="c cteal"><div class="ci">🔒</div><div class="ct">Moeda Proprietária</div><div class="cd">O X$ cria um ecossistema fechado que garante retenção de usuários e receita recorrente em cada transação</div></div>
+    <div class="c corange"><div class="ci">📡</div><div class="ct">Canal de Distribuição</div><div class="cd">Sebrae como canal de distribuição para 12M+ empresas — custo de aquisição de clientes drasticamente reduzido</div></div>
+    <div class="c corange"><div class="ci">🌐</div><div class="ct">Efeito de Rede</div><div class="cd">Quanto mais usuários, mais transações possíveis — modelo de crescimento exponencial e defensável</div></div>
+    <div class="c corange"><div class="ci">📱</div><div class="ct">Tecnologia Escalável</div><div class="cd">Plataforma web + app mobile pronta para escalar para qualquer estado do Brasil sem custo marginal significativo</div></div>
+  </div>
+</section>
+
+<!-- 11 ROADMAP -->
+<section class="s" id="roadmap">
+  <div class="sn">11 / 12</div>
+  <span class="st">Roadmap</span>
+  <h2>Plano de <span class="tc">expansão</span> nacional</h2>
+  <div class="dv"></div>
+  <p class="d">Com o investimento, a XporY.com acelerará sua expansão para todos os estados brasileiros, aproveitando a rede do Sebrae como canal de distribuição validado.</p>
+  <div class="rm">
+    <div class="rmi">
+      <div class="rmd done">✅</div>
+      <div class="rmp">CONCLUÍDO</div>
+      <div class="rmt">Fundação e Validação</div>
+      <div class="rmds">Plataforma lançada, parceria Sebrae-SP, loja física, 900+ usuários, lei em Goiás</div>
+    </div>
+    <div class="rmi">
+      <div class="rmd now">🚀</div>
+      <div class="rmp">ATUAL — 2026</div>
+      <div class="rmt">Expansão Regional</div>
+      <div class="rmds">Expansão para 5 estados via Sebrae, aumento de volume de transações, app mobile 2.0</div>
+    </div>
+    <div class="rmi">
+      <div class="rmd fut">📈</div>
+      <div class="rmp">2027</div>
+      <div class="rmt">Escala Nacional</div>
+      <div class="rmds">Presença em todos os 27 estados, integração com bancos e fintechs, B2E corporativo</div>
+    </div>
+    <div class="rmi">
+      <div class="rmd fut">🌎</div>
+      <div class="rmp">2028+</div>
+      <div class="rmt">Internacionalização</div>
+      <div class="rmds">Expansão para América Latina, parcerias com governos e organismos internacionais</div>
+    </div>
+  </div>
+  <div class="g3" style="margin-top:32px">
+    <div style="background:var(--cd);border:1px solid var(--br);border-radius:12px;padding:20px">
+      <div style="font-size:11px;color:var(--gy);letter-spacing:1px;margin-bottom:8px">USO DO INVESTIMENTO</div>
+      <ul class="ck">
+        <li><span class="ckv">→</span>Expansão para novos estados via Sebrae</li>
+        <li><span class="ckv">→</span>Desenvolvimento tecnológico (app + plataforma)</li>
+        <li><span class="ckv">→</span>Marketing e aquisição de usuários</li>
+      </ul>
+    </div>
+    <div style="background:var(--cd);border:1px solid var(--br);border-radius:12px;padding:20px">
+      <div style="font-size:11px;color:var(--gy);letter-spacing:1px;margin-bottom:8px">METAS 2026-2027</div>
+      <ul class="ck">
+        <li><span class="ckv">→</span>50.000+ usuários ativos na plataforma</li>
+        <li><span class="ckv">→</span>R$500M+ em volume de transações em X$</li>
+        <li><span class="ckv">→</span>R$50M+ em receita acumulada</li>
+      </ul>
+    </div>
+    <div style="background:var(--cd);border:1px solid var(--br);border-radius:12px;padding:20px">
+      <div style="font-size:11px;color:var(--gy);letter-spacing:1px;margin-bottom:8px">INDICADORES-CHAVE</div>
+      <ul class="ck">
+        <li><span class="ckv">→</span>GMV (Volume de transações em X$)</li>
+        <li><span class="ckv">→</span>Take Rate: 10% sobre GMV</li>
+        <li><span class="ckv">→</span>NPS e retenção de usuários</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 12 CAPTAÇÃO -->
+<section class="s ask" id="captacao">
+  <div class="sn">12 / 12</div>
+  <span class="st">Oportunidade de Investimento</span>
+  <h2>Invista na <span class="tc">economia colaborativa</span> do futuro</h2>
+  <div class="dv"></div>
+  <p class="d">A XporY.com está captando recursos para acelerar sua expansão nacional e consolidar sua posição como o maior marketplace de transações multilaterais do Brasil.</p>
+  <div class="aa">Rodada Série A</div>
+  <div class="au">
+    <div class="aui">
+      <div class="aup">40%</div>
+      <div class="aul">🚀 Expansão Tecnológica</div>
+      <div class="aud">Desenvolvimento do app mobile 2.0, novas funcionalidades e infraestrutura escalável</div>
+    </div>
+    <div class="aui">
+      <div class="aup o">35%</div>
+      <div class="aul">📡 Expansão Comercial</div>
+      <div class="aud">Abertura de novos estados via Sebrae, equipe comercial e parcerias estratégicas</div>
+    </div>
+    <div class="aui">
+      <div class="aup">25%</div>
+      <div class="aul">📣 Marketing e Crescimento</div>
+      <div class="aud">Aquisição de usuários, branding nacional e campanhas de ativação em novos mercados</div>
+    </div>
+  </div>
+  <div class="g3" style="margin-top:28px">
+    <div style="background:linear-gradient(135deg,rgba(0,196,180,.08),rgba(0,196,180,.02));border:1px solid rgba(0,196,180,.25);border-radius:12px;padding:20px;text-align:center">
+      <div style="font-size:11px;color:var(--gy);letter-spacing:1px;margin-bottom:6px">VALUATION PRÉ-MONEY</div>
+      <div style="font-size:28px;font-weight:900;color:var(--tl)">A definir</div>
+      <div style="font-size:12px;color:var(--lt);margin-top:4px">Baseado em tração e pipeline</div>
+    </div>
+    <div style="background:linear-gradient(135deg,rgba(245,166,35,.08),rgba(245,166,35,.02));border:1px solid rgba(245,166,35,.25);border-radius:12px;padding:20px;text-align:center">
+      <div style="font-size:11px;color:var(--gy);letter-spacing:1px;margin-bottom:6px">RETORNO ESPERADO</div>
+      <div style="font-size:28px;font-weight:900;color:var(--or)">10x — 20x</div>
+      <div style="font-size:12px;color:var(--lt);margin-top:4px">Em 5 anos com expansão nacional</div>
+    </div>
+    <div style="background:var(--cd);border:1px solid var(--br);border-radius:12px;padding:20px;text-align:center">
+      <div style="font-size:11px;color:var(--gy);letter-spacing:1px;margin-bottom:6px">INSTRUMENTO</div>
+      <div style="font-size:28px;font-weight:900;color:var(--wh)">Equity</div>
+      <div style="font-size:12px;color:var(--lt);margin-top:4px">Participação societária com tag-along</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTATO -->
+<section class="s con" id="contato">
+  <div class="conl"><span style="color:var(--tl)">X</span>por<span style="color:var(--or)">Y</span>.com</div>
+  <div class="conu">xpory.com</div>
+  <h2 style="margin-bottom:12px">Vamos construir o futuro da <span class="tc">economia colaborativa</span> juntos?</h2>
+  <p style="font-size:16px;color:var(--lt);max-width:500px;margin:0 auto 40px">Entre em contato para agendar uma reunião e receber o material completo de due diligence.</p>
+  <div class="cong">
+    <div class="coni"><div class="conlb">SITE</div><div class="conv" style="color:var(--tl)">xpory.com</div></div>
+    <div class="coni"><div class="conlb">INSTAGRAM</div><div class="conv">@XporY</div></div>
+    <div class="coni"><div class="conlb">YOUTUBE</div><div class="conv">youtube.com/XporY</div></div>
+    <div class="coni"><div class="conlb">SEBRAE</div><div class="conv" style="color:var(--tl)">permuta.sebraesp.com.br</div></div>
+  </div>
+  <div style="margin-top:48px;padding:24px;background:var(--cd);border:1px solid var(--br);border-radius:12px;max-width:600px;text-align:center">
+    <div style="font-size:11px;color:var(--gy);letter-spacing:2px;margin-bottom:8px">INDICAÇÃO EXCLUSIVA</div>
+    <div style="font-size:14px;color:var(--lt)">Cadastre-se na plataforma via link de indicação:</div>
+    <div style="font-size:16px;font-weight:700;color:var(--tl);margin-top:6px">xpory.com/indicar/qhsYkx65erb7</div>
+  </div>
+</section>
+
+<footer>
+  <div class="fll"><span class="x">X</span>por<span class="y">Y</span>.com — Pitch Deck Investidores 2026</div>
+  <div class="fc">DOCUMENTO CONFIDENCIAL — Uso exclusivo para fins de investimento</div>
+</footer>
+
+</body>
+</html>
