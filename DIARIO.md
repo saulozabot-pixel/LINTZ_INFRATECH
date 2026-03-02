@@ -260,6 +260,50 @@ Criação de pitch deck completo para apresentação a bancos de investimento e 
 
 ---
 
+## 📅 2026-03-02 — Sessão 3 — Ferramenta: Gerenciador de Créditos AI
+
+### ✅ O que foi feito
+
+#### 💳 `tools/credit-manager.html` — Dashboard de ROI e Créditos BLACKBOX AI
+Criação de ferramenta standalone (HTML puro + localStorage) para controle financeiro das sessões de desenvolvimento com IA.
+
+**Funcionalidades implementadas:**
+
+| Feature | Descrição |
+|---------|-----------|
+| 📊 5 cards de stats | Créditos totais, Custo R$, Tempo AI, Equiv. Dev (h), ROI |
+| ⚙️ Config ajustável | Custo/crédito, multiplicador AI→Dev, hora dev sênior, câmbio USD/BRL |
+| 📋 Histórico de sessões | Tabela com data, projeto, descrição, créditos, tempo, equiv. dev, custo |
+| 📈 Gráfico de barras | Créditos por projeto (LUX, Capitólio, XporY, Outro) |
+| 📊 Painel ROI | Custo AI vs custo dev humano, economia total, multiplicador, horas economizadas |
+| ⏱️ Timer integrado | Cronômetro da sessão atual com pause/resume + equiv. dev em tempo real |
+| 📥 Preload de dados | Botão carrega automaticamente as sessões de hoje (2026-03-02) |
+| 📤 Export CSV | Download do histórico completo em CSV |
+| 💾 Persistência | localStorage — dados sobrevivem ao fechar/reabrir o browser |
+
+**Configurações padrão:**
+- Custo por crédito: **R$ 0,30**
+- Multiplicador AI→Dev: **8x** (1h AI = 8h dev humano = 1 dia útil)
+- Hora dev sênior: **R$ 150**
+- Câmbio: **R$ 5,80/USD**
+
+**ROI calculado para hoje (85 créditos, 75 min AI):**
+- Custo AI: **R$ 25,50**
+- Equiv. dev: **10h** de trabalho humano
+- Custo dev equivalente: **R$ 1.500**
+- **Economia: R$ 1.474,50 → ROI 58x**
+
+**Arquivo:** `tools/credit-manager.html` (standalone, sem dependências, sem servidor)
+
+### 🔗 Como usar
+```
+Abrir: tools/credit-manager.html no browser
+Clicar: "📥 Carregar dados de hoje" para pré-carregar sessões de 2026-03-02
+Ajustar: configurações de custo/multiplicador conforme seu plano BLACKBOX
+```
+
+---
+
 ## 📅 [TEMPLATE PARA PRÓXIMOS DIAS]
 
 <!--

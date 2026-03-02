@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💳 Gerenciador de Créditos AI</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0f1117;--card:#1a1d2e;--card2:#222538;--border:#2d3154;--accent:#6c63ff;--teal:#00c4b4;--orange:#f5a623;--green:#22c55e;--red:#ef4444;--text:#e2e8f0;--muted:#94a3b8}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh}
+header{background:linear-gradient(135deg,#1a1d2e,#222538);border-bottom:1px solid var(--border);padding:18px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+h1{font-size:1.35rem;font-weight:700}h1 span{color:var(--accent)}
+.sub{color:var(--muted);font-size:.82rem;margin-top:2px}
+.live{background:var(--green);color:#000;font-size:.68rem;font-weight:700;padding:3px 10px;border-radius:20px;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+.wrap{max-width:1380px;margin:0 auto;padding:22px 28px}
+.cfg{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 22px;margin-bottom:22px;display:flex;gap:22px;align-items:flex-end;flex-wrap:wrap}
+.cfg label{font-size:.75rem;color:var(--muted);display:block;margin-bottom:4px}
+.cfg input{background:var(--bg);border:1px solid var(--border);color:var(--text);padding:7px 11px;border-radius:8px;font-size:.88rem;width:125px}
+.cfg input:focus{outline:none;border-color:var(--accent)}
+.cfg-title{font-size:.83rem;font-weight:600;color:var(--accent);align-self:center}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:14px;margin-bottom:22px}
+.sc{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;position:relative;overflow:hidden}
+.sc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.sc.p::before{background:var(--accent)}.sc.t::before{background:var(--teal)}.sc.o::before{background:var(--orange)}.sc.g::before{background:var(--green)}.sc.r::before{background:var(--red)}
+.sl{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px}
+.sv{font-size:1.65rem;font-weight:700;line-height:1}
+.ss{font-size:.71rem;color:var(--muted);margin-top:5px}
+.si{position:absolute;right:13px;top:13px;font-size:1.5rem;opacity:.22}
+.grid{display:grid;grid-template-columns:1fr 360px;gap:22px}
+@media(max-width:880px){.grid{grid-template-columns:1fr}}
+.col{display:flex;flex-direction:column;gap:22px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:22px}
+.ct{font-size:.97rem;font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.fg .full{grid-column:1/-1}
+.fg label{font-size:.76rem;color:var(--muted);display:block;margin-bottom:5px}
+.fg input,.fg select,.fg textarea{background:var(--bg);border:1px solid var(--border);color:var(--text);padding:9px 12px;border-radius:8px;font-size:.88rem;font-family:inherit;width:100%}
+.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--accent)}
+.fg textarea{resize:vertical;min-height:58px}
+.btn{padding:9px 18px;border-radius:8px;border:none;cursor:pointer;font-size:.88rem;font-weight:600;transition:all .2s}
+.btn-p{background:var(--accent);color:#fff}.btn-p:hover{background:#5a52e0}
+.btn-g{background:var(--card2);color:var(--muted);border:1px solid var(--border)}
+.btn-sm{font-size:.72rem;padding:4px 9px;border-radius:6px;border:1px solid var(--red);background:transparent;color:var(--red);cursor:pointer}
+.btn-sm:hover{background:var(--red);color:#fff}
+.btn-exp{background:var(--teal);color:#000;font-size:.8rem;padding:7px 15px;border-radius:8px;border:none;cursor:pointer;font-weight:600}
+.btn-exp:hover{background:#00a89a}
+.btn-pre{background:var(--card2);border:1px dashed var(--border);color:var(--muted);font-size:.76rem;padding:6px 13px;border-radius:8px;cursor:pointer}
+.btn-pre:hover{border-color:var(--accent);color:var(--accent)}
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.81rem}
+th{text-align:left;padding:9px 11px;color:var(--muted);font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:10px 11px;border-bottom:1px solid var(--border);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(108,99,255,.04)}
+.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:.68rem;font-weight:600;white-space:nowrap}
+.bl{background:rgba(108,99,255,.2);color:var(--accent)}
+.bc{background:rgba(0,196,180,.2);color:var(--teal)}
+.bx{background:rgba(245,166,35,.2);color:var(--orange)}
+.bo{background:rgba(148,163,184,.2);color:var(--muted)}
+.rr{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)}
+.rr:last-child{border-bottom:none}
+.rl{font-size:.81rem;color:var(--muted)}
+.rv{font-size:.97rem;font-weight:700}
+.rv.g{color:var(--green)}.rv.o{color:var(--orange)}.rv.a{color:var(--accent)}
+.bars{display:flex;flex-direction:column;gap:9px}
+.br{display:flex;align-items:center;gap:9px}
+.bl2{font-size:.73rem;color:var(--muted);width:105px;text-align:right;flex-shrink:0}
+.bw{flex:1;background:var(--bg);border-radius:4px;height:17px;overflow:hidden}
+.bb{height:100%;border-radius:4px;transition:width .5s ease;min-width:4px}
+.bv{font-size:.73rem;color:var(--muted);width:48px;text-align:right;flex-shrink:0}
+.empty{text-align:center;padding:28px;color:var(--muted)}
+.empty-i{font-size:2.2rem;margin-bottom:9px}
+.info{background:rgba(108,99,255,.08);border:1px solid rgba(108,99,255,.25);border-radius:10px;padding:13px 15px;font-size:.79rem;color:var(--muted);line-height:1.7}
+.info strong{color:var(--accent)}
+.timer{font-size:2.3rem;font-weight:700;font-variant-numeric:tabular-nums;text-align:center;padding:10px 0 3px}
+footer{text-align:center;padding:18px;color:var(--muted);font-size:.76rem;border-top:1px solid var(--border);margin-top:28px}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>💳 Gerenciador de Créditos <span>BLACKBOX AI</span></h1>
+    <div class="sub">Controle financeiro, ROI e equivalência de horas de desenvolvimento</div>
+  </div>
+  <div style="display:flex;gap:9px;align-items:center;flex-wrap:wrap">
+    <span class="live">● LIVE</span>
+    <button class="btn-pre" onclick="preloadData()">📥 Carregar dados de hoje</button>
+    <button class="btn-exp" onclick="exportCSV()">📤 Exportar CSV</button>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="cfg">
+    <span class="cfg-title">⚙️ Config</span>
+    <div><label for="cc">Custo/crédito (R$)</label><input id="cc" type="number" title="Custo por crédito em reais" value="0.30" step="0.01" min="0.01" onchange="render()"></div>
+    <div><label for="cm">Multiplicador AI→Dev</label><input id="cm" type="number" title="Vezes mais rápido que dev humano" value="8" step="1" min="1" onchange="render()"></div>
+    <div><label for="cd">Hora dev sênior (R$)</label><input id="cd" type="number" title="Valor hora desenvolvedor sênior" value="150" step="10" min="10" onchange="render()"></div>
+    <div><label for="ce">Câmbio USD→BRL</label><input id="ce" type="number" title="Taxa de câmbio" value="5.80" step="0.10" min="1" onchange="render()"></div>
+  </div>
+
+  <div class="stats">
+    <div class="sc p"><div class="si">💳</div><div class="sl">Total Créditos</div><div class="sv" id="s1">0</div><div class="ss" id="s1b">0 sessões</div></div>
+    <div class="sc o"><div class="si">💰</div><div class="sl">Custo AI (R$)</div><div class="sv" id="s2">R$ 0</div><div class="ss" id="s2b">≈ USD 0</div></div>
+    <div class="sc t"><div class="si">⏱️</div><div class="sl">Tempo AI (min)</div><div class="sv" id="s3">0</div><div class="ss" id="s3b">≈ 0h AI</div></div>
+    <div class="sc g"><div class="si">👨‍💻</div><div class="sl">Equiv. Dev (h)</div><div class="sv" id="s4">0h</div><div class="ss" id="s4b">Custaria R$ 0</div></div>
+    <div class="sc r"><div class="si">📈</div><div class="sl">ROI / Economia</div><div class="sv" id="s5">0x</div><div class="ss" id="s5b">Economizou R$ 0</div></div>
+  </div>
+
+  <div class="grid">
+    <div class="col">
+      <div class="card">
+        <div class="ct">➕ Registrar Sessão</div>
+        <div class="fg">
+          <div><label for="fd">Data</label><input id="fd" type="date" title="Data da sessão"></div>
+          <div><label for="fp">Projeto</label>
+            <select id="fp" title="Projeto">
+              <option value="lux">🚗 LUX Driver</option>
+              <option value="capitolio">🏠 Capitólio Premium</option>
+              <option value="xpory">💱 XporY</option>
+              <option value="outro">📁 Outro</option>
+            </select>
+          </div>
+          <div><label for="fcr">Créditos (estimativa)</label><input id="fcr" type="number" title="Créditos estimados" placeholder="ex: 85" min="1"></div>
+          <div><label for="ft">Tempo AI (min)</label><input id="ft" type="number" title="Minutos de sessão" placeholder="ex: 30" min="1"></div>
+          <div class="full"><label for="fde">Descrição</label><textarea id="fde" title="Descrição da tarefa" placeholder="ex: Criação pitch deck XporY, 12 slides, deploy Vercel..."></textarea></div>
+        </div>
+        <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-p" onclick="addSession()">✅ Adicionar</button>
+          <button class="btn btn-g" onclick="clearForm()">🗑️ Limpar</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="ct" style="justify-content:space-between">
+          <span>📋 Histórico de Sessões</span>
+          <button class="btn-sm" onclick="clearAll()">🗑️ Limpar tudo</button>
+        </div>
+        <div class="tw" id="tbl"></div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card">
+        <div class="ct">📊 Análise de ROI</div>
+        <div class="rr"><div class="rl">💳 Custo total AI</div><div class="rv o" id="r1">R$ 0,00</div></div>
+        <div class="rr"><div class="rl">👨‍💻 Custo equiv. dev</div><div class="rv" id="r2">R$ 0,00</div></div>
+        <div class="rr"><div class="rl">💚 Economia total</div><div class="rv g" id="r3">R$ 0,00</div></div>
+        <div class="rr"><div class="rl">🚀 Multiplicador ROI</div><div class="rv a" id="r4">0x</div></div>
+        <div class="rr"><div class="rl">⏱️ Horas dev economizadas</div><div class="rv g" id="r5">0h</div></div>
+      </div>
+
+      <div class="card">
+        <div class="ct">📈 Créditos por Projeto</div>
+        <div class="bars" id="chart"></div>
+      </div>
+
+      <div class="card">
+        <div class="ct">⏱️ Timer da Sessão Atual</div>
+        <div class="timer" id="tmr">00:00:00</div>
+        <div style="text-align:center;color:var(--muted);font-size:.76rem;margin-bottom:13px" id="tmr-eq">Equiv. dev: <strong>0h 0min</strong></div>
+        <div style="display:flex;gap:9px;justify-content:center">
+          <button class="btn btn-p" id="tbtn" onclick="toggleTimer()">▶️ Iniciar</button>
+          <button class="btn btn-g" onclick="resetTimer()">🔄 Reset</button>
+        </div>
+      </div>
+
+      <div class="info">
+        <strong>🤖 Como funciona o multiplicador?</strong><br><br>
+        Converte tempo AI em tempo equivalente de dev humano.<br><br>
+        <strong>Exemplo com 8x:</strong><br>
+        • 30 min AI = 4h de dev humano<br>
+        • 1h AI = 8h de dev (1 dia útil)<br><br>
+        <strong>Por quê 8x?</strong> A AI não pesquisa, não comete erros de digitação, não faz pausas e executa múltiplas tarefas em paralelo.
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>💳 Gerenciador de Créditos BLACKBOX AI · Dados salvos localmente (localStorage) · Nenhum dado enviado para servidores</footer>
+
+<script>
+var sessions = JSON.parse(localStorage.getItem('bb-sessions') || '[]');
+var timerInterval = null;
+var timerSeconds = 0;
+var timerRunning = false;
+
+function save() { localStorage.setItem('bb-sessions', JSON.stringify(sessions)); }
+
+function cfg() {
+  return {
+    cc: parseFloat(document.getElementById('cc').value) || 0.30,
+    cm: parseFloat(document.getElementById('cm').value) || 8,
+    cd: parseFloat(document.getElementById('cd').value) || 150,
+    ce: parseFloat(document.getElementById('ce').value) || 5.80
+  };
+}
+
+function setToday() {
+  document.getElementById('fd').value = new Date().toISOString().split('T')[0];
+}
+
+function clearForm() {
+  document.getElementById('fcr').value = '';
+  document.getElementById('ft').value = '';
+  document.getElementById('fde').value = '';
+  setToday();
+}
+
+function addSession() {
+  var date = document.getElementById('fd').value;
+  var proj = document.getElementById('fp').value;
+  var cred = parseInt(document.getElementById('fcr').value);
+  var time = parseInt(document.getElementById('ft').value);
+  var desc = document.getElementById('fde').value.trim();
+  if (!date || !cred || !time || !desc) { alert('Preencha todos os campos!'); return; }
+  sessions.push({ id: Date.now(), date: date, project: proj, credits: cred, time: time, desc: desc });
+  save(); clearForm(); render();
+}
+
+function deleteSession(id) {
+  if (!confirm('Remover esta sessão?')) return;
+  sessions = sessions.filter(function(s) { return s.id !== id; });
+  save(); render();
+}
+
+function clearAll() {
+  if (!confirm('Limpar TODAS as sessões?')) return;
+  sessions = []; save(); render();
+}
+
+function preloadData() {
+  if (sessions.length > 0 && !confirm('Já existem sessões. Adicionar dados de hoje mesmo assim?')) return;
+  var today = new Date().toISOString().split('T')[0];
+  sessions = sessions.concat([
+    { id: Date.now()+1, date: today, project: 'capitolio', credits: 15, time: 20, desc: 'Retomada de contexto Capitólio Premium — leitura de arquivos, revisão TODO' },
+    { id: Date.now()+2, date: today, project: 'xpory',     credits: 60, time: 45, desc: 'Criação pitch deck institucional XporY.com — 12 slides, HTML completo, design dark teal+orange' },
+    { id: Date.now()+3, date: today, project: 'xpory',     credits: 10, time: 10, desc: 'Deploy Vercel projeto dedicado xpory.vercel.app, vercel.json, git init, commit' }
+  ]);
+  save(); render();
+  alert('Dados de hoje carregados! (2026-03-02 — XporY + Capitólio)');
+}
+
+var PLABELS = { lux:'🚗 LUX Driver', capitolio:'🏠 Capitólio Premium', xpory:'💱 XporY', outro:'📁 Outro' };
+var PCOLORS = { lux:'#6c63ff', capitolio:'#00c4b4', xpory:'#f5a623', outro:'#94a3b8' };
+var PBADGE  = { lux:'bl', capitolio:'bc', xpory:'bx', outro:'bo' };
+
+function fmt(n) { return n.toLocaleString('pt-BR', { minimumFractionDigits:2, maximumFractionDigits:2 }); }
+function fmtI(n) { return n.toLocaleString('pt-BR'); }
+function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'<').replace(/>/g,'>'); }
+
+function render() {
+  var c = cfg();
+  var totCred = sessions.reduce(function(a,s){ return a+s.credits; }, 0);
+  var totMin  = sessions.reduce(function(a,s){ return a+s.time; }, 0);
+  var costBRL = totCred * c.cc;
+  var costUSD = costBRL / c.ce;
+  var devH    = (totMin * c.cm) / 60;
+  var devCost = devH * c.cd;
+  var savings = devCost - costBRL;
+  var roi     = costBRL > 0 ? devCost / costBRL : 0;
+
+  document.getElementById('s1').textContent  = fmtI(totCred);
+  document.getElementById('s1b').textContent = sessions.length + ' sessão(ões)';
+  document.getElementById('s2').textContent  = 'R$ ' + fmt(costBRL);
+  document.getElementById('s2b').textContent = '≈ USD ' + fmt(costUSD);
+  document.getElementById('s3').textContent  = fmtI(totMin);
+  document.getElementById('s3b').textContent = '≈ ' + (totMin/60).toFixed(1) + 'h AI';
+  document.getElementById('s4').textContent  = devH.toFixed(1) + 'h';
+  document.getElementById('s4b').textContent = 'Custaria R$ ' + fmt(devCost);
+  document.getElementById('s5').textContent  = roi.toFixed(1) + 'x';
+  document.getElementById('s5b').textContent = 'Economizou R$ ' + fmt(savings);
+
+  document.getElementById('r1').textContent = 'R$ ' + fmt(costBRL);
+  document.getElementById('r2').textContent = 'R$ ' + fmt(devCost);
+  document.getElementById('r3').textContent = 'R$ ' + fmt(savings);
+  document.getElementById('r4').textContent = roi.toFixed(1) + 'x';
+  document.getElementById('r5').textContent = devH.toFixed(1) + 'h';
+
+  // Table
+  var tbl = document.getElementById('tbl');
+  if (sessions.length === 0) {
+    tbl.innerHTML = '<div class="empty"><div class="empty-i">📭</div><div>Nenhuma sessão ainda.</div><div style="margin-top:7px;font-size:.78rem">Use o formulário ou clique em "Carregar dados de hoje".</div></div>';
+  } else {
+    var sorted = sessions.slice().sort(function(a,b){ return new Date(b.date)-new Date(a.date); });
+    var html = '<table><thead><tr><th>Data</th><th>Projeto</th><th>Descrição</th><th>Créditos</th><th>Tempo AI</th><th>Equiv.Dev</th><th>Custo R$</th><th></th></tr></thead><tbody>';
+    sorted.forEach(function(s) {
+      var cost = s.credits * c.cc;
+      var dh   = (s.time * c.cm / 60).toFixed(1);
+      var dt   = new Date(s.date + 'T12:00:00').toLocaleDateString('pt-BR');
+      var bg   = PBADGE[s.project] || 'bo';
+      var lb   = PLABELS[s.project] || s.project;
+      html += '<tr>';
+      html += '<td style="white-space:nowrap;color:var(--muted)">' + dt + '</td>';
+      html += '<td><span class="badge ' + bg + '">' + lb + '</span></td>';
+      html += '<td style="max-width:240px;font-size:.78rem">' + esc(s.desc) + '</td>';
+      html += '<td style="font-weight:600;color:var(--orange)">' + fmtI(s.credits) + '</td>';
+      html += '<td style="color:var(--muted)">' + s.time + 'min</td>';
+      html += '<td style="color:var(--teal)">' + dh + 'h</td>';
+      html += '<td style="font-weight:600;color:var(--green)">R$ ' + fmt(cost) + '</td>';
+      html += '<td><button class="btn-sm" onclick="deleteSession(' + s.id + ')">✕</button></td>';
+      html += '</tr>';
+    });
+    html += '</tbody></table>';
+    tbl.innerHTML = html;
+  }
+
+  // Chart
+  var byProj = {};
+  sessions.forEach(function(s) {
+    byProj[s.project] = (byProj[s.project] || 0) + s.credits;
+  });
+  var maxC = Math.max.apply(null, Object.values(byProj).concat([1]));
+  var chart = document.getElementById('chart');
+  if (Object.keys(byProj).length === 0) {
+    chart.innerHTML = '<div class="empty" style="padding:14px">Sem dados ainda</div>';
+  } else {
+    var ch = '';
+    Object.keys(byProj).forEach(function(p) {
+      var pct = (byProj[p] / maxC * 100).toFixed(1);
+      var col = PCOLORS[p] || '#94a3b8';
+      var lb  = PLABELS[p] || p;
+      ch += '<div class="br">';
+      ch += '<div class="bl2">' + lb + '</div>';
+      ch += '<div class="bw"><div class="bb" style="width:' + pct + '%;background:' + col + '"></div></div>';
+      ch += '<div class="bv">' + fmtI(byProj[p]) + '</div>';
+      ch += '</div>';
+    });
+    chart.innerHTML = ch;
+  }
+}
+
+// Timer
+function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+function updateTimerDisplay() {
+  var h = Math.floor(timerSeconds / 3600);
+  var m = Math.floor((timerSeconds % 3600) / 60);
+  var s = timerSeconds % 60;
+  document.getElementById('tmr').textContent = pad(h) + ':' + pad(m) + ':' + pad(s);
+  var c = cfg();
+  var devMin = (timerSeconds / 60) * c.cm;
+  var dh = Math.floor(devMin / 60);
+  var dm = Math.round(devMin % 60);
+  document.getElementById('tmr-eq').innerHTML = 'Equiv. dev: <strong>' + dh + 'h ' + dm + 'min</strong>';
+}
+
+function toggleTimer() {
+  if (timerRunning) {
+    clearInterval(timerInterval);
+    timerRunning = false;
+    document.getElementById('tbtn').textContent = '▶️ Continuar';
+  } else {
+    timerInterval = setInterval(function() { timerSeconds++; updateTimerDisplay(); }, 1000);
+    timerRunning = true;
+    document.getElementById('tbtn').textContent = '⏸️ Pausar';
+  }
+}
+
+function resetTimer() {
+  clearInterval(timerInterval);
+  timerRunning = false;
+  timerSeconds = 0;
+  document.getElementById('tbtn').textContent = '▶️ Iniciar';
+  updateTimerDisplay();
+}
+
+function exportCSV() {
+  if (sessions.length === 0) { alert('Nenhuma sessão para exportar.'); return; }
+  var c = cfg();
+  var lines = ['Data,Projeto,Descricao,Creditos,Tempo_min,Equiv_Dev_h,Custo_BRL'];
+  sessions.forEach(function(s) {
+    var dh = (s.time * c.cm / 60).toFixed(2);
+    var cost = (s.credits * c.cc).toFixed(2);
+    lines.push([s.date, PLABELS[s.project] || s.project, '"' + s.desc.replace(/"/g,'""') + '"', s.credits, s.time, dh, cost].join(','));
+  });
+  var blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = 'creditos-blackbox-' + new Date().toISOString().split('T')[0] + '.csv';
+  a.click(); URL.revokeObjectURL(url);
+}
+
+// Init
+setToday();
+render();
+</script>
+</body>
+</html>
