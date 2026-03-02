@@ -1,4 +1,4 @@
-# 📓 Diárokio de Desenvolvimento — LUX Driver
+# 📓 Diário de Desenvolvimento — LUX Driver
 
 > Registro diário das atividades, decisões e progresso do projeto.
 
@@ -177,6 +177,86 @@ Projeto Next.js 16 (Turbopack) com deploy na Vercel. Sessão de correções e no
 - [ ] Integração de pagamento (Stripe/Mercado Pago)
 - [ ] Configurar WhatsApp com Evolution API + n8n
 - [ ] Configurar env var `ADMIN_PASSWORD` na Vercel (atualmente usa fallback `capitolio2026`)
+
+---
+
+## 📅 2026-03-02 — Sessão 2 — Projeto: XporY Pitch Deck
+
+### ✅ O que foi feito
+
+#### 📊 XporY.com — Pitch Deck Institucional para Investidores
+Criação de pitch deck completo para apresentação a bancos de investimento e fundos de investimento, baseado na apresentação institucional existente (PDF em Downloads).
+
+**Arquivo criado:**
+- `docs/pitch-xpory-investidores.html` — Pitch deck completo (HTML single-file, 567 linhas)
+- `C:\Users\SAULO\xpory-pitch\index.html` — Cópia para deploy dedicado
+- `C:\Users\SAULO\xpory-pitch\vercel.json` — Config Vercel do projeto XporY
+
+**Conteúdo do pitch deck (12 slides):**
+
+| Slide | Título | Conteúdo |
+|-------|--------|----------|
+| 01 | Cover | Logo, tagline, 3 badges (Sebrae, Lei GO, Senado), 4 stats |
+| 02 | O Problema | 22M+ MEIs, R$400B ociosos, 5 dores do mercado |
+| 03 | A Solução | 6 pilares: Web+App, X$, Rede Multilateral, Loja Física, Adiantamento, Resolução de Dívidas |
+| 04 | Como Funciona | Fluxo Ana→Pedro→Luísa→Ricardo + benefícios vendedor/comprador |
+| 05 | A Moeda X$ | Paridade X$1=R$1, 4 operações, diferencial competitivo |
+| 06 | Mercado | TAM R$2,5T / SAM R$400B / SOM R$4B + 4 métricas |
+| 07 | Modelo de Negócio | 10% taxa, 4 fontes de receita, gráfico projeção R$40M+ Ano 5 |
+| 08 | Tração | 900+ depoimentos, Sebrae Nacional, Feira do Empreendedor |
+| 09 | Reconhecimento | Lei GO, Senado Federal, Governador GO, Mídia + 4 aplicações |
+| 10 | Vantagens Competitivas | 6 diferenciais: Pioneirismo, Validação Gov., Moeda Proprietária, Sebrae, Efeito Rede, Tecnologia |
+| 11 | Roadmap | 4 fases: Concluído → 2026 → 2027 → 2028+ Internacional |
+| 12 | Captação | Série A, uso dos recursos (40/35/25%), valuation, retorno 10x-20x |
+| + | Contato | Links, redes sociais, botão Cadastre-se funcional |
+
+**Funcionalidades:**
+- Design dark com identidade visual XporY (teal `#00c4b4` + laranja `#f5a623`)
+- Responsivo (mobile-friendly)
+- Navegação fixa com âncoras para cada seção
+- Badge "CONFIDENCIAL" no header
+- Botão **🚀 Cadastre-se Agora** funcional → `https://xpory.com/indicar/qhsYkx65erb7` (abre em nova aba)
+
+**Deploy:**
+- Projeto Vercel dedicado criado: `saulozabot-pixels-projects/xpory`
+- URL de produção: **https://xpory.vercel.app**
+- Deploy via Vercel CLI: `vercel --yes` (sem passar pelo projeto Lux)
+- Commit no repo Lux: `feat: pitch deck institucional XporY.com para investidores`
+
+### 🐛 Problemas encontrados e soluções
+
+| Problema | Solução |
+|---|---|
+| `create_file` truncava o conteúdo (arquivo muito grande) | Usado `edit_file` para completar os slides restantes |
+| `start ""` não funciona no PowerShell | Usado `Invoke-Item` para abrir o HTML no browser |
+| GitHub CLI precisava de auth para criar repo | Deploy direto via Vercel CLI (sem precisar do GitHub) |
+| URL do Vercel mostrava "lux" no nome | Criado projeto Vercel separado com nome "xpory" → URL `xpory.vercel.app` |
+
+### 🔗 Links do projeto
+
+| Link | Descrição |
+|------|-----------|
+| https://xpory.vercel.app | 🌐 Pitch deck online (URL limpa, sem "lux") |
+| https://vercel.com/saulozabot-pixels-projects/xpory | ⚙️ Painel Vercel do projeto XporY |
+| C:\Users\SAULO\xpory-pitch\ | 📁 Projeto local dedicado |
+| https://xpory.com/indicar/qhsYkx65erb7 | 🔗 Link de indicação XporY (botão Cadastre-se) |
+
+### 💰 Créditos BLACKBOX AI utilizados hoje (estimativa)
+
+> ⚠️ Nota: O BLACKBOX AI não expõe contagem exata de créditos por sessão. Estimativa baseada em volume de tokens processados.
+
+| Projeto | Atividade | Créditos estimados |
+|---------|-----------|-------------------|
+| Capitólio Premium | Retomada de contexto + leitura de arquivos | ~15 créditos |
+| XporY Pitch Deck | Leitura do PDF + criação do HTML (12 slides) + iterações de edição | ~60 créditos |
+| XporY Deploy | Deploy Vercel CLI + commits + ajustes | ~10 créditos |
+| **Total estimado** | | **~85 créditos** |
+
+### 💡 Pendências / Próximos passos
+- [ ] Adicionar dados reais de faturamento/usuários quando disponíveis
+- [ ] Personalizar valuation e valor da rodada Série A
+- [ ] Adicionar fotos reais da plataforma XporY nos slides
+- [ ] Continuar correções do Capitólio Premium (fotos reais, pagamento, WhatsApp)
 
 ---
 
