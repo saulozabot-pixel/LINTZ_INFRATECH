@@ -104,6 +104,82 @@
 
 ---
 
+## 📅 2026-03-02 (Segunda-feira) — Projeto: Capitólio Premium
+
+### ✅ O que foi feito
+
+#### 🏠 Capitólio Premium — Site de aluguel de luxo em Capitólio/MG
+Projeto Next.js 16 (Turbopack) com deploy na Vercel. Sessão de correções e novas funcionalidades.
+
+**Correções de build (Next.js 16):**
+- Removido `middleware.ts` conflitante com `proxy.ts` (Next.js 16 não aceita os dois simultaneamente)
+- Corrigido `eslint.config.mjs` com extensões `.js` nos imports
+- Corrigido `app/globals.css` para sintaxe Tailwind v4 (`@import "tailwindcss"`)
+- Removido BOM (Byte Order Mark) de `app/admin/page.tsx`, `app/reservar/page.tsx`, `lib/properties-data.ts`
+
+**Novas funcionalidades implementadas:**
+- `components/HeroSlideshow.tsx` — Slideshow client-side com 4 imagens Unsplash, crossfade 5s, dots de navegação
+- `app/page.tsx` — Reescrito com HeroSlideshow, fotos Unsplash nas propriedades, seção galeria, stats bar
+- `proxy.ts` — Proteção de rotas `/admin/*` via Next.js 16 (substitui `middleware.ts`)
+- `app/api/admin/login/route.ts` — POST login, valida senha, seta cookie `admin_session` (httpOnly, 7 dias)
+- `app/api/admin/logout/route.ts` — POST logout, limpa cookie
+- `app/admin/login/page.tsx` — Página de login com background Unsplash
+- `components/AdminNav.tsx` — Header+nav admin reutilizável com botão logout
+- `app/admin/page.tsx` — Dashboard reescrito com AdminNav
+- `app/admin/reservas/page.tsx` — Tabela de reservas com AdminNav
+- `app/admin/propriedades/page.tsx` — Cards de propriedades com imagens Unsplash
+- `app/admin/servicos/page.tsx` — Gestão de serviços com AdminNav
+
+**Páginas criadas:**
+- `app/propriedades/[slug]/page.tsx` — Detalhes da propriedade com booking card
+- `app/admin/reservas/page.tsx` — Lista de reservas admin
+- `app/admin/propriedades/page.tsx` — Gestão de propriedades admin
+- `app/admin/servicos/page.tsx` — Gestão de serviços admin
+
+**Deploy:**
+- Build local: ✅ Next.js 16.1.6 Turbopack
+- Commit: `feat: hero slideshow, fotos, autenticacao admin, proxy.ts (Next.js 16)` (14 arquivos, 835 inserções)
+- Deploy Vercel: ✅ LIVE
+
+### 🧪 Testes realizados (9/9 ✅)
+
+| Teste | Resultado |
+|-------|-----------|
+| POST `/api/admin/login` senha correta | ✅ 200 + cookie setado |
+| POST `/api/admin/login` senha errada | ✅ 401 `{"error":"Senha incorreta"}` |
+| GET `/admin` sem auth | ✅ 307 → `/admin/login?from=%2Fadmin` |
+| GET `/admin/reservas` sem auth | ✅ 307 redirect |
+| GET `/admin/propriedades` sem auth | ✅ 307 redirect |
+| GET `/admin/servicos` sem auth | ✅ 307 redirect |
+| GET `/propriedades/rancho-beira-represa` | ✅ 200 |
+| GET `/propriedades/casa-premium-capitolio` | ✅ 200 |
+| GET `/reservar` | ✅ 200 |
+
+### 🐛 Problemas encontrados e soluções
+
+| Problema | Solução |
+|---|---|
+| Build falhou: conflito `middleware.ts` + `proxy.ts` | Deletado `middleware.ts` via PowerShell `Remove-Item` |
+| curl no Windows retornava 500 (escaping de JSON) | Usado script PowerShell com `Invoke-WebRequest` |
+| Next.js 16 não suporta `eslint` config em `next.config.ts` | Removido `eslint.ignoreDuringBuilds` |
+
+### 🔗 Links do projeto
+
+| Link | Descrição |
+|------|-----------|
+| https://capitolio-premium.vercel.app | 🌐 Site principal |
+| https://capitolio-premium.vercel.app/admin/login | 🔐 Painel admin (senha: `capitolio2026`) |
+| https://github.com/saulozabot-pixel/Capit-lioPremium | 💻 GitHub (branch: main) |
+| C:\Users\SAULO\capitolio-premium | 📁 Projeto local |
+
+### 💡 Pendências / Próximos passos
+- [ ] Adicionar fotos reais do Google Drive (substituir Unsplash)
+- [ ] Integração de pagamento (Stripe/Mercado Pago)
+- [ ] Configurar WhatsApp com Evolution API + n8n
+- [ ] Configurar env var `ADMIN_PASSWORD` na Vercel (atualmente usa fallback `capitolio2026`)
+
+---
+
 ## 📅 [TEMPLATE PARA PRÓXIMOS DIAS]
 
 <!--
