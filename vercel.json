@@ -3,6 +3,9 @@
   "outputDirectory": "dist",
   "installCommand": "",
   "framework": null,
+  "rewrites": [
+    { "source": "/rei-permutas", "destination": "/pitch-deck-rei-permutas.html" }
+  ],
   "headers": [
     {
       "source": "/api/(.*)",
