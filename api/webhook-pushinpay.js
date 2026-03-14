@@ -1,69 +1,67 @@
 // Vercel Serverless Function — Recebe confirmação de pagamento PushinPay
-// Gera código LUX e envia via WhatsApp (Evolution API)
+// Gera código LUX aleatório, salva no banco, envia via WhatsApp (Evolution API)
+import { randomBytes } from 'crypto';
+import pkg from 'pg';
+const { Pool } = pkg;
 
-// ── Gerador de código — MESMO algoritmo do PaywallScreen.tsx ─────────────────
-// ATENÇÃO: qualquer mudança aqui deve ser espelhada em PaywallScreen.tsx
-function djb2Hash(str) {
-  let hash = 5381;
-  for (let i = 0; i < str.length; i++) {
-    hash = ((hash << 5) + hash) + str.charCodeAt(i);
-    hash = hash & hash; // 32-bit
-  }
-  return Math.abs(hash);
-}
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false },
+});
 
-// Gera o código para um índice específico (índices 1–500)
-// Idêntico a generateCode(index) no PaywallScreen.tsx
-function generateCode(index) {
-  const SECRET = process.env.LUX_SECRET || 'LUX_SAULO_2025_DRIVER';
-  const CHARS   = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // sem 0/O/1/I
-  let n1 = djb2Hash(SECRET + index + 'A');
-  let n2 = djb2Hash(SECRET + index + 'B');
-  let part1 = '';
-  let part2 = '';
+// ── Gerador de código aleatório ───────────────────────────────────────────────
+const CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // sem 0/O/1/I
+
+function generateRandomCode() {
+  const bytes = randomBytes(8);
+  let part1 = '', part2 = '';
   for (let i = 0; i < 4; i++) {
-    part1 += CHARS[n1 % CHARS.length]; n1 = Math.floor(n1 / CHARS.length);
-    part2 += CHARS[n2 % CHARS.length]; n2 = Math.floor(n2 / CHARS.length);
+    part1 += CHARS[bytes[i] % CHARS.length];
+    part2 += CHARS[bytes[i + 4] % CHARS.length];
   }
   return `LUX-${part1}-${part2}`;
 }
 
-// Deriva um índice único (1–500) a partir do txid + telefone
-function generateLuxCode(txid, phone) {
-  const SECRET = process.env.LUX_SECRET || 'LUX_SAULO_2025_DRIVER';
-  const MAX_CODES = 500;
-  const index = (djb2Hash(SECRET + txid + phone) % MAX_CODES) + 1;
-  return generateCode(index);
+function planMonths(plan) {
+  if (plan === 'mensal') return 1;
+  if (plan === 'trimestral') return 3;
+  if (plan === 'anual') return 12;
+  return 1;
+}
+
+// ── Salva assinante no banco ──────────────────────────────────────────────────
+async function saveSubscriber(phone, plan, code, txid) {
+  const expires_at = new Date();
+  expires_at.setMonth(expires_at.getMonth() + planMonths(plan));
+
+  await pool.query(
+    `INSERT INTO lux_subscribers (phone, plan, code, txid, expires_at)
+     VALUES ($1, $2, $3, $4, $5)
+     ON CONFLICT (code) DO NOTHING`,
+    [phone.replace(/\D/g, ''), plan, code, txid, expires_at.toISOString()]
+  );
 }
 
 // ── Envia mensagem via Evolution API ─────────────────────────────────────────
 async function sendWhatsApp(phone, message) {
-  // .trim() remove newlines que o PowerShell adiciona ao setar via CLI
-  const apiUrl      = (process.env.EVOLUTION_API_URL   || '').trim();
-  const apiKey      = (process.env.EVOLUTION_API_KEY   || '').trim();
-  const instance    = (process.env.EVOLUTION_INSTANCE  || '').trim();
+  const apiUrl   = (process.env.EVOLUTION_API_URL  || '').trim();
+  const apiKey   = (process.env.EVOLUTION_API_KEY  || '').trim();
+  const instance = (process.env.EVOLUTION_INSTANCE || '').trim();
 
   if (!apiUrl || !apiKey || !instance) {
     console.error('Evolution API não configurada — verifique as env vars');
     return { ok: false, error: 'env_vars_missing' };
   }
 
-  // Formata número: remove não-dígitos, garante DDI 55
   let number = phone.replace(/\D/g, '');
   if (!number.startsWith('55')) number = '55' + number;
 
-  const url = `${apiUrl}/message/sendText/${instance}`;
-
   try {
-    const res = await fetch(url, {
+    const res = await fetch(`${apiUrl}/message/sendText/${instance}`, {
       method: 'POST',
-      headers: {
-        'apikey': apiKey,
-        'Content-Type': 'application/json',
-      },
+      headers: { 'apikey': apiKey, 'Content-Type': 'application/json' },
       body: JSON.stringify({ number, text: message }),
     });
-
     const body = await res.text();
     if (!res.ok) {
       console.error('Evolution API error:', res.status, body);
@@ -105,7 +103,6 @@ function buildMessage(code, plan) {
 
 // ── Handler principal ─────────────────────────────────────────────────────────
 export default async function handler(req, res) {
-  // PushinPay envia POST; aceita também GET para teste
   if (req.method === 'GET') {
     return res.status(200).json({ status: 'webhook endpoint ativo' });
   }
@@ -114,8 +111,7 @@ export default async function handler(req, res) {
   const payload = req.body || {};
   console.log('PushinPay webhook recebido:', JSON.stringify(payload));
 
-  // ── Verifica se o pagamento foi aprovado ──────────────────────────────────
-  // PushinPay pode enviar status como: "paid", "PAID", "approved", "APPROVED"
+  // Verifica se o pagamento foi aprovado
   const status = (
     payload.status ||
     payload.payment?.status ||
@@ -128,7 +124,7 @@ export default async function handler(req, res) {
     return res.status(200).json({ received: true, ignored: true, status });
   }
 
-  // ── Extrai external_reference: "phone|plan|timestamp" ────────────────────
+  // Extrai external_reference: "phone|plan|timestamp"
   const externalRef = (
     payload.external_reference ||
     payload.payment?.external_reference ||
@@ -139,24 +135,25 @@ export default async function handler(req, res) {
   const parts = externalRef.split('|');
   const phone = parts[0];
   const plan  = parts[1];
-  const ts    = parts[2] || Date.now().toString();
 
   if (!phone || !plan) {
     console.error('external_reference inválido:', externalRef);
     return res.status(200).json({ received: true, error: 'invalid_ref' });
   }
 
-  // ── Gera código único baseado no txid + telefone ──────────────────────────
-  const txid = payload.id || payload.txid || payload.payment?.id || ts;
-  const code = generateLuxCode(txid, phone);
+  const txid = payload.id || payload.txid || payload.payment?.id || Date.now().toString();
+
+  // Gera código aleatório e salva no banco
+  const code = generateRandomCode();
+  await saveSubscriber(phone, plan, code, txid);
 
   console.log(`✅ Pagamento confirmado — phone: ${phone}, plan: ${plan}, code: ${code}`);
 
-  // ── Envia WhatsApp ────────────────────────────────────────────────────────
+  // Envia WhatsApp
   const message = buildMessage(code, plan);
   const sent = await sendWhatsApp(phone, message);
 
-  console.log(`WhatsApp enviado: ${sent}`);
+  console.log('WhatsApp resultado:', sent);
 
   return res.status(200).json({
     received: true,
@@ -164,11 +161,5 @@ export default async function handler(req, res) {
     plan,
     code,
     whatsapp_sent: sent?.ok === true,
-    _debug: {
-      evolution_url: (process.env.EVOLUTION_API_URL || '').trim(),
-      evolution_instance: (process.env.EVOLUTION_INSTANCE || '').trim(),
-      evolution_key_set: !!(process.env.EVOLUTION_API_KEY || '').trim(),
-      whatsapp_result: sent,
-    },
   });
 }

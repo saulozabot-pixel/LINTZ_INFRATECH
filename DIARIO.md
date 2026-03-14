@@ -20,6 +20,38 @@
 
 ---
 
+## 📅 2026-03-13 (Sexta-feira)
+
+### ✅ O que foi feito
+- **Segurança crítica:** removido algoritmo DJB2 + SECRET do frontend (PaywallScreen.tsx)
+  - Antes: geração de códigos acontecia no browser (SECRET exposta no bundle)
+  - Agora: validação 100% server-side via `/api/validate-code`
+- **Banco de dados:** criada tabela `lux_subscribers` no Supabase (compartilhado com Capitólio Premium)
+  - Campos: `id`, `phone`, `plan`, `code` (UNIQUE), `txid`, `status`, `expires_at`, `created_at`
+  - Índices em `code` e `phone` para performance
+- **Nova API:** `api/validate-code.js` — valida código no banco, checa status e expiração
+- **Nova API:** `api/subscribers.js` — painel admin (listar, criar, cancelar assinantes)
+  - Autenticação via header `x-admin-key`
+- **Webhook atualizado:** `api/webhook-pushinpay.js` agora gera códigos aleatórios com `crypto.randomBytes` e salva no banco
+- **Vercel:** adicionadas env vars `DATABASE_URL` e `LUX_ADMIN_KEY` + redeploy
+- **Evolution API:** confirmada configuração existente desde 22/02 — WhatsApp já funciona
+- **PaywallScreen:** botão OK mostra `...` durante loading, desabilitado com `opacity-50`
+
+### 🔗 Variáveis de ambiente Vercel (produção)
+- `DATABASE_URL` — Supabase connection string (pgbouncer)
+- `LUX_ADMIN_KEY` — chave de admin para `/api/subscribers`
+- `EVOLUTION_API_URL`, `EVOLUTION_API_KEY`, `EVOLUTION_INSTANCE` — já estavam configuradas
+- `PUSHINPAY_TOKEN`, `LUX_SECRET`, `VITE_APP_URL` — já estavam configuradas
+
+### 💡 Pendências / Próximos passos
+- Testar fluxo completo: criar assinante via API → validar código no app
+- Build AAB v1.2: rodar `tools\build-gradle-only.bat`
+- Upload AAB para Play Console (Alpha)
+- Configurar PUSHINPAY_TOKEN com token real
+- Separar banco Supabase do Capitólio Premium (quando crescer)
+
+---
+
 ## 📅 2025-07-14 (Segunda-feira)
 
 ### ✅ O que foi feito
@@ -301,6 +333,64 @@ Abrir: tools/credit-manager.html no browser
 Clicar: "📥 Carregar dados de hoje" para pré-carregar sessões de 2026-03-02
 Ajustar: configurações de custo/multiplicador conforme seu plano BLACKBOX
 ```
+
+---
+
+## 📅 2026-03-12 (Quinta-feira) — Versão 1.2 (versionCode 3)
+
+### ✅ O que foi feito
+
+#### 🐛 Bugs corrigidos
+
+| Bug | Causa | Correção |
+|-----|-------|---------|
+| 99 não detectava corridas | Pacotes `com.taxis99` / `com.taxis99.driver` ausentes na whitelist | Adicionados + triggers "Aceitar corrida", "Ver oferta", "Pegar corrida" |
+| Uber parava às vezes | WebView não acessível + throttle alto | `canRequestEnhancedWebAccessibility=true` + throttle 400ms→250ms |
+| Corridas similares bloqueadas | Dedup lock de 8s muito longo | Reduzido para 5s |
+| Versão errada no app | Settings mostrava v1.0.0 | Corrigido para v1.1 |
+
+#### ☀️ Nova feature — Bolinha de status flutuante
+
+- **Arquivo criado:** `android/app/src/main/java/com/lux/motorista/StatusBubbleManager.kt`
+- Sol dourado desenhado programaticamente (Canvas — círculo + 8 raios + texto "LUX")
+- Arrastável por toda a tela via `WindowManager.updateViewLayout()`
+- Posição salva em SharedPreferences entre sessões
+- Toque simples → abre o app (`MainActivity`)
+- Aparece quando serviço conecta (`onServiceConnected`)
+- Remove quando serviço destrói (`onDestroy`)
+- Mesma técnica do concorrente GIGU (`TYPE_ACCESSIBILITY_OVERLAY`)
+
+#### 📄 Documentação
+
+- `CLAUDE.md` criado na raiz — contexto completo do projeto para sessões futuras com IA
+- Migração do contexto do Antigravity/Gemini para Claude Code
+
+### 🔗 Arquivos alterados
+
+- `RideService.kt` — packages 99/InDriver, triggers, throttle, dedup lock, StatusBubble
+- `accessibility_service_config.xml` — `canRequestEnhancedWebAccessibility`
+- `SettingsScreen.tsx` — versão v1.0.0→v1.1
+- `build.gradle` — versionCode 2→3, versionName 1.1→1.2
+- `StatusBubbleManager.kt` — **NOVO**
+- `CLAUDE.md` — **NOVO**
+
+### 🐛 Problemas encontrados
+
+Nenhum na sessão de hoje — build pendente para amanhã.
+
+### 🔗 Links úteis
+
+- Firebase: https://console.firebase.google.com/project/lux-driver-assistant
+- Play Console: https://play.google.com/console → Lux → Teste → Teste fechado Alpha
+- Site: https://lux-driver-assistent-18y8.vercel.app
+
+### 💡 Pendências / Próximos passos
+
+- [ ] **AMANHÃ:** Rodar `tools\build-gradle-only.bat` para gerar AAB v1.2
+- [ ] Instalar APK no celular e testar bolinha + detecção 99
+- [ ] Enviar AAB para Play Console (Alpha)
+- [ ] Enviar link de teste para testadores via WhatsApp
+- [ ] Implementar botão "Encerrar Jornada" (pausa/retoma o serviço pelo app)
 
 ---
 

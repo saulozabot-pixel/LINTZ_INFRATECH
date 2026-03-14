@@ -3,53 +3,7 @@ import { Check, MessageCircle, Key, ChevronDown, ChevronUp, Crown } from 'lucide
 
 // ── Configuração ──────────────────────────────────────────────────────────────
 const WHATSAPP_NUMBER = '47988182649';
-
-// ── Sistema de códigos únicos ─────────────────────────────────────────────────
-// IMPORTANTE: mantenha SECRET em segredo — é a chave que gera todos os códigos
-const SECRET = 'LUX_SAULO_2025_DRIVER';
-const MAX_CODES = 500; // total de códigos válidos (índices 1–500)
-
-function djb2Hash(str: string): number {
-  let hash = 5381;
-  for (let i = 0; i < str.length; i++) {
-    hash = ((hash << 5) + hash) + str.charCodeAt(i);
-    hash = hash & hash; // 32-bit
-  }
-  return Math.abs(hash);
-}
-
-// Gera o código para um índice específico (mesmo algoritmo do gerador externo)
-export function generateCode(index: number): string {
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // sem 0/O/1/I (confusos)
-  let n1 = djb2Hash(SECRET + index + 'A');
-  let n2 = djb2Hash(SECRET + index + 'B');
-  let part1 = '';
-  let part2 = '';
-  for (let i = 0; i < 4; i++) {
-    part1 += chars[n1 % chars.length]; n1 = Math.floor(n1 / chars.length);
-    part2 += chars[n2 % chars.length]; n2 = Math.floor(n2 / chars.length);
-  }
-  return `LUX-${part1}-${part2}`;
-}
-
-// Valida se o código é legítimo e ainda não foi usado neste dispositivo
-function validateCode(code: string): { valid: boolean; index: number } {
-  const normalized = code.trim().toUpperCase();
-  for (let i = 1; i <= MAX_CODES; i++) {
-    if (generateCode(i) === normalized) {
-      const used: string[] = JSON.parse(localStorage.getItem('lux_used_codes') || '[]');
-      if (used.includes(normalized)) return { valid: false, index: i }; // já usado
-      return { valid: true, index: i };
-    }
-  }
-  return { valid: false, index: -1 };
-}
-
-function markCodeUsed(code: string) {
-  const used: string[] = JSON.parse(localStorage.getItem('lux_used_codes') || '[]');
-  used.push(code.trim().toUpperCase());
-  localStorage.setItem('lux_used_codes', JSON.stringify(used));
-}
+const API_BASE = (import.meta.env.VITE_APP_URL as string) || 'https://lux-driver-assistent-18y8.vercel.app';
 
 const PLANS = [
   {
@@ -107,6 +61,7 @@ const PaywallScreen = ({
   const [code, setCode] = useState('');
   const [codeError, setCodeError] = useState('');
   const [codeSuccess, setCodeSuccess] = useState(false);
+  const [codeLoading, setCodeLoading] = useState(false);
 
   const isTrial = trialDaysLeft > 0;
   const plan = PLANS.find(p => p.id === selectedPlan)!;
@@ -121,23 +76,45 @@ const PaywallScreen = ({
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`, '_blank');
   };
 
-  const handleCodeSubmit = () => {
-    const result = validateCode(code);
-    if (result.valid) {
-      const normalized = code.trim().toUpperCase();
-      setCodeSuccess(true);
-      setCodeError('');
-      setTimeout(() => {
-        markCodeUsed(normalized);
-        localStorage.setItem('lux_premium', 'true');
-        localStorage.setItem('lux_premium_code', normalized);
-        localStorage.setItem('lux_premium_plan', 'code');
-        onActivate();
-      }, 1200);
-    } else if (result.index > 0) {
-      setCodeError('Este código já foi utilizado neste dispositivo.');
-    } else {
-      setCodeError('Código inválido. Verifique e tente novamente.');
+  const handleCodeSubmit = async () => {
+    const normalized = code.trim().toUpperCase();
+    if (!normalized) return;
+
+    setCodeLoading(true);
+    setCodeError('');
+
+    try {
+      const res = await fetch(`${API_BASE}/api/validate-code`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: normalized }),
+      });
+      const data = await res.json();
+
+      if (data.valid) {
+        setCodeSuccess(true);
+        setTimeout(() => {
+          localStorage.setItem('lux_premium', 'true');
+          localStorage.setItem('lux_premium_code', normalized);
+          localStorage.setItem('lux_premium_plan', data.plan || 'code');
+          if (data.expires_at) {
+            localStorage.setItem('lux_premium_expires', data.expires_at);
+          }
+          onActivate();
+        }, 1200);
+      } else {
+        const msgs: Record<string, string> = {
+          not_found: 'Código inválido. Verifique e tente novamente.',
+          expired:   'Este código expirou. Entre em contato para renovar.',
+          cancelled: 'Este código foi cancelado. Entre em contato para suporte.',
+          server_error: 'Erro ao validar. Tente novamente em instantes.',
+        };
+        setCodeError(msgs[data.error] || 'Código inválido. Verifique e tente novamente.');
+      }
+    } catch {
+      setCodeError('Sem conexão. Verifique sua internet e tente novamente.');
+    } finally {
+      setCodeLoading(false);
     }
   };
 
@@ -285,9 +262,10 @@ const PaywallScreen = ({
                   />
                   <button
                     onClick={handleCodeSubmit}
-                    className="px-4 py-3 bg-primary/20 text-primary rounded-xl font-bold text-sm active:scale-95 transition-all border border-primary/30"
+                    disabled={codeLoading}
+                    className="px-4 py-3 bg-primary/20 text-primary rounded-xl font-bold text-sm active:scale-95 transition-all border border-primary/30 disabled:opacity-50"
                   >
-                    OK
+                    {codeLoading ? '...' : 'OK'}
                   </button>
                 </div>
                 {codeError && (
